@@ -1,3 +1,7 @@
+<?php
+  require_once "../../../app/config/app.php";  
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
