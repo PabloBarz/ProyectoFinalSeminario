@@ -23,7 +23,7 @@ class Conexion{
       return $pdo;
     }
     catch(Exception $e){
-      die($e->getMessage());
+      echo "Error: " . $e->getMessage();
     }
   }
 
