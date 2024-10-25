@@ -1,5 +1,5 @@
 <?php
-  require_once "../../../app/config/app.php";  
+  require_once "./app/config/app.php";  
 ?>
 
 <!DOCTYPE html>
