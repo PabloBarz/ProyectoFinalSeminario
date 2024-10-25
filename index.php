@@ -1,5 +1,11 @@
 <?php
   require_once "./app/config/app.php";  
+  spl_autoload_register(function ($className) {
+    $filePath = __DIR__ . '/app/' . '/helpers/'. $className . '.php'; 
+    if (file_exists($filePath)) {
+        require_once $filePath; // Incluir el archivo si existe
+    }
+});
 ?>
 
 <!DOCTYPE html>
