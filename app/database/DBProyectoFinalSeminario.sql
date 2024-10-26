@@ -10,7 +10,12 @@ USE sportsfieldrentaldb;
 -- T2 TIPO DE USUARIOS
  CREATE TABLE tipos_usuarios (
   idTipoUsuario INT AUTO_INCREMENT PRIMARY KEY,
-  nombreRol 	VARCHAR (20) NOT NULL
+  nombreRol 	VARCHAR (20) NOT NULL,
+  nombreCorto	CHAR(3)	NOT NULL,
+  descripcion	VARCHAR(200) NULL,
+  create_at 	DATETIME NOT NULL DEFAULT NOW(),
+  CONSTRAINT uk_nombreRol_per UNIQUE (nombreRol),
+  CONSTRAINT uk_nombrecorto_per UNIQUE (nombreCorto)
 ) ENGINE = INNODB;
 
 -- T3 PERMISOS RELACIONANDO CON T1 Y T2
@@ -22,19 +27,37 @@ USE sportsfieldrentaldb;
   CONSTRAINT 	fk_permisos_tipo_usuario 	FOREIGN KEY (idTipoUsuario) REFERENCES tipos_usuarios (idTipoUsuario)
 ) ENGINE = INNODB;
 
--- T4 USUARIOS RELACIONADO CON T2
- CREATE TABLE usuarios (
-  idUsuario 		INT AUTO_INCREMENT PRIMARY KEY,
-  idTipoUsuario 	INT NOT NULL,
-  nombre 		VARCHAR (20) NOT NULL,
-  apellido 		VARCHAR (20) NOT NULL,
-  correoElectronico 	VARCHAR (50) NOT NULL,
-  constraseña 		VARCHAR (255) NOT NULL,
-   telefono 		VARCHAR (20) NOT NULL,
-  CONSTRAINT 		fk_usuarios_tipo_usuario FOREIGN KEY (idTipoUsuario) REFERENCES tipos_usuarios (idTipoUsuario)
+-- T4 PERMISOS
+CREATE TABLE personas 
+(
+    idPersona 		INT AUTO_INCREMENT PRIMARY KEY,
+    apellidos		VARCHAR(40) 	NOT NULL,
+    nombres 		VARCHAR(40)	NOT NULL,
+    dni 		CHAR(8) 	NOT NULL,
+    telefono 		CHAR(9) 	NULL,
+    direccion		VARCHAR(70)	NULL,
+    email 		VARCHAR(70) 	NULL,
+    create_at 		DATETIME 	NOT NULL DEFAULT NOW(),
+    CONSTRAINT uk_dni_per UNIQUE (dni)
 ) ENGINE = INNODB;
 
--- T5 CAMPOS
+-- T5 USUARIOS RELACIONADO CON T2 Y T4
+ CREATE TABLE usuarios (
+  idUsuario 		INT AUTO_INCREMENT PRIMARY KEY,
+  idPersona		INT NOT NULL,
+  idTipoUsuario 	INT NOT NULL,
+  nomUser 		VARCHAR(20) 	NOT NULL,
+  passUser 		VARCHAR(70) 	NOT NULL,
+  create_at 		DATETIME 	NOT NULL DEFAULT NOW(),
+  update_at 		DATETIME 	NULL,
+  inactive_at		DATETIME 	NULL,
+  CONSTRAINT fk_idpersona_usu FOREIGN KEY (idPersona) REFERENCES personas (idPersona), 
+  CONSTRAINT uk_idpersona_usu UNIQUE (idPersona), -- Uno a Uno
+  CONSTRAINT fk_usuarios_tipo_usuario FOREIGN KEY (idTipoUsuario) REFERENCES tipos_usuarios (idTipoUsuario),
+  CONSTRAINT uk_nomuser_usu UNIQUE (nomUser)
+) ENGINE = INNODB;
+
+-- T6 CAMPOS
  CREATE TABLE campos (
   idCampo 	INT AUTO_INCREMENT PRIMARY KEY,
   tipoCampo 	VARCHAR (20) NOT NULL,
@@ -46,7 +69,7 @@ USE sportsfieldrentaldb;
   telefono 	VARCHAR (30) NOT NULL
 ) ENGINE = INNODB;
 
--- T6 ZONAS DE CAMPOS RELACIONADO CON T5
+-- T7 ZONAS DE CAMPOS RELACIONADO CON T6
  CREATE TABLE zonas_campos (
   idZonaCampo 	INT AUTO_INCREMENT PRIMARY KEY,
   idCampo 	INT NOT NULL,
@@ -60,7 +83,7 @@ USE sportsfieldrentaldb;
   CONSTRAINT 	fk_zonas_campos_campo FOREIGN KEY (idCampo) REFERENCES campos (idCampo)
 ) ENGINE = INNODB;
 
--- T7 RESERVACIONES DE LAS ZONAS RELACIONADO CON T6
+-- T8 RESERVACIONES DE LAS ZONAS RELACIONADO CON T7
  CREATE TABLE reservaciones (
   idReservacion 	INT AUTO_INCREMENT PRIMARY KEY,
   idZonaCampo 		INT NOT NULL,
@@ -75,11 +98,11 @@ USE sportsfieldrentaldb;
   CONSTRAINT 		fk_reservaciones_usuario 	FOREIGN KEY (idUsuario) REFERENCES usuarios (idUsuario)
 ) ENGINE = INNODB;
 
--- T8 PAGOS RELACIONADO CON T7
+-- T9 PAGOS RELACIONADO CON T8
  CREATE TABLE pagos (
   idPago INT AUTO_INCREMENT PRIMARY KEY,
   idReservacion INT NOT NULL,
-  monto DECIMAL (6, 2),
+  monto DECIMAL (10, 2),
   fechaPago DATETIME NOT NULL,
   metodoPago VARCHAR (20) NOT NULL,
   comprobante VARCHAR (255) NOT NULL,

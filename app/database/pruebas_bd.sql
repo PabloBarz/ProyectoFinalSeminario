@@ -10,10 +10,10 @@ INSERT INTO acciones (nombre) VALUES
 ('Consultar Reservaciones');
 
 -- Insertar tipos de usuarios
-INSERT INTO tipos_usuarios (nombreRol) VALUES 
-('Administrador'),
-('Cliente'),
-('Empleado');
+INSERT INTO tipos_usuarios (nombreRol, nombrecorto) VALUES
+('Administrador', 'ADM'),
+('Supervisor', 'SPV'),
+('Invitado', 'INV');
 
 -- Insertar permisos
 INSERT INTO permisos (idAccion, idTipoUsuario) VALUES 
@@ -25,11 +25,22 @@ INSERT INTO permisos (idAccion, idTipoUsuario) VALUES
 (4, 2), -- Cliente puede consultar reservaciones
 (4, 3); -- Empleado puede consultar reservaciones
 
+-- Insertar personas
+INSERT INTO personas (apellidos, nombres, dni) VALUES
+('Barzola Claudio', 'Roberto Pablo', '77420150'),
+('Ochoa Prada', 'Karina', '11112222'),
+('Castilla Morales', 'Carlos', '33334444');
+
+
 -- Insertar usuarios
-INSERT INTO usuarios (idTipoUsuario, nombre, apellido, correoElectronico, constraseña, telefono) VALUES 
-(1, 'Juan', 'Pérez', 'juan.perez@example.com', 'password123', '123456789'),
-(2, 'María', 'García', 'maria.garcia@example.com', 'password456', '987654321'),
-(3, 'Luis', 'Martínez', 'luis.martinez@example.com', 'password789', '456123789');
+INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES 
+(1, 1, 'Pablo', '123'),
+(2, 2, 'Karina', '123'),
+(3, 3, 'Carlos', '123');
+
+/*UPDATE usuarios SET passuser = '$2y$10$2bLM5P3czoCxOgUzUiczb.I9v7zCrNCTHHypgQqxI7dS7fPzy6jXm' WHERE idusuario = 1;
+UPDATE usuarios SET passuser = '$2y$10$mN17BrRISm3N0Yo/DjF8YebEudo7rMKdHRdCa/yfatEbD3zPHOS9S' WHERE idusuario = 2;
+UPDATE usuarios SET passuser = '$2y$10$zLZfCqnbfLatck7P7uCzBOyRFTFYK437m2m05H7k3uYz1Zzx8Va/.' WHERE idusuario = 3;*/
 
 -- Insertar campos
 INSERT INTO campos (tipoCampo, nombre, latitud, longitud, direccion, distrito, telefono) VALUES 
