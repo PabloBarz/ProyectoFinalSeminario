@@ -31,18 +31,6 @@ CREATE TABLE permisos (
   CONSTRAINT 	fk_permisos_tipo_usuario 	FOREIGN KEY (idTipoUsuario) REFERENCES tipos_usuarios (idTipoUsuario)
 ) ENGINE = INNODB;
 
-<<<<<<< HEAD
--- T4 USUARIOS RELACIONADO CON T2
- CREATE TABLE usuarios (
-  idUsuario 		INT AUTO_INCREMENT PRIMARY KEY,v
-  idTipoUsuario 	INT NOT NULL,
-  nombre 		VARCHAR (20) NOT NULL,
-  apellido 		VARCHAR (20) NOT NULL,
-  correoElectronico 	VARCHAR (50) NOT NULL,
-  constraseña 		VARCHAR (255) NOT NULL,
-   telefono 		VARCHAR (20) NOT NULL,
-  CONSTRAINT 		fk_usuarios_tipo_usuario FOREIGN KEY (idTipoUsuario) REFERENCES tipos_usuarios (idTipoUsuario)
-=======
 -- T4 PERSONAS
 DROP TABLE IF EXISTS personas;
 CREATE TABLE personas (
@@ -55,7 +43,6 @@ CREATE TABLE personas (
   email 		VARCHAR(70) 	NULL,
   create_at 		DATETIME 	NOT NULL DEFAULT NOW(),
   CONSTRAINT uk_dni_per UNIQUE (dni)
->>>>>>> 47dc9618e22b681493dc8618e9da55e5c11bbecc
 ) ENGINE = INNODB;
 
 -- T5 USUARIOS RELACIONADO CON T2 Y T4
