@@ -55,7 +55,7 @@ INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES
 UPDATE usuarios SET passUser = '$2y$10$zDaQ9eU7HpHq6NA0Es/W3O.2wq2zpZKiOSf2MnTIKTzgyqxZKLM4e' WHERE idUsuario = 1;
 UPDATE usuarios SET passUser = '$2y$10$2lbo6wQ73RB.aKjUZpte5utBK.BDP/ZYT1d85ZjgUR8Z1N0gApW6q' WHERE idUsuario = 2;
 UPDATE usuarios SET passUser = '$2y$10$bSPoK.vw2LMFJ0XD.c6FJeH4n6UfaeUHLveq1y2Zs8l4EYYaByCtG' WHERE idUsuario = 3;
-UPDATE usuarios SET passUser = '$2y$10$EX6X0KQEJWyKArdHZxS05.xbTx9ZDlZpxi/IZtoJZsV2Tl9aIpoZW' WHERE idUsuario = 4;
+UPDATE usuarios SET passUser = '$2y$10$xLCsA6h7Nel8ArSyyAe.veYWIaUQty7pFUKxtv2EwWv8wvY33uDbi' WHERE idUsuario = 4;
 
 /* Insertar campos */
 INSERT INTO campos (tipoCampo, nombre, latitud, longitud, direccion, distrito, telefono) VALUES 
