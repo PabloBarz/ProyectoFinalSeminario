@@ -24,7 +24,7 @@ USE sportsfieldrentaldb;
 
 -- T4 USUARIOS RELACIONADO CON T2
  CREATE TABLE usuarios (
-  idUsuario 		INT AUTO_INCREMENT PRIMARY KEY,
+  idUsuario 		INT AUTO_INCREMENT PRIMARY KEY,v
   idTipoUsuario 	INT NOT NULL,
   nombre 		VARCHAR (20) NOT NULL,
   apellido 		VARCHAR (20) NOT NULL,
