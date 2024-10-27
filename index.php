@@ -1,11 +1,11 @@
 <?php
+  session_start();
   require_once "./app/config/app.php";  
-  spl_autoload_register(function ($className) {
-    $filePath = __DIR__ . '/app/' . '/helpers/'. $className . '.php'; 
-    if (file_exists($filePath)) {
-        require_once $filePath; // Incluir el archivo si existe
-    }
-});
+
+  if(isset($_SESSION["login"]) && $_SESSION["login"]["status"] = true){
+    header("Location: " . SERVERURL . "views/");
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -36,15 +36,17 @@
             <div class="card col-lg-4 mx-auto">
               <div class="card-body px-5 py-5">
                 <h3 class="card-title text-left mb-3">Login</h3>
-                <form>
+
+                <form method="POST" id="formLogin" autocomplete="off">
                   <div class="form-group">
-                    <label>Username or email *</label>
-                    <input type="text" class="form-control p_input">
+                    <label for="nomUser">Nombre de Usuario *</label>
+                    <input type="text" class="form-control p_input" id="nomUser" name="nomUser" required autofocus>
                   </div>
                   <div class="form-group">
-                    <label>Password *</label>
-                    <input type="text" class="form-control p_input">
+                    <label for="passUser">Contraseña *</label>
+                    <input type="text" class="form-control p_input" id="passUser" name="passUser" required>
                   </div>
+
                   <div class="form-group d-flex align-items-center justify-content-between">
                     <div class="form-check">
                       <label class="form-check-label">
@@ -52,17 +54,13 @@
                     </div>
                     <a href="#" class="forgot-pass">Forgot password</a>
                   </div>
+
                   <div class="text-center">
-                    <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
-                  </div>
-                  <div class="d-flex">
-                    <button class="btn btn-facebook mr-2 col">
-                      <i class="mdi mdi-facebook"></i> Facebook </button>
-                    <button class="btn btn-google col">
-                      <i class="mdi mdi-google-plus"></i> Google plus </button>
+                    <button type="submit" class="btn btn-primary btn-block enter-btn">Ingresar</button>
                   </div>
                   <p class="sign-up">Don't have an Account?<a href="#"> Sign Up</a></p>
                 </form>
+
               </div>
             </div>
           </div>
@@ -74,7 +72,7 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    <script src="../../assets/vendors/js/vendor.bundle.base.js"></script>
+    <script src="<?= SERVERURL?>/views/assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
     <!-- End plugin js for this page -->
@@ -85,5 +83,46 @@
     <script src="<?= SERVERURL?>/views/assets/js/settings.js"></script>
     <script src="<?= SERVERURL?>/views/assets/js/todolist.js"></script>
     <!-- endinject -->
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- SweetAlert Customer -->
+    <script src="<?= SERVERURL?>views/assets/js/swalcustom.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded",  (event) =>{
+        const formLogin = document.querySelector("#formLogin");
+
+        formLogin.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          const params = new FormData(formLogin);
+          params.append("operation", "login");
+
+          try{
+            const response = await fetch(`app/controllers/UsuarioController.php`, {
+              method: "POST",
+              body: params
+            });
+
+            if (!response.ok) { 
+              throw new Error('Error en la solicitud');
+            }
+
+            const data = await response.json();
+            
+            if (!data.esCorrecto){
+              showToast(data.mensaje, 'WARNING');
+            }else{
+              showToast(data.mensaje, 'SUCCESS', 1500, 'views/');
+            }
+
+          }
+          catch(error){
+            console.error('Hubo un error: ', error.message);
+          }   
+        })
+      })
+    </script>
+
   </body>
 </html>

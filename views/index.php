@@ -1,3 +1,13 @@
+<?php
+session_start();
+require_once "../app/config/app.php";
+
+if(!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false){
+  header("Location: " . SERVERURL);
+} 
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>

@@ -1,8 +1,9 @@
 USE sportsfieldrentaldb;
 
-/* Aqui iran todas los store procedures*/
+/* Aqui iran todos los store procedures*/
 
 -- SP para listar las reservaciones()
+DROP PROCEDURE IF EXISTS spGetDataReservacion;
 DELIMITER //
 
 CREATE PROCEDURE spGetDataReservacion()
@@ -36,17 +37,29 @@ END //
 DELIMITER ;
 
 -- SP para validar usuario cuando se logea 
-DROP PROCEDURE IF EXISTS `spUsuarioLogin`;
+DROP PROCEDURE IF EXISTS spUsuarioLogin;
 DELIMITER //
 CREATE PROCEDURE spUsuarioLogin(IN _nomuser VARCHAR(20))
 BEGIN
-	SELECT
-	US.idusuario,
-        PE.apellidos, PE.nombres,
-        TU.nombreRol, TU.nombreCorto,
-        US.nomUser, US.passUser
-	      FROM usuarios US
-        INNER JOIN personas PE ON PE.idpersona = US.idpersona
-        INNER JOIN tipos_usuarios TU ON TU.idTipoUsuario = US.idTipoUsuario
-        WHERE US.nomUser = _nomuser AND US.inactive_at IS NULL;
+    SELECT
+        US.idusuario,
+        PE.apellidos, 
+        PE.nombres,
+        TU.nombreRol, 
+        TU.nombreCorto,
+        US.nomUser, 
+        US.passUser
+    FROM 
+        usuarios US
+    INNER JOIN 
+        personas PE ON PE.idpersona = US.idpersona
+    INNER JOIN 
+        tipos_usuarios TU ON TU.idTipoUsuario = US.idTipoUsuario
+    WHERE 
+        US.nomUser = _nomuser AND US.inactive_at IS NULL;
 END //
+
+DELIMITER ;
+
+-- Ejemplo de llamada al procedimiento
+CALL spUsuarioLogin("Pablo");

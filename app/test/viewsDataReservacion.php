@@ -1,5 +1,5 @@
 <?php 
-    require_once "../models/reservacionesModel.php";
+    require_once "../models/ReservacionesModel.php";
 
     $reservacion = new ReservacionesModel();
 
