@@ -1,6 +1,7 @@
 <?php
+require_once "../helpers/Helper.php";
 
-class Conexion{
+class Conexion extends Helper{
   //1. Almacenamos los datos de conexión
   private $servidor = "localhost";
   private $puerto = "3306";
@@ -22,7 +23,7 @@ class Conexion{
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       return $pdo;
     }
-    catch(Exception $e){
+    catch(PDOException $e){
       echo "Error: " . $e->getMessage();
     }
   }
