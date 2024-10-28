@@ -2,7 +2,7 @@
   session_start();
   require_once "./app/config/app.php";  
 
-  if(isset($_SESSION["login"]) && $_SESSION["login"]["status"] = true){
+  if(isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true){
     header("Location: " . SERVERURL . "views/");
   }
 

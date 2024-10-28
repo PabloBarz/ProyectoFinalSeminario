@@ -1,4 +1,5 @@
 <?php
+require_once '../../../app/helpers/Helper.php';
 require_once '../../../app/config/app.php';
 require_once '../../partials/header.php';
 ?>
@@ -8,12 +9,10 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <div class="content-header">
-
-    </div>
+    <?= Helper::renderContentHeader("Lista Campos", "Inicio", SERVERURL . "views/")?>
 
     <div class="content-main">
-
+      
     </div>
   </div>
   <!-- content-wrapper ends -->

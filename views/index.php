@@ -1,6 +1,7 @@
 <?php
 require_once "../app/config/app.php";
 require_once './partials/header.php';
+
 ?>
 
 <!-- partial - WRAPPER MAIN + FOOTER -->
@@ -9,7 +10,15 @@ require_once './partials/header.php';
   <div class="content-wrapper">
     <!-- Contenido main -->
     <div class="content-header">
-
+    <div class='page-header'>
+      <h3 class='page-title'> Bienvenido <?= $_SESSION["login"]["nombres"]?> </h3>
+      <nav aria-label='breadcrumb'>
+        <ol class='breadcrumb'>
+          <li class='breadcrumb-item'><a href='$path'>Inicio</a></li>
+          <li class='breadcrumb-item active' aria-current='page'>Página de inicio</li>
+        </ol>
+      </nav>
+    </div>
     </div>
 
     <div class="content-main">

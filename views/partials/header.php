@@ -47,7 +47,7 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
       <span class="nav-link">Navigation</span>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<?= SERVERURL?>views/pages/reservaciones/lista-reservaciones.php">
+      <a class="nav-link" href="<?= SERVERURL?>views/pages/reservaciones/lista-reservaciones">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
@@ -55,7 +55,7 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<?= SERVERURL?>views/pages/usuarios/lista-usuarios.php">
+      <a class="nav-link" href="<?= SERVERURL?>views/pages/usuarios/lista-usuarios">
         <span class="menu-icon">
           <i class="mdi mdi-speedometer"></i>
         </span>
@@ -63,7 +63,7 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
       </a>
     </li>
     <li class="nav-item menu-items">
-      <a class="nav-link" href="<?= SERVERURL?>views/pages/campos/lista-campos.php">
+      <a class="nav-link" href="<?= SERVERURL?>views/pages/campos/lista-campos">
         <span class="menu-icon">
           <i class="mdi mdi-playlist-play"></i>
         </span>
