@@ -62,4 +62,4 @@ END //
 DELIMITER ;
 
 -- Ejemplo de llamada al procedimiento
-CALL spUsuarioLogin("Pablo");
+CALL spUsuarioLogin("vaistaya");

@@ -60,6 +60,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         }
         break;
     case "GET":
+        if($_GET["operation"] == "destroy"){
+            session_destroy();
+            session_unset();
+            header("Location: ../../");
+        }
         break;
     case "PUT":
         break;
