@@ -14,7 +14,7 @@ require_once './partials/header.php';
       <h3 class='page-title'> Bienvenido <?= $_SESSION["login"]["nombres"]?> </h3>
       <nav aria-label='breadcrumb'>
         <ol class='breadcrumb'>
-          <li class='breadcrumb-item'><a href='$path'>Inicio</a></li>
+          <li class='breadcrumb-item'><a href='<?= SERVERURL?>views/'>Inicio</a></li>
           <li class='breadcrumb-item active' aria-current='page'>Página de inicio</li>
         </ol>
       </nav>
