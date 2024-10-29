@@ -19,7 +19,7 @@ BEGIN
         z.nombre AS nombreZona,
         u.nomUser AS nombreUsuario,
         p.apellidos AS apellidoUsuario,  
-        p.nombres AS nombreUsuario,  
+        p.nombres AS nombreCliente,  
         c.nombre AS nombreCampo,
         c.direccion AS direccionCampo
     FROM 
@@ -62,4 +62,4 @@ END //
 DELIMITER ;
 
 -- Ejemplo de llamada al procedimiento
-CALL spUsuarioLogin("vaistaya");
+CALL spGetDataReservacion();
