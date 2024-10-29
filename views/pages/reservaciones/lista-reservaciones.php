@@ -16,22 +16,22 @@ require_once '../../partials/header.php';
 
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">Reservaciones</h5>
-            <div>
-              <button class="btn btn-primary">Registrar</button>
-              <!-- Agregar mas botones PDF-->
-              <button class="btn btn-secondary">Otro Botón</button>
-              <button class="btn btn-success">Botón Adicional</button>
+          <div class="card-header">
+            <div class="row">
+              <div class="col-md-6">Horarios</div>
+              <div class="col-md-6 text-right">
+                <a href="./registra-colaborador" class="btn btn-sm btn-primary">Registrar</a>
+                <a href="./registra-colaborador" class="btn btn-sm btn-danger">Reporte</a>
+              </div>
             </div>
           </div>
           <div class="card-body">
 
-          <style>
-            #tabla-reservaciones thead th {
-              color: white; 
-            }
-          </style>
+            <style>
+              #tabla-reservaciones thead th {
+                color: white;
+              }
+            </style>
 
             <div class="table-responsive">
               <table class="table table-hover" id="tabla-reservaciones">
@@ -50,42 +50,7 @@ require_once '../../partials/header.php';
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>Barzola Claudio Roberto Pablo</td>
-                    <td>2024-10-30</td>
-                    <td>10:00:00</td>
-                    <td>12:00:00</td>
-                    <td>2</td>
-                    <td>50</td>
-                    <td>Pagado</td>
-                    <td>Zona A</td>
-                    <td>Campo Central</td>
-                    <td>Av .Principal 123</td>
-                  </tr>
-                  <tr>
-                    <td>Barzola Claudio Roberto Pablo</td>
-                    <td>2024-10-30</td>
-                    <td>10:00:00</td>
-                    <td>12:00:00</td>
-                    <td>2</td>
-                    <td>50</td>
-                    <td>Pagado</td>
-                    <td>Zona A</td>
-                    <td>Campo Central</td>
-                    <td>Av .Principal 123</td>
-                  </tr>
-                  <tr>
-                    <td>Barzola Claudio Roberto Pablo</td>
-                    <td>2024-10-30</td>
-                    <td>10:00:00</td>
-                    <td>12:00:00</td>
-                    <td>2</td>
-                    <td>50</td>
-                    <td>Pagado</td>
-                    <td>Zona A</td>
-                    <td>Campo Central</td>
-                    <td>Av .Principal 123</td>
-                  </tr>
+                  <!-- Filas pintados desde JS -->
                 </tbody>
               </table>
             </div> <!-- Fin de tabla -->
@@ -102,6 +67,81 @@ require_once '../../partials/header.php';
   <?php
   require_once '../../partials/_footer.php';
   ?>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+      const tableBody = document.querySelector("#tabla-reservaciones tbody");
+
+      const listTableRerservaciones = async () => {
+        const params = new FormData();
+        params.append("operation", "getListReservaciones");
+
+        try {
+
+          const response = await fetch(`../../../app/controllers/ReservacionController.php`, {
+            method: "POST",
+            body: params
+          });
+
+          if (!response.ok) {
+            throw new Error('Error en la solicitud');
+          }
+
+          const data = await response.json();
+
+          console.log(data);
+
+          if (data.length > 0) {
+
+            tableBody.innerHTML = ""
+
+            data.forEach(element => {
+
+              const colorsStatusPago = {
+                "Pendiente": "badge badge-danger",
+                "Parcial": "badge badge-warning",
+                "Pagado": "badge badge-success"
+              }
+
+              const classStatusPago = colorsStatusPago[element.estadoPago];
+
+              const render =
+                `
+                <tr data-id="${element.idReservacion}">
+                  <td>${element.nombreCliente} ${element.apellidoUsuario}</td>
+                  <td>${element.fechaReservacion}</td>
+                  <td>${element.horaInicio}</td>
+                  <td>${element.horaFin}</td>
+                  <td>${element.cantidadHora}</td>
+                  <td>${element.precioHora}</td>
+                  <td><label class="${classStatusPago}">${element.estadoPago}</label></td>
+                  <td>${element.nombreZona}</td>
+                  <td>${element.nombreCampo}</td>
+                  <td>${element.direccionCampo}</td>
+                </tr>
+                `
+              tableBody.insertAdjacentHTML("beforeend", render);
+
+            });
+
+          } else {
+            const noRows =
+              `
+              <tr>
+                <td colspan="10" class="text-center text-muted">Registros vacíos</td>
+              </tr>
+              `;
+            tableBody.insertAdjacentHTML("beforeend", noRows);
+          }
+        } catch (error) {
+          console.error('Hubo un error: ', error.message);
+        }
+      }
+
+      listTableRerservaciones();
+
+    })
+  </script>
   </body>
 
   </html>
