@@ -89,19 +89,17 @@ require_once '../../partials/header.php';
 
           const data = await response.json();
 
-          console.log(data);
-
           if (data.length > 0) {
 
-            tableBody.innerHTML = ""
+            tableBody.innerHTML = "";
 
-            data.forEach(element => {
-
-              const colorsStatusPago = {
+            const colorsStatusPago = {
                 "Pendiente": "badge badge-danger",
                 "Parcial": "badge badge-warning",
                 "Pagado": "badge badge-success"
               }
+
+            data.forEach(element => {
 
               const classStatusPago = colorsStatusPago[element.estadoPago];
 
