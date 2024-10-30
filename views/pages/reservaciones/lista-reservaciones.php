@@ -20,8 +20,8 @@ require_once '../../partials/header.php';
             <div class="row">
               <div class="col-md-6">Horarios</div>
               <div class="col-md-6 text-right">
-                <a href="./registra-colaborador" class="btn btn-sm btn-primary">Registrar</a>
-                <a href="./registra-colaborador" class="btn btn-sm btn-danger">Reporte</a>
+                <a href="./registro-reservaciones" class="btn btn-sm btn-primary">Registrar</a>
+                <a href="./registro-reservaciones" class="btn btn-sm btn-danger">Reporte</a>
               </div>
             </div>
           </div>

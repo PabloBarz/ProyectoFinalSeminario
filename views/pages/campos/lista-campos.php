@@ -18,10 +18,10 @@ require_once '../../partials/header.php';
   <div class="card">
     <div class="card-header">
       <div class="row">
-        <div class="col-md-6">Horarios</div>
+        <div class="col-md-6">Campos</div>
         <div class="col-md-6 text-right">
-          <a href="./registra-colaborador" class="btn btn-sm btn-primary">Registrar</a>
-          <a href="./registra-colaborador" class="btn btn-sm btn-danger">Reporte</a>
+          <a href="./registro-campos" class="btn btn-sm btn-primary">Registrar</a>
+          <a href="./registro-campos" class="btn btn-sm btn-danger">Reporte</a>
         </div>
       </div>
     </div>
@@ -37,30 +37,46 @@ require_once '../../partials/header.php';
         <table class="table table-hover" id="tabla-usuarios">
           <thead>
             <tr>
-              <th>ID Usuario</th>
-              <th>Tipo Usuario</th>
-              <th>Usuario</th>
-              <th>Contraseña</th>
+              <th>Campo</th>
+              <th>Nombre</th>
+              <th>Capacidad</th>
+              <th>Superficie</th>
+              <th>Dimensiones</th>
+              <th>Precio x Hora</th>
+              <th>Descripcion</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
-              <td>Administrador</td>
+              <td>Campo Senati</td>
+              <td>El golazo</td>
               <td>Pablo</td>
-              <td>plabo123</td>
+              <td>22</td>
+              <td>Cancha de loza</td>
+              <td>50 x 70 m</td>
+              <td>45</td>
+              <td>Disponible</td>
             </tr>
             <tr>
-              <td>2</td>
-              <td>Supervisor</td>
-              <td>vaistaya</td>
-              <td>vaista123</td>
+            <td>Campo Senati</td>
+              <td>El golazo</td>
+              <td>Pablo</td>
+              <td>22</td>
+              <td>Cancha de loza</td>
+              <td>50 x 70 m</td>
+              <td>45</td>
+              <td>Disponible</td>
             </tr>
             <tr>
-              <td>3</td>
-              <td>Invitado</td>
-              <td>Carlos</td>
-              <td>carlos123</td>
+            <td>Campo Senati</td>
+              <td>El golazo</td>
+              <td>Pablo</td>
+              <td>22</td>
+              <td>Cancha de loza</td>
+              <td>50 x 70 m</td>
+              <td>45</td>
+              <td>Disponible</td>
             </tr>
           </tbody>
         </table>
