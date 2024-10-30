@@ -1,11 +1,19 @@
 USE sportsfieldrentaldb;
 
-/* Aqui iran todos los store procedures*/
+/* Aquí irán todos los stored procedures */
 
--- SP para listar las reservaciones()
+-- SP para renderizar los campos
+DROP PROCEDURE IF EXISTS spGetAllCampos;
+DELIMITER //
+CREATE PROCEDURE spGetAllCampos()
+BEGIN
+    SELECT idCampo, tipoCampo, nombre, latitud, longitud, direccion, distrito, telefono FROM campos;
+END //
+DELIMITER ;
+
+-- SP para listar las reservaciones
 DROP PROCEDURE IF EXISTS spGetDataReservacion;
 DELIMITER //
-
 CREATE PROCEDURE spGetDataReservacion()
 BEGIN
     SELECT 
@@ -33,10 +41,9 @@ BEGIN
     INNER JOIN 
         campos c ON z.idCampo = c.idCampo;
 END //
-
 DELIMITER ;
 
--- SP para validar usuario cuando se logea 
+-- SP para validar usuario al iniciar sesión
 DROP PROCEDURE IF EXISTS spUsuarioLogin;
 DELIMITER //
 CREATE PROCEDURE spUsuarioLogin(IN _nomuser VARCHAR(20))
@@ -58,8 +65,6 @@ BEGIN
     WHERE 
         US.nomUser = _nomuser AND US.inactive_at IS NULL;
 END //
-
 DELIMITER ;
 
--- Ejemplo de llamada al procedimiento
-CALL spGetDataReservacion();
+CALL spGetAllCampos();

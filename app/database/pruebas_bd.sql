@@ -58,9 +58,18 @@ UPDATE usuarios SET passUser = '$2y$10$bSPoK.vw2LMFJ0XD.c6FJeH4n6UfaeUHLveq1y2Zs
 UPDATE usuarios SET passUser = '$2y$10$xLCsA6h7Nel8ArSyyAe.veYWIaUQty7pFUKxtv2EwWv8wvY33uDbi' WHERE idUsuario = 4;
 
 /* Insertar campos */
-INSERT INTO campos (tipoCampo, nombre, latitud, longitud, direccion, distrito, telefono) VALUES 
-('Fútbol', 'Campo Central', -12.0456, -77.0352, 'Av. Principal 123', 'Alto Laran', '123456789'),
-('Vóley', 'Campo Secundario', -12.0460, -77.0360, 'Av. Secundaria 456', 'Pueblo Nuevo', '987654321');
+-- Inserción de datos en la tabla campos con NULL en el campo telefono cuando no hay número
+INSERT INTO campos (tipoCampo, nombre, latitud, longitud, direccion, distrito, telefono) VALUES
+('Futbol', 'El golazo', -13.412920, -76.152480, 'Av Centenario Calle 3', 'Sunampe', '956848951'),
+('Futbol', 'Deporcentro Tarazona', -13.445049, -76.137218, 'Las gardenias', 'Chincha Baja', '981047228'),
+('Futbol', 'El volante', -13.424924, -76.136024, 'Prol. Lima 699', 'Sunampe', '955660928'),
+('Futbol', 'Los peloteros', -13.404182, -76.149584, 'C. Satelite', 'Grocio Prado', NULL),
+('Futbol', 'Los galacticos', -13.416167, -76.149789, 'Psj. La Paz', 'Sunampe', '981127319'),
+('Futbol', 'El mundialito', -13.396716, -76.125345, 'Calle A x Calle Los Martirez', 'Sunampe', '942101700'),
+('Futbol', 'LA FAVELA', -13.416690, -76.117680, 'Pasaje San Pablito', 'Chincha Alta', '945292380'),
+('Futbol', 'Apolo', -13.412172, -76.133803, 'C. Rosario 159', 'Chincha Alta', '951050584'),
+('Futbol', 'El profe', -13.411961, -76.142735, 'Av. Pedro Moreno 778', 'Chincha Alta', '956530662');
+
 
 /* Insertar zonas de campos */
 INSERT INTO zonas_campos (idCampo, nombre, capacidad, superficie, dimensiones, precioHora, descripcion, estado) VALUES 
