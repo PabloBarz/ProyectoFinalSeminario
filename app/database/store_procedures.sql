@@ -48,23 +48,22 @@ DROP PROCEDURE IF EXISTS spUsuarioLogin;
 DELIMITER //
 CREATE PROCEDURE spUsuarioLogin(IN _nomuser VARCHAR(20))
 BEGIN
-    SELECT
-        US.idusuario,
-        PE.apellidos, 
-        PE.nombres,
-        TU.nombreRol, 
-        TU.nombreCorto,
-        US.nomUser, 
-        US.passUser
-    FROM 
-        usuarios US
-    INNER JOIN 
-        personas PE ON PE.idpersona = US.idpersona
-    INNER JOIN 
-        tipos_usuarios TU ON TU.idTipoUsuario = US.idTipoUsuario
-    WHERE 
-        US.nomUser = _nomuser AND US.inactive_at IS NULL;
+    SELECT * FROM vwUserPerson
+    WHERE nomUser = _nomuser AND inactive_at IS NULL;
 END //
 DELIMITER ;
 
-CALL spGetAllCampos();
+-- SP para validar clientes al registrar una reserva
+DROP PROCEDURE IF EXISTS spVerifyClient;
+DELIMITER //
+CREATE PROCEDURE spVerifyClient
+(
+	IN _dni CHAR(8)
+)	
+BEGIN
+	SELECT * FROM vwUserPerson
+	WHERE dni = _dni; 
+END //
+DELIMITER ; 
+
+

@@ -106,6 +106,7 @@ CREATE TABLE reservaciones (
   estadoPago 		VARCHAR (10) NOT NULL,
   precioHora 		SMALLINT NOT NULL,
   cantidadHora 		SMALLINT NOT NULL,
+  totalMonto		DECIMAL(10,2),
   create_at 		DATETIME NOT NULL DEFAULT NOW(),
   CONSTRAINT 		fk_reservaciones_zona_campo 	FOREIGN KEY (idZonaCampo) REFERENCES zonas_campos (idZonaCampo),
   CONSTRAINT 		fk_reservaciones_usuario 	FOREIGN KEY (idUsuario) REFERENCES usuarios (idUsuario)

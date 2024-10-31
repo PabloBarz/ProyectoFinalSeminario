@@ -4,6 +4,16 @@ require_once '../../../app/config/app.php';
 require_once '../../partials/header.php';
 ?>
 
+<style>
+    input[readonly] {
+            background-color: #2A3038 !important; /* Cambia el color de fondo */
+        }
+
+    input,select{
+        color: white !important;
+    }
+</style>
+
 <!-- partial - WRAPPER MAIN + FOOTER -->
 <div class="main-panel">
     <!-- MAIN -->
@@ -26,46 +36,67 @@ require_once '../../partials/header.php';
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
+                                    <div class="row" id="row-cliente">
+                                        <div class="col-md-2 form-group">
+                                            <label for="dniCliente">DNI:</label>
+                                            <input type="text" class="form-control bg-input" id="dniCliente" name="dniCliente" maxlength="8" minlength="8" required>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="nomCliente">Cliente:</label>
+                                            <input type="text" class="form-control" value="Barzola Pablo" name="nomCliente" id="nomCliente" readonly required>
+                                        </div>
+                                        <div class="col-md-2 form-group"></div>
+                                        <div class="col-md-2 form-group">
+                                            <label for="horaReservadas">Horas:</label>
+                                            <input type="number" class="form-control" id="horaReservadas" name="horaReservadas"  required>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="row-fecha">
                                         <div class="col-md-4 form-group">
-                                            <label for="cliente">Cliente:</label>
-                                            <input type="text" class="form-control" id="cliente" required>
+                                            <label for="fechaReservacion">Fecha</label>
+                                            <input type="date" class="form-control" id="fechaReservacion" name="fechaReservacion" required>
                                         </div>
                                         <div class="col-md-4 form-group">
-                                            <label for="fecha-reservacion">Fecha reservacion:</label>
-                                            <input type="date" class="form-control" id="fecha-reservacion" required>
+                                            <label for="hInicio">Hora de Inicio:</label>
+                                            <input type="time" class="form-control" id="hInicio" name="hInicio" required>
                                         </div>
                                         <div class="col-md-4 form-group">
-                                            <label for="hinicio">Hora de inicio:</label>
-                                            <input type="time" class="form-control" id="hinicio" required>
+                                            <label for="hFin">Hora de Fin:</label>
+                                            <input type="time" class="form-control" id="hFin" name="hFin" readonly required>
                                         </div>
+                                    </div>
+                                    <div class="row" id="row-campo">
                                         <div class="col-md-4 form-group">
-                                            <label for="hfinal">Hora de fin:</label>
-                                            <input type="time" class="form-control" id="hfinal" required>
-                                        </div>
-                                        <div class="col-md-4 form-group">
-                                            <label for="hreservadas">Horas reservadas:</label>
-                                            <input type="number" class="form-control" id="hreservadas" disabled required>
-                                        </div>
-                                        <div class="col-md-4 form-group">
-                                            <label for="estado-pago">Estado de pago:</label>
-                                            <select class="form-control" id="estado-pago" required>
-                                                <option value="">Selecciona un estado</option>
-                                                <option value="Administrador">Pagado</option>
-                                                <option value="Supervisor">Pendiente</option>
+                                            <label for="campo">Campo:</label>
+                                            <select class="form-control" id="campo" name="campo" required>
+                                                <option value=""></option>
+                                                <option value="Administrador">El Golazo</option>
+                                                <option value="Supervisor">El volante</option>
                                             </select>
                                         </div>
                                         <div class="col-md-4 form-group">
-                                            <label for="zona-campo">Zona del campo:</label>
-                                            <input type="text" class="form-control" id="zona-campo" required>
-                                        </div>
-                                        <div class="col-md-4 form-group">
-                                            <label for="campo">Campo:</label>
-                                            <input type="text" class="form-control" id="campo" required>
+                                            <label for="zonaCampo">Zona del campo:</label>
+                                            <select class="form-control" id="zonaCampo" name="zonaCampo" required> 
+                                            <option value=""></option>
+                                                <option value="1">Zona 1</option>
+                                                <option value="2">Zona 3</option>
+                                            </select>
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <label for="direccion">Direccion:</label>
-                                            <input type="number" class="form-control" id="direccion" required>
+                                            <input type="text" class="form-control" id="direccion" name="direccion" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="row-detalles-reserva">
+                                        <div class="col-md-4 form-group">
+                                            <label for="precioHora">Precio por Hora:</label>
+                                            <input type="number" class="form-control" id="precioHora" name="precioHora" readonly required>
+                                        </div>
+                                        
+                                        <div class="col-md-4 form-group"></div>
+                                        <div class="col-md-4 form-group">
+                                            <label for="total">Total:</label>
+                                            <input type="number" class="form-control" id="total" name="total" readonly required>
                                         </div>
                                     </div>
                                 </div>
