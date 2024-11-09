@@ -6,6 +6,7 @@ DROP VIEW IF EXISTS vwUserPerson;  -- Eliminar la vista si ya existe
 CREATE VIEW vwUserPerson AS
 SELECT
     US.idusuario,
+    PE.idPersona,
     PE.dni,
     PE.apellidos, 
     PE.nombres,

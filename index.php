@@ -27,6 +27,9 @@
     <link rel="stylesheet" href="<?= SERVERURL?>/views/assets/css/style.css">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="<?= SERVERURL?>/views/assets/images/favicon.png" />
+
+    <!-- ARCHIVO CSS PARA LOS COLORES DE LOS FORMULARIOS -->
+    <link rel="stylesheet" href="<?= SERVERURL?>/views/assets/css/form.css">
   </head>
   <body>
     <div class="container-scroller">
@@ -44,7 +47,7 @@
                   </div>
                   <div class="form-group">
                     <label for="passUser">Contraseña *</label>
-                    <input type="text" class="form-control p_input" id="passUser" name="passUser" required>
+                    <input type="password" class="form-control p_input" id="passUser" name="passUser" required>
                   </div>
 
                   <div class="form-group d-flex align-items-center justify-content-between">
