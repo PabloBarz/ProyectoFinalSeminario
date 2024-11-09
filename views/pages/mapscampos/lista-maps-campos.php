@@ -56,7 +56,7 @@ require_once '../../partials/header.php';
         async function initMap() {
             const camposData = await fetchCampos();
             contentBody.innerHTML = "";
-            
+            console.log(camposData);          
             camposData.forEach(campo => {
                 const render = `
                 <div class="col-md-4 px-3 py-3">

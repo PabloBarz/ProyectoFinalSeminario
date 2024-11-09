@@ -57,7 +57,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 }
                 echo json_encode($statusLogin);
                 break;
-            case "":
+            case "spGetDataUsers";
+                echo json_encode($user->GetDataUsers());
                 break;
         }
         break;

@@ -67,3 +67,23 @@ END //
 DELIMITER ; 
 
 
+DROP PROCEDURE IF EXISTS spGetDataUsers;
+DELIMITER //
+CREATE PROCEDURE spGetDataUsers()
+BEGIN
+    SELECT 
+        u.idUsuario AS IDUsuario,
+        t.nombreRol AS TipoUsuario,
+        u.nomUser AS Usuario,
+        u.passUser AS Contraseña    
+    FROM 
+        usuarios u
+    INNER JOIN 
+        tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario;
+END //
+DELIMITER ;
+
+
+
+
+

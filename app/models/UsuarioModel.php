@@ -31,7 +31,19 @@ class UsuarioModel extends Conexion {
             return [];
         }
     }
+    public function getDataUsers(){
+        try{
+            $query = "CALL spGetDataUsers()";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
 
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $ex){
+            die($ex->getCode());
+        }
+
+    }
     public function addUser(){}
     public function updateUser(){}
     public function deleteUser(){}    
