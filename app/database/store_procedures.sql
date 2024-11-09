@@ -61,9 +61,19 @@ CREATE PROCEDURE spVerifyClient
 	IN _dni CHAR(8)
 )	
 BEGIN
-	SELECT * FROM vwUserPerson
+	SELECT idusuario,
+	       idPersona,
+	       dni,
+	       apellidos, 
+	       nombres,
+	       nombreRol, 
+	       nombreCorto,
+	       nomUser
+	FROM vwUserPerson
 	WHERE dni = _dni; 
 END //
 DELIMITER ; 
+
+
 
 

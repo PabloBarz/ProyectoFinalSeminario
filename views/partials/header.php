@@ -31,6 +31,9 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
   <link rel="stylesheet" href="<?= SERVERURL?>views/assets/css/style.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="<?= SERVERURL?>views/assets/images/favicon.png" />
+
+  <!-- ARCHIVO CSS PARA LOS COLORES DE LOS FORMULARIOS -->
+  <link rel="stylesheet" href="<?= SERVERURL?>/views/assets/css/form.css">
 </head>
 
 <body>

@@ -1,75 +1,113 @@
-
-
 <?php
 require_once '../../../app/helpers/Helper.php';
 require_once '../../../app/config/app.php';
 require_once '../../partials/header.php';
 ?>
 
+
+
 <!-- partial - WRAPPER MAIN + FOOTER -->
 <div class="main-panel">
     <!-- MAIN -->
     <div class="content-wrapper">
         <!-- Contenido main -->
-        <?= Helper::renderContentHeader("Lista Mapas Campos", "Inicio", SERVERURL . "views/") ?>
+        <?= Helper::renderContentHeader("Registro Campos", "Inicio", SERVERURL . "views/") ?>
 
         <div class="content-main">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div id="map" style="height: 400px; width: 100%;"></div>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <h5 id="campoNombre" class="mb-0"></h5>
-                                <button class="btn btn-primary" id="reservarCampoBtn">Reservar Campo</button>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="" autocomplete="off">
+                            <div class="card card-outline card-primary">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col-md-6">Complete los datos</div>
+                                        <div class="col-md-6 text-right">
+                                            <a href="./lista-reservaciones" class="btn btn-sm btn-primary">Mostrar Lista</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row" id="row-cliente">
+                                        <div class="col-md-2 form-group">
+                                            <label for="dniCliente">DNI:</label>
+                                            <input type="text" class="form-control bg-input" id="dniCliente" name="dniCliente" maxlength="8" minlength="8" required>
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label for="nomCliente">Cliente:</label>
+                                            <input type="text" class="form-control" value="Barzola Pablo" name="nomCliente" id="nomCliente" readonly required>
+                                        </div>
+                                        <div class="col-md-2 form-group"></div>
+                                        <div class="col-md-2 form-group">
+                                            <label for="horaReservadas">Horas:</label>
+                                            <input type="number" class="form-control" id="horaReservadas" name="horaReservadas" required>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="row-fecha">
+                                        <div class="col-md-4 form-group">
+                                            <label for="fechaReservacion">Fecha</label>
+                                            <input type="date" class="form-control" id="fechaReservacion" name="fechaReservacion" required>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label for="hInicio">Hora de Inicio:</label>
+                                            <input type="time" class="form-control" id="hInicio" name="hInicio" required>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label for="hFin">Hora de Fin:</label>
+                                            <input type="time" class="form-control" id="hFin" name="hFin" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="row-campo">
+                                        <div class="col-md-4 form-group">
+                                            <label for="campo">Campo:</label>
+                                            <select class="form-control" id="campo" name="campo" required>
+                                                <option value=""></option>
+                                                <option value="Administrador">El Golazo</option>
+                                                <option value="Supervisor">El volante</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label for="zonaCampo">Zona del campo:</label>
+                                            <select class="form-control" id="zonaCampo" name="zonaCampo" required>
+                                                <option value=""></option>
+                                                <option value="1">Zona 1</option>
+                                                <option value="2">Zona 3</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4 form-group">
+                                            <label for="direccion">Direccion:</label>
+                                            <input type="text" class="form-control" id="direccion" name="direccion" readonly required>
+                                        </div>
+                                    </div>
+                                    <div class="row" id="row-detalles-reserva">
+                                        <div class="col-md-4 form-group">
+                                            <label for="precioHora">Precio por Hora:</label>
+                                            <input type="number" class="form-control" id="precioHora" name="precioHora" readonly required>
+                                        </div>
+
+                                        <div class="col-md-4 form-group"></div>
+                                        <div class="col-md-4 form-group">
+                                            <label for="total">Total:</label>
+                                            <input type="number" class="form-control" id="total" name="total" readonly required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer text-right">
+                                    <button class="btn btn-sm btn-outline-secondary" type="reset">Cancelar</button>
+                                    <button class="btn btn-sm btn-primary" type="submit">Registrar</button>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
-                </div>
+
+                </div><!-- /.container-fluid -->
             </div>
         </div>
-    </div>
-    <!-- content-wrapper ends -->
-    <!-- partial:partials/_footer.html - FOOTER-->
-    <?php
-    require_once '../../partials/_footer.php';
-    ?>
+        <!-- content-wrapper ends -->
+        <!-- partial:partials/_footer.html - FOOTER-->
+        <?php
+        require_once '../../partials/_footer.php';
+        ?>
+        </body>
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC264--FZ7dF8vsFtaglWrM77yRNyeAvTE&callback=initMap" async defer></script>
-
-    <script>
-        function initMap() {
-
-            const campo = {
-                idCampo: 1,
-                nombre: 'Campo de Senati',
-                latitud: -13.4458051,
-                longitud: -76.1375517,
-            };
-            const location = {
-                lat: campo.latitud,
-                lng: campo.longitud
-            };
-
-            const map = new google.maps.Map(document.querySelector("#map"), {
-                zoom: 15,
-                center: location
-            });
-
-            const marker = new google.maps.Marker({
-                position: location,
-                map: map,
-                title: campo.nombre
-            });
-
-            document.querySelector("#campoNombre").innerText = campo.nombre;
-
-            document.getElementById('reservarCampoBtn').onclick = function() {
-                alert('Reserva realizada para ' + campo.nombre);
-            };
-        }
-    </script>
-
-    </body>
-
-    </html>
+        </html>
