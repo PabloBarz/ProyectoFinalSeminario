@@ -9,7 +9,7 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <?= Helper::renderContentHeader("Lista Usuarios", "Inicio", SERVERURL . "views/") ?>
+    <?= Helper::renderContentHeader("Lista Zona Campos", "Inicio", SERVERURL . "views/") ?>
 
     <div class="content-main">
       <div class="row">
@@ -17,10 +17,9 @@ require_once '../../partials/header.php';
           <div class="card">
             <div class="card-header">
               <div class="row">
-                <div class="col-md-6">Horarios</div>
+                <div class="col-md-6">Zonas Campos</div>
                 <div class="col-md-6 text-right">
-                  <a href="./registra-usuarios" class="btn btn-sm btn-primary">Registrar</a>
-                  <a href="./registra-usuarios" class="btn btn-sm btn-danger">Reporte</a>
+                  <a href="./registro-campos" class="btn btn-sm btn-primary">Registrar</a>
                 </div>
               </div>
             </div>
@@ -32,13 +31,17 @@ require_once '../../partials/header.php';
               </style>
 
               <div class="table-responsive">
-                <table class="table table-hover" id="tabla-usuarios">
+                <table class="table table-hover" id="tabla-campos">
                   <thead>
                     <tr>
-                      <th>ID Usuario</th>
-                      <th>Tipo Usuario</th>
-                      <th>Usuario</th>
-                      <th>Contraseña</th>
+                      <th>Campo</th>
+                      <th>Nombre</th>
+                      <th>Capacidad</th>
+                      <th>Superficie</th>
+                      <th>Dimensiones</th>
+                      <th>Precio x Hora</th>
+                      <th>Descripcion</th>
+                      <th>Estado</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -62,14 +65,13 @@ require_once '../../partials/header.php';
             document.addEventListener("DOMContentLoaded", (event) => {
               console.log("DOM completamente cargado y analizado");
 
-              const tableBody = document.querySelector("#tabla-usuarios tbody");
+              const tableBody = document.querySelector("#tabla-campos tbody");
 
-              const listTableUsers = async () => {
+              const listTableCampos = async () => {
                 try {
                   const params = new FormData();
-                  params.append('operation', 'spGetDataUsers');
-
-                  const response = await fetch('../../../app/controllers/UsuarioController.php', {
+                  params.append('operation', 'GetDataZonasCampos');
+                  const response = await fetch('../../../app/controllers/ZonasCamposController.php', {
                     method: 'POST',
                     body: params
                   });
@@ -87,11 +89,15 @@ require_once '../../partials/header.php';
 
                     data.forEach(element => {
                       const render = `
-                        <tr data-id="${element.IDUsuario}">
-                            <td>${element.IDUsuario}</td>
-                            <td>${element.TipoUsuario}</td>
-                            <td>${element.Usuario}</td>
-                            <td>${element.Contraseña}</td>
+                        <tr data-id="${element.NombreCampo}">
+                            <td>${element.NombreCampo}</td>
+                            <td>${element.NombreZonaCampo}</td>
+                            <td>${element.CapacidadZonaCampo}</td>
+                            <td>${element.SuperficieZonaCampo}</td>
+                            <td>${element.DimensionesZonaCampo}</td>
+                            <td>${element.PrecioPorHora}</td>
+                            <td>${element.DescripcionZonaCampo}</td>
+                            <td>${element.EstadoZonaCampo}</td>
                         </tr>
                     `;
                       tableBody.insertAdjacentHTML("beforeend", render);
@@ -109,6 +115,6 @@ require_once '../../partials/header.php';
                 }
               };
 
-              listTableUsers();
+              listTableCampos();
             });
           </script>
