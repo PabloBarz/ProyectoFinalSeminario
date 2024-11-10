@@ -74,6 +74,14 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
       </a>
     </li>
     <li class="nav-item menu-items">
+      <a class="nav-link" href="<?= SERVERURL?>views/pages/zonas-campos/lista-zonascampos">
+        <span class="menu-icon">
+          <i class="mdi mdi-playlist-play"></i>
+        </span>
+        <span class="menu-title">Zonas Campos</span>
+      </a>
+    </li>
+    <li class="nav-item menu-items">
       <a class="nav-link" href="<?= SERVERURL?>views/pages/mapscampos/lista-maps-campos">
         <span class="menu-icon">
           <i class="mdi mdi-playlist-play"></i>

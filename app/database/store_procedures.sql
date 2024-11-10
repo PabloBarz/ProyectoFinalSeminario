@@ -61,15 +61,7 @@ CREATE PROCEDURE spVerifyClient
 	IN _dni CHAR(8)
 )	
 BEGIN
-	SELECT idusuario,
-	       idPersona,
-	       dni,
-	       apellidos, 
-	       nombres,
-	       nombreRol, 
-	       nombreCorto,
-	       nomUser
-	FROM vwUserPerson
+	SELECT * FROM vwUserPerson
 	WHERE dni = _dni; 
 END //
 DELIMITER ; 
@@ -89,7 +81,9 @@ BEGIN
     INNER JOIN 
         tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario;
 END //
-DELIMITER ;
+DELIMITER ;`zonas_campos``zonas_campos`
+
+
 
 
 
