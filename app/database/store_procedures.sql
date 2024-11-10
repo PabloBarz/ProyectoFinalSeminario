@@ -11,7 +11,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 -- SP para listar las reservaciones
 DROP PROCEDURE IF EXISTS spGetDataReservacion;
 DELIMITER //
@@ -44,7 +43,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 -- SP para validar usuario al iniciar sesión
 DROP PROCEDURE IF EXISTS spUsuarioLogin;
 DELIMITER //
@@ -54,7 +52,6 @@ BEGIN
     WHERE nomUser = _nomuser AND inactiveAt IS NULL;
 END //
 DELIMITER ;
-
 
 -- SP para validar clientes al registrar una reserva
 DROP PROCEDURE IF EXISTS spVerifyClient;
@@ -86,8 +83,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
-
 /*Store Procedure para obtener permiso por perfil*/
 DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;
 DELIMITER //
@@ -114,6 +109,31 @@ BEGIN
 END //
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS spGetDataZonasCampos;
+DELIMITER //
+CREATE PROCEDURE spGetDataZonasCampos()
+BEGIN
+    SELECT 
+        c.nombre AS NombreCampo,
+        z.nombre AS NombreZonaCampo,
+        z.capacidad AS CapacidadZonaCampo,
+        z.superficie AS SuperficieZonaCampo,
+        z.dimensiones AS DimensionesZonaCampo,
+        z.precioHora AS PrecioPorHora,
+        z.descripcion AS DescripcionZonaCampo,
+        z.estado AS EstadoZonaCampo
+    FROM 
+        campos c
+    INNER JOIN 
+        zonas_campos z ON c.idCampo = z.idCampo;
+END //
+
+DELIMITER ;
 
 
-CALL spGetPermisosByPerfil("ADM");
+
+
+
+
+
+
