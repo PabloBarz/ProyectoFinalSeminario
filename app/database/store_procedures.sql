@@ -84,7 +84,7 @@ BEGIN
     INNER JOIN 
         tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario;
 END //
-DELIMITER ;`zonas_campos``zonas_campos`
+DELIMITER ;
 
 
 
