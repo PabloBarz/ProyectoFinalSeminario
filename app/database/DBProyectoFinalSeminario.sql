@@ -3,37 +3,50 @@ CREATE DATABASE sportsfieldrentaldb;
 USE sportsfieldrentaldb;
 
 -- T1 ACCIONES
-DROP TABLE IF EXISTS acciones;
-CREATE TABLE acciones (
-  idAccion 	INT AUTO_INCREMENT PRIMARY KEY,
-  nombre 	VARCHAR (20) NOT NULL,
-  create_at 	DATETIME NOT NULL DEFAULT NOW()
-) ENGINE = INNODB;
+DROP TABLE IF EXISTS modulos;
+CREATE TABLE modulos
+(
+    idModulo 		INT AUTO_INCREMENT PRIMARY KEY,
+    modulo		VARCHAR(20) NOT NULL,
+    createAt 		DATETIME NOT NULL DEFAULT NOW()
+)ENGINE = INNODB;
 
--- T2 TIPO DE USUARIOS
+-- T2 ACCIONES - RUTAS RELACIONADO CON T1
+DROP TABLE IF EXISTS rutas;
+CREATE TABLE rutas (
+    idRuta	INT AUTO_INCREMENT PRIMARY KEY,
+    idModulo 	INT NOT NULL,
+    ruta 	VARCHAR(30),
+    visible	BOOLEAN,
+    texto 	VARCHAR(20),
+    icono 	VARCHAR(50),
+    CONSTRAINT 	fk_ruta_modulo FOREIGN KEY (idmodulo) REFERENCES modulos(idmodulo)
+)ENGINE = INNODB;
+
+-- T3 TIPO DE USUARIOS
 DROP TABLE IF EXISTS tipos_usuarios;
 CREATE TABLE tipos_usuarios (
   idTipoUsuario INT AUTO_INCREMENT PRIMARY KEY,
   nombreRol 	VARCHAR (20) NOT NULL,
   nombreCorto	CHAR(3)	NOT NULL,
   descripcion	VARCHAR(200) NULL,
-  create_at 	DATETIME NOT NULL DEFAULT NOW(),
+  createAt 	DATETIME NOT NULL DEFAULT NOW(),
   CONSTRAINT uk_nombreRol_per UNIQUE (nombreRol),
   CONSTRAINT uk_nombrecorto_per UNIQUE (nombreCorto)
 ) ENGINE = INNODB;
 
--- T3 PERMISOS RELACIONANDO CON T1 Y T2
+-- T4 PERMISOS RELACIONANDO CON T3 Y T2
 DROP TABLE IF EXISTS permisos;
 CREATE TABLE permisos (
   idPermiso 	INT AUTO_INCREMENT PRIMARY KEY,
-  idAccion 	INT NOT NULL,
   idTipoUsuario INT NOT NULL,
-  create_at 	DATETIME NOT NULL DEFAULT NOW(),
-  CONSTRAINT 	fk_permisos_accion 		FOREIGN KEY (idAccion) REFERENCES acciones (idAccion),
+  idRuta	INT NOT NULL,
+  createAt 	DATETIME NOT NULL DEFAULT NOW(),
+  CONSTRAINT 	fk_permisos_ruta 		FOREIGN KEY (idRuta) REFERENCES rutas (idRuta),
   CONSTRAINT 	fk_permisos_tipo_usuario 	FOREIGN KEY (idTipoUsuario) REFERENCES tipos_usuarios (idTipoUsuario)
 ) ENGINE = INNODB;
 
--- T4 PERSONAS
+-- T5 PERSONAS
 DROP TABLE IF EXISTS personas;
 CREATE TABLE personas (
   idPersona 		INT AUTO_INCREMENT PRIMARY KEY,
@@ -43,11 +56,11 @@ CREATE TABLE personas (
   telefono 		CHAR(9) 	NULL,
   direccion		VARCHAR(70)	NULL,
   email 		VARCHAR(70) 	NULL,
-  create_at 		DATETIME 	NOT NULL DEFAULT NOW(),
+  createAt 		DATETIME 	NOT NULL DEFAULT NOW(),
   CONSTRAINT uk_dni_per UNIQUE (dni)
 ) ENGINE = INNODB;
 
--- T5 USUARIOS RELACIONADO CON T2 Y T4
+-- T6 USUARIOS RELACIONADO CON T5 Y T3
 DROP TABLE IF EXISTS usuarios;
 CREATE TABLE usuarios (
   idUsuario 		INT AUTO_INCREMENT PRIMARY KEY,
@@ -55,16 +68,16 @@ CREATE TABLE usuarios (
   idTipoUsuario 	INT NOT NULL,
   nomUser 		VARCHAR(20) 	NOT NULL,
   passUser 		VARCHAR(70) 	NOT NULL,
-  create_at 		DATETIME 	NOT NULL DEFAULT NOW(),
-  update_at 		DATETIME 	NULL,
-  inactive_at		DATETIME 	NULL,
+  createAt 		DATETIME 	NOT NULL DEFAULT NOW(),
+  updateAt 		DATETIME 	NULL,
+  inactiveAt		DATETIME 	NULL,
   CONSTRAINT fk_idpersona_usu FOREIGN KEY (idPersona) REFERENCES personas (idPersona), 
   CONSTRAINT uk_idpersona_usu UNIQUE (idPersona), -- Uno a Uno
   CONSTRAINT fk_usuarios_tipo_usuario FOREIGN KEY (idTipoUsuario) REFERENCES tipos_usuarios (idTipoUsuario),
   CONSTRAINT uk_nomuser_usu UNIQUE (nomUser)
 ) ENGINE = INNODB;
 
--- T6 CAMPOS
+-- T7 CAMPOS
 DROP TABLE IF EXISTS campos;
 CREATE TABLE campos (
   idCampo 	INT AUTO_INCREMENT PRIMARY KEY,
@@ -75,10 +88,10 @@ CREATE TABLE campos (
   direccion 	VARCHAR (30) NOT NULL,
   distrito 	VARCHAR (30) NOT NULL,
   telefono 	VARCHAR (9) NULL,
-  create_at 		DATETIME 	NOT NULL DEFAULT NOW()
+  createAt 		DATETIME 	NOT NULL DEFAULT NOW()
 ) ENGINE = INNODB;
 
--- T7 ZONAS DE CAMPOS RELACIONADO CON T6
+-- T8 ZONAS DE CAMPOS RELACIONADO CON T7
 DROP TABLE IF EXISTS zonas_campos;
 CREATE TABLE zonas_campos (
   idZonaCampo 	INT AUTO_INCREMENT PRIMARY KEY,
@@ -90,11 +103,11 @@ CREATE TABLE zonas_campos (
   precioHora 	SMALLINT NOT NULL,
   descripcion 	TEXT NULL,
   estado 	VARCHAR (10),
-  create_at 	DATETIME NOT NULL DEFAULT NOW(),
+  createAt 	DATETIME NOT NULL DEFAULT NOW(),
   CONSTRAINT 	fk_zonas_campos_campo FOREIGN KEY (idCampo) REFERENCES campos (idCampo)
 ) ENGINE = INNODB;
 
--- T8 RESERVACIONES DE LAS ZONAS RELACIONADO CON T7
+-- T9 RESERVACIONES DE LAS ZONAS RELACIONADO CON T8
 DROP TABLE IF EXISTS reservaciones;
 CREATE TABLE reservaciones (
   idReservacion 	INT AUTO_INCREMENT PRIMARY KEY,
@@ -107,12 +120,12 @@ CREATE TABLE reservaciones (
   precioHora 		SMALLINT NOT NULL,
   cantidadHora 		SMALLINT NOT NULL,
   totalMonto		DECIMAL(10,2),
-  create_at 		DATETIME NOT NULL DEFAULT NOW(),
+  createAt 		DATETIME NOT NULL DEFAULT NOW(),
   CONSTRAINT 		fk_reservaciones_zona_campo 	FOREIGN KEY (idZonaCampo) REFERENCES zonas_campos (idZonaCampo),
   CONSTRAINT 		fk_reservaciones_usuario 	FOREIGN KEY (idUsuario) REFERENCES usuarios (idUsuario)
 ) ENGINE = INNODB;
 
--- T9 PAGOS RELACIONADO CON T8
+-- T10 PAGOS RELACIONADO CON T9
 DROP TABLE IF EXISTS pagos;
 CREATE TABLE pagos (
   idPago 	INT AUTO_INCREMENT PRIMARY KEY,
@@ -122,6 +135,6 @@ CREATE TABLE pagos (
   metodoPago 	VARCHAR (20) NOT NULL,
   comprobante 	VARCHAR (255) NOT NULL,
   estadoPago 	VARCHAR (20) NOT NULL,
-  create_at 	DATETIME NOT NULL DEFAULT NOW(),
+  createAt 	DATETIME NOT NULL DEFAULT NOW(),
   CONSTRAINT fk_pagos_reservacion FOREIGN KEY (idReservacion) REFERENCES reservaciones (idReservacion)
 ) ENGINE = INNODB;

@@ -3,7 +3,7 @@
   require_once "./app/config/app.php";  
 
   if(isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true){
-    header("Location: " . SERVERURL . "views/");
+    header("Location: " . SERVERURL . "views/home/welcome");
   }
 
 ?>
@@ -98,6 +98,7 @@
 
         formLogin.addEventListener("submit", async (event) => {
           event.preventDefault();
+          console.log("Login presionado")
           const params = new FormData(formLogin);
           params.append("operation", "login");
 
@@ -116,7 +117,7 @@
             if (!data.esCorrecto){
               showToast(data.mensaje, 'WARNING');
             }else{
-              showToast(data.mensaje, 'SUCCESS', 1500, 'views/');
+              showToast(data.mensaje, 'SUCCESS', 1500, 'views/home/welcome');
             }
 
           }

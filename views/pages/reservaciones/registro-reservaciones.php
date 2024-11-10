@@ -183,7 +183,7 @@ require_once '../../partials/header.php';
                     document.getElementById("hFin").value = ""; // Limpia si los valores son inválidos
                 }
             });
-
+            
             document.getElementById("horaReservadas").addEventListener("input", function() {
                 // Asegura que el valor sea un número entero positivo
                 if (this.value < 1) {
@@ -193,8 +193,6 @@ require_once '../../partials/header.php';
                     this.value = Math.floor(this.value);
                 }
             });
-
-
         });
     </script>
     </body>

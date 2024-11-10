@@ -42,8 +42,21 @@ class UsuarioModel extends Conexion {
         catch(PDOException $ex){
             die($ex->getCode());
         }
-
     }
+
+    public function getPermisosByPerfil($params = []){
+        try{
+          $cmd = $this->pdo->prepare("CALL spGetPermisosByPerfil(?)");
+          $cmd->execute([$params["nombreCorto"]]);
+    
+          return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(Exception $e){
+          error_log("Error servidor: " . $e->getMessage());
+          return [];
+        }
+    }
+
     public function addUser(){}
     public function updateUser(){}
     public function deleteUser(){}    

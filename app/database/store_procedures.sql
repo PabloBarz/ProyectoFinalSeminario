@@ -11,6 +11,7 @@ BEGIN
 END //
 DELIMITER ;
 
+
 -- SP para listar las reservaciones
 DROP PROCEDURE IF EXISTS spGetDataReservacion;
 DELIMITER //
@@ -43,15 +44,17 @@ BEGIN
 END //
 DELIMITER ;
 
+
 -- SP para validar usuario al iniciar sesión
 DROP PROCEDURE IF EXISTS spUsuarioLogin;
 DELIMITER //
 CREATE PROCEDURE spUsuarioLogin(IN _nomuser VARCHAR(20))
 BEGIN
     SELECT * FROM vwUserPerson
-    WHERE nomUser = _nomuser AND inactive_at IS NULL;
+    WHERE nomUser = _nomuser AND inactiveAt IS NULL;
 END //
 DELIMITER ;
+
 
 -- SP para validar clientes al registrar una reserva
 DROP PROCEDURE IF EXISTS spVerifyClient;
@@ -91,7 +94,32 @@ BEGIN
 END //
 DELIMITER ;
 
+/*Store Procedure para obtener permiso por perfil*/
+DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;
+DELIMITER //
+CREATE PROCEDURE spGetPermisosByPerfil (
+    IN _nombrecorto CHAR(3)
+)
+BEGIN
+    SELECT 
+        MD.modulo,
+        RT.ruta,
+        RT.visible,
+        RT.texto,
+        RT.icono
+    FROM 
+        permisos AS PE
+    INNER JOIN 
+        tipos_usuarios AS TU ON PE.idTipoUsuario = TU.idTipoUsuario
+    INNER JOIN 
+        rutas AS RT ON PE.idRuta = RT.idRuta
+    INNER JOIN 
+        modulos AS MD ON RT.idModulo = MD.idModulo
+    WHERE 
+        TU.nombrecorto = _nombrecorto;
+END //
+DELIMITER ;
 
 
 
-
+CALL spGetPermisosByPerfil("ADM");

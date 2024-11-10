@@ -14,7 +14,7 @@ SELECT
     TU.nombreCorto,
     US.nomUser, 
     US.passUser,
-    US.inactive_at 
+    US.inactiveAt
 FROM 
     usuarios US
 INNER JOIN 

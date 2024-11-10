@@ -5,6 +5,23 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
   header("Location: " . SERVERURL);
 }
 
+$listaPemisos = $_SESSION["login"]["permisos"];
+
+$urlCompleta = $_SERVER["REQUEST_URI"];
+$arraVista = explode("/", $urlCompleta);
+$vistaActual = end($arraVista);
+
+$encontrado = false;
+foreach($listaPemisos as $permisos){
+  if($vistaActual == $permisos["ruta"]){
+    $encontrado = true;
+  }
+}
+
+if(!$encontrado){
+  header("Location: " .SERVERURL . "views/home/welcome");
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +49,9 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
   <!-- End layout styles -->
   <link rel="shortcut icon" href="<?= SERVERURL?>views/assets/images/favicon.png" />
 
+  <!-- FonAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <!-- ARCHIVO CSS PARA LOS COLORES DE LOS FORMULARIOS -->
   <link rel="stylesheet" href="<?= SERVERURL?>/views/assets/css/form.css">
 </head>
@@ -49,39 +69,23 @@ if (!isset($_SESSION["login"]) || $_SESSION["login"]["status"] == false) {
     <li class="nav-item nav-category">
       <span class="nav-link">Navigation</span>
     </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<?= SERVERURL?>views/pages/reservaciones/lista-reservaciones">
-        <span class="menu-icon">
-          <i class="mdi mdi-speedometer"></i>
-        </span>
-        <span class="menu-title" >Reservaciones</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<?= SERVERURL?>views/pages/usuarios/lista-usuarios">
-        <span class="menu-icon">
-          <i class="mdi mdi-speedometer"></i>
-        </span>
-        <span class="menu-title" >Usuarios</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<?= SERVERURL?>views/pages/campos/lista-campos">
-        <span class="menu-icon">
-          <i class="mdi mdi-playlist-play"></i>
-        </span>
-        <span class="menu-title">Campos</span>
-      </a>
-    </li>
-    <li class="nav-item menu-items">
-      <a class="nav-link" href="<?= SERVERURL?>views/pages/mapscampos/lista-maps-campos">
-        <span class="menu-icon">
-          <i class="mdi mdi-playlist-play"></i>
-        </span>
-        <span class="menu-title">Mapas Campos</span>
-      </a>
-    </li>
-   
+    <?php
+      foreach($listaPemisos as $permisos){
+        if($permisos["visible"]){
+          $vista = SERVERURL . "views" . "/pages" . "/" . $permisos["modulo"] . "/" . $permisos["ruta"];
+          echo "
+            <li class='nav-item menu-items'>
+              <a class='nav-link' href='{$vista}'>
+                <span class='menu-icon'>
+                  <i class='{$permisos['icono']}'></i>
+                </span>
+                <span class='menu-title' >{$permisos['texto']}</span>
+              </a>
+            </li>
+          ";
+        }
+      }
+    ?>
   </ul>
 </sidebar>
     <!-- partial -->

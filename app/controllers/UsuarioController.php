@@ -13,7 +13,8 @@ if (!isset($_SESSION['login']) || $_SESSION['login']['status'] == false) {
         "nombres"     => "",
         "nombreRol"      => "",
         "nombreCorto" => "",
-        "nomUser"     => ""
+        "nomUser"     => "",
+        "permisos"    => []
     ];
 }
 
@@ -51,6 +52,8 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                         $_SESSION["login"]["nombreRol"] =  $registro[0]['nombreRol'];
                         $_SESSION["login"]["nombreCorto"] = $registro[0]['nombreCorto'];
                         $_SESSION["login"]["nomUser"] =  $registro[0]['nomUser'];
+                        $_SESSION["login"]["permisos"] = $user->getPermisosByPerfil(["nombreCorto" => $registro[0]["nombreCorto"]]);
+
                     } else {
                         $statusLogin["mensaje"] = "Contraseña incorrecta";
                     }
