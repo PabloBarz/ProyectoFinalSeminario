@@ -11,7 +11,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 -- SP para listar las reservaciones
 DROP PROCEDURE IF EXISTS spGetDataReservacion;
 DELIMITER //
@@ -44,7 +43,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 -- SP para validar usuario al iniciar sesión
 DROP PROCEDURE IF EXISTS spUsuarioLogin;
 DELIMITER //
@@ -54,7 +52,6 @@ BEGIN
     WHERE nomUser = _nomuser AND inactiveAt IS NULL;
 END //
 DELIMITER ;
-
 
 -- SP para validar clientes al registrar una reserva
 DROP PROCEDURE IF EXISTS spVerifyClient;
@@ -84,36 +81,34 @@ BEGIN
     INNER JOIN 
         tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario;
 END //
-DELIMITER ;`zonas_campos``zonas_campos`
+DELIMITER ;
 
-
-
-/*Store Procedure para obtener permiso por perfil*/
-DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;
+DROP PROCEDURE IF EXISTS spGetDataZonasCampos;
 DELIMITER //
-CREATE PROCEDURE spGetPermisosByPerfil (
-    IN _nombrecorto CHAR(3)
-)
+
+CREATE PROCEDURE spGetDataZonasCampos()
 BEGIN
     SELECT 
-        MD.modulo,
-        RT.ruta,
-        RT.visible,
-        RT.texto,
-        RT.icono
+        c.nombre AS NombreCampo,
+        z.nombre AS NombreZonaCampo,
+        z.capacidad AS CapacidadZonaCampo,
+        z.superficie AS SuperficieZonaCampo,
+        z.dimensiones AS DimensionesZonaCampo,
+        z.precioHora AS PrecioPorHora,
+        z.descripcion AS DescripcionZonaCampo,
+        z.estado AS EstadoZonaCampo
     FROM 
-        permisos AS PE
+        campos c
     INNER JOIN 
-        tipos_usuarios AS TU ON PE.idTipoUsuario = TU.idTipoUsuario
-    INNER JOIN 
-        rutas AS RT ON PE.idRuta = RT.idRuta
-    INNER JOIN 
-        modulos AS MD ON RT.idModulo = MD.idModulo
-    WHERE 
-        TU.nombrecorto = _nombrecorto;
+        zonas_campos z ON c.idCampo = z.idCampo;
 END //
+
 DELIMITER ;
 
 
 
-CALL spGetPermisosByPerfil("ADM");
+
+
+
+
+
