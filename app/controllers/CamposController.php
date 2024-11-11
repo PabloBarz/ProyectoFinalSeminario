@@ -10,6 +10,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         switch ($_POST["operation"]) {
             case "GetListSelectCampos";
                     echo json_encode($campos->getCamposForSelects());
+                    break;
             case "GetDataCampos";
                     echo json_encode($campos->GetDataCampos());
                 break;

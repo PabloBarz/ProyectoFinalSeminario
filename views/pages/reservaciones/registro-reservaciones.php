@@ -131,7 +131,7 @@ require_once '../../partials/header.php';
                     if (!response.ok) {
                         throw new Error('Error en la solicitud Campos')
                     }
-
+                    
                     const data = await response.json();
                     dataCampos = data;
 
