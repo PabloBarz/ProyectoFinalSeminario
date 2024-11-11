@@ -17,7 +17,7 @@ require_once '../../partials/header.php';
           <div class="card">
             <div class="card-header">
               <div class="row">
-                <div class="col-md-6">Zonas Campos</div>
+                <div class="col-md-6">Campos</div>
                 <div class="col-md-6 text-right">
                   <a href="./registro-campos" class="btn btn-sm btn-primary">Registrar</a>
                 </div>
@@ -34,14 +34,13 @@ require_once '../../partials/header.php';
                 <table class="table table-hover" id="tabla-campos">
                   <thead>
                     <tr>
-                      <th>Campo</th>
+                      <th>Tipo de Campo</th>
                       <th>Nombre</th>
-                      <th>Capacidad</th>
-                      <th>Superficie</th>
-                      <th>Dimensiones</th>
-                      <th>Precio x Hora</th>
-                      <th>Descripcion</th>
-                      <th>Estado</th>
+                      <th>Latitud</th>
+                      <th>Longitud</th>
+                      <th>Direccion</th>
+                      <th>Distrito</th>
+                      <th>Telefono</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -70,7 +69,7 @@ require_once '../../partials/header.php';
               const listTableCampos = async () => {
                 try {
                   const params = new FormData();
-                  params.append('operation', 'GetDataZonasCampos');
+                  params.append('operation', 'GetDataCampos');
                   const response = await fetch('../../../app/controllers/CamposController.php', {
                     method: 'POST',
                     body: params
@@ -89,15 +88,14 @@ require_once '../../partials/header.php';
 
                     data.forEach(element => {
                       const render = `
-                        <tr data-id="${element.NombreCampo}">
-                            <td>${element.NombreCampo}</td>
-                            <td>${element.NombreZonaCampo}</td>
-                            <td>${element.CapacidadZonaCampo}</td>
-                            <td>${element.SuperficieZonaCampo}</td>
-                            <td>${element.DimensionesZonaCampo}</td>
-                            <td>${element.PrecioPorHora}</td>
-                            <td>${element.DescripcionZonaCampo}</td>
-                            <td>${element.EstadoZonaCampo}</td>
+                        <tr data-id="${element.idCampo}">
+                            <td>${element.tipoCampo}</td>
+                            <td>${element.nombre}</td>
+                            <td>${element.latitud}</td>
+                            <td>${element.longitud}</td>
+                            <td>${element.direccion}</td>
+                            <td>${element.distrito}</td>
+                            <td>${element.telefono ?? "No registrado"}</td>
                         </tr>
                     `;
                       tableBody.insertAdjacentHTML("beforeend", render);
