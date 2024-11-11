@@ -14,7 +14,20 @@ class CamposModel extends Conexion{
             $query = "CALL spListSelectCampos()";
             $statement = $this->pdo->prepare($query);
             $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $ex){
+            die($ex->getCode());
+        }
+    }
+        
             
+    public function GetDataCampos():array{
+        try{
+            $query = "CALL spGetDataCampos()";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
         catch(PDOException $ex){

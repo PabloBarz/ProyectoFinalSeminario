@@ -130,6 +130,24 @@ END //
 
 DELIMITER ;
 
+DROP PROCEDURE IF EXISTS spGetDataCampos;
+DELIMITER //
+CREATE PROCEDURE spGetDataCampos()
+BEGIN
+    SELECT 
+        tipoCampo,
+        nombre,
+        latitud,
+        longitud,
+        direccion,
+        distrito,
+        telefono
+    FROM 
+        campos;
+END //
+
+DELIMITER ;
+
 
 
 
