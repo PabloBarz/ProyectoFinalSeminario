@@ -34,7 +34,7 @@ INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES
 (3, "lista-maps-campos", TRUE, "Mapas de Campos", "fa-solid fa-map-location-dot"), -- 4
 -- Reservaciones
 (4, "lista-reservaciones", TRUE, "Reservaciones", "fa-solid fa-calendar-days"), -- 5
-(4, "registro-horario", FALSE, "", ""), -- 6
+(4, "registro-reservaciones", FALSE, "", ""), -- 6
 -- Usuarios
 (5, "lista-usuarios", TRUE, "Usuarios", "fa-solid fa-users"), -- 7
 (5, "registra-usuarios", FALSE, "", ""); -- 8
@@ -109,10 +109,53 @@ INSERT INTO campos (tipoCampo, nombre, latitud, longitud, direccion, distrito, t
 
 
 /* Insertar zonas de campos */
+/* Insertar zonas para cada campo, máximo 3 zonas por campo */
 INSERT INTO zonas_campos (idCampo, nombre, capacidad, superficie, dimensiones, precioHora, descripcion, estado) VALUES 
+-- Zonas para el campo 1
 (1, 'Zona A', 10, 'Césped', '40x20', 50, 'Zona ideal para partidos amistosos', 'Disponible'),
 (1, 'Zona B', 15, 'Césped', '60x30', 75, 'Zona con graderías', 'Disponible'),
-(2, 'Zona C', 8, 'Arena', '30x20', 40, 'Zona para entrenamiento', 'Disponible');
+(1, 'Zona C', 12, 'Césped', '50x25', 60, 'Zona para torneos locales', 'Ocupado'),
+
+-- Zonas para el campo 2
+(2, 'Zona D', 8, 'Arena', '30x20', 40, 'Zona para entrenamiento', 'Disponible'),
+(2, 'Zona E', 10, 'Arena', '35x25', 45, 'Zona de práctica con menor aforo', 'Disponible'),
+(2, 'Zona F', 12, 'Arena', '40x30', 50, 'Zona para actividades de resistencia', 'Ocupado'),
+
+-- Zonas para el campo 3
+(3, 'Zona G', 10, 'Césped', '50x25', 55, 'Zona de juego estándar', 'Disponible'),
+(3, 'Zona H', 14, 'Césped', '60x30', 70, 'Zona con iluminación nocturna', 'Disponible'),
+(3, 'Zona I', 18, 'Césped', '70x40', 90, 'Zona premium con graderías', 'Ocupado'),
+
+-- Zonas para el campo 4
+(4, 'Zona J', 6, 'Césped', '25x15', 30, 'Zona de recreación infantil', 'Disponible'),
+(4, 'Zona K', 12, 'Césped', '50x25', 55, 'Zona ideal para torneos', 'Ocupado'),
+(4, 'Zona L', 15, 'Césped', '55x30', 65, 'Zona para entrenamientos privados', 'Disponible'),
+
+-- Zonas para el campo 5
+(5, 'Zona M', 10, 'Césped', '45x20', 50, 'Zona para partidos amistosos', 'Disponible'),
+(5, 'Zona N', 14, 'Césped', '60x30', 70, 'Zona de uso general', 'Ocupado'),
+(5, 'Zona O', 18, 'Césped', '70x35', 80, 'Zona con acceso VIP', 'Disponible'),
+
+-- Zonas para el campo 6
+(6, 'Zona P', 10, 'Césped', '40x20', 50, 'Zona de juegos nocturnos', 'Disponible'),
+(6, 'Zona Q', 15, 'Césped', '65x30', 75, 'Zona de uso intensivo', 'Disponible'),
+(6, 'Zona R', 20, 'Césped', '70x40', 90, 'Zona principal para torneos', 'Ocupado'),
+
+-- Zonas para el campo 7
+(7, 'Zona S', 8, 'Arena', '30x20', 40, 'Zona de entrenamiento básico', 'Disponible'),
+(7, 'Zona T', 10, 'Césped', '40x25', 50, 'Zona con sombra natural', 'Disponible'),
+(7, 'Zona U', 14, 'Césped', '55x30', 65, 'Zona para partidos oficiales', 'Ocupado'),
+
+-- Zonas para el campo 8
+(8, 'Zona V', 12, 'Césped', '50x25', 60, 'Zona para juegos amistosos', 'Disponible'),
+(8, 'Zona W', 18, 'Césped', '70x35', 85, 'Zona con asientos de espectadores', 'Ocupado'),
+(8, 'Zona X', 20, 'Césped', '75x40', 100, 'Zona de alto nivel', 'Disponible'),
+
+-- Zonas para el campo 9
+(9, 'Zona Y', 8, 'Césped', '35x20', 45, 'Zona de práctica para principiantes', 'Disponible'),
+(9, 'Zona Z', 12, 'Césped', '50x25', 55, 'Zona para torneos locales', 'Disponible'),
+(9, 'Zona AA', 16, 'Césped', '60x30', 70, 'Zona con capacidad para espectadores', 'Ocupado');
+
 
 /* Insertar reservaciones */
 INSERT INTO reservaciones (idZonaCampo, idUsuario, fechaReservacion, horaInicio, horaFin, estadoPago, precioHora, cantidadHora) VALUES 

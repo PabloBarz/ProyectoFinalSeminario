@@ -59,17 +59,13 @@ require_once '../../partials/header.php';
                                         <div class="col-md-4 form-group">
                                             <label for="campo">Campo:</label>
                                             <select class="form-control" id="campo" name="campo" required>
-                                                <option value=""></option>
-                                                <option value="Administrador">El Golazo</option>
-                                                <option value="Supervisor">El volante</option>
+
                                             </select>
                                         </div>
                                         <div class="col-md-4 form-group">
                                             <label for="zonaCampo">Zona del campo:</label>
                                             <select class="form-control" id="zonaCampo" name="zonaCampo" required>
-                                                <option value=""></option>
-                                                <option value="1">Zona 1</option>
-                                                <option value="2">Zona 3</option>
+
                                             </select>
                                         </div>
                                         <div class="col-md-4 form-group">
@@ -118,6 +114,110 @@ require_once '../../partials/header.php';
 
             const dni = document.querySelector("#dniCliente");
             const nomCliente = document.querySelector("#nomCliente");
+            const selectCampos = document.querySelector("#campo");
+            const selectsZonaCampos = document.querySelector("#zonaCampo");
+
+            let dataCampos = [];
+            let dataZonasCampos = [];
+
+            const listSelectCampos = async () => {
+                const params = new FormData();
+                params.append("operation", "GetListSelectCampos")
+                try {
+                    const response = await fetch('../../../app/controllers/CamposController.php', {
+                        method: "POST",
+                        body: params
+                    })
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud Campos')
+                    }
+
+                    const data = await response.json();
+                    dataCampos = data;
+
+                    selectCampos.innerHTML = '<option value="">Seleccione un campo</option>';
+                    data.forEach(element => {
+                        const tagOption = document.createElement("option");
+                        tagOption.value = element.idcampo;
+                        tagOption.textContent = element.nombre;
+                        selectCampos.appendChild(tagOption);
+                    });
+
+                } catch (error) {
+                    console.error("ERROR al traer lista campos ", error.message);
+                }
+            }
+
+            const listSelectZonaCampos = async (idCampo) => {
+                const params = new FormData();
+                params.append("operation", "getZonaCamposByCampos");
+                params.append("idCampo", idCampo);
+
+                try {
+                    const response = await fetch('../../../app/controllers/ZonasCamposController.php', {
+                        method: "POST",
+                        body: params
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud ZonaCampos')
+                    }
+
+                    const data = await response.json();
+                    dataZonasCampos = data;
+
+                    selectsZonaCampos.innerHTML = '<option value="">Seleccione una zona de campo</option>';
+                    data.forEach(element => {
+                        const tagOption = document.createElement("option");
+                        tagOption.value = element.idZonaCampo;
+                        tagOption.textContent = element.nombre;
+                        selectsZonaCampos.appendChild(tagOption);
+                    });
+
+
+                } catch (Error) {
+                    console.error("ERROR al traer lista zona campos ", error.message);
+                }
+            }
+
+            const calcularHFin = () => {
+                const hInicio = document.querySelector("#hInicio").value;
+                const horas = parseInt(document.querySelector("#horaReservadas").value);
+
+                if (hInicio && horas) {
+                    const [hora, minutos] = hInicio.split(":").map(Number);
+
+                    const fechaInicio = new Date();
+                    fechaInicio.setHours(hora, minutos);
+                    fechaInicio.setHours(fechaInicio.getHours() + horas);
+
+                    const hFin = fechaInicio.toTimeString().slice(0, 5);
+                    document.querySelector("#hFin").value = hFin;
+                } else {
+                    document.querySelector("#hFin").value = "";
+                }
+            }
+
+            const validateHora = () => {
+                const horasString = document.querySelector("#horaReservadas").value;
+
+                if (horasString === "") document.querySelector("#horaReservadas").value = "1";
+                else {
+                    const horasInt = parseInt(horasString)
+
+                    if (horasInt < 1) document.querySelector("#horaReservadas").value = 1
+                    else document.querySelector("#horaReservadas").value = horasInt;
+                }
+            }
+
+            const calculatePrecio = () => {
+                const hora = parseInt(document.querySelector("#horaReservadas").value);
+                const precio = parseFloat(document.querySelector("#precioHora").value);
+
+                if(hora && precio){
+                    document.querySelector("#total").value = hora*precio;
+                }
+            }
 
             const verifyDni = async (dni) => {
                 const params = new FormData();
@@ -149,6 +249,27 @@ require_once '../../partials/header.php';
                     showToast("DNI no valido", "ERROR")
                 }
             }
+            
+
+            selectCampos.addEventListener("change", (event) => {
+                const id = parseInt(event.target.value);
+                const selectedCampo = dataCampos.find(campo => campo.idcampo === id);
+
+                listSelectZonaCampos(id);
+                if (selectedCampo) document.querySelector("#direccion").value = selectedCampo.direccion;
+                else document.querySelector("#direccion").value = ""
+            })
+
+            selectsZonaCampos.addEventListener("change", (event) => {
+                const id = parseInt(event.target.value);
+                const selectedZonaCampo = dataZonasCampos.find(zonaCampo => zonaCampo.idZonaCampo === id);
+
+                if (selectedZonaCampo){ 
+                    document.querySelector("#precioHora").value = selectedZonaCampo.precioHora;
+                    calculatePrecio();
+                }
+                else document.querySelector("#precioHora").value = ""
+            })
 
             dni.addEventListener("keydown", async (event) => {
                 if (event.key === 'Enter') {
@@ -160,39 +281,18 @@ require_once '../../partials/header.php';
                 }
             })
 
-            document.getElementById("horaReservadas").addEventListener("input", function() {
-                const hInicio = document.getElementById("hInicio").value;
-                const horas = parseInt(this.value, 10);
-
-                console.log(typeof hInicio)
-                console.log(horas);
-
-                if (hInicio && horas) {
-                    // Convierte la hora de inicio en un objeto Date
-                    const [hora, minutos] = hInicio.split(":").map(Number);
-                    const fechaInicio = new Date();
-                    fechaInicio.setHours(hora, minutos);
-
-                    // Incrementa las horas
-                    fechaInicio.setHours(fechaInicio.getHours() + horas);
-
-                    // Formatea la hora de fin
-                    const horaFin = fechaInicio.toTimeString().slice(0, 5);
-                    document.getElementById("hFin").value = horaFin;
-                } else {
-                    document.getElementById("hFin").value = ""; // Limpia si los valores son inválidos
-                }
+            document.querySelector("#hInicio").addEventListener("input", () => {
+                calcularHFin();
             });
-            
-            document.getElementById("horaReservadas").addEventListener("input", function() {
-                // Asegura que el valor sea un número entero positivo
-                if (this.value < 1) {
-                    this.value = 1; // Si es menor que 1, restablece a 1
-                } else {
-                    // Elimina decimales si se ingresan
-                    this.value = Math.floor(this.value);
-                }
+
+            document.querySelector("#horaReservadas").addEventListener("input", () => {
+                validateHora();
+                calcularHFin();
+                calculatePrecio();
             });
+
+            listSelectCampos();
+
         });
     </script>
     </body>

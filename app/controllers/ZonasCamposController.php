@@ -3,15 +3,16 @@ session_start();
 require_once "../models/ZonasCamposModel.php";
 header('Content-Type: application/json');
 
-$campos = new CamposModel();
+$zonaCampos = new ZonaCamposModel();
 
 switch ($_SERVER["REQUEST_METHOD"]) {
     case "POST":
         switch ($_POST["operation"]) {
             case "GetDataZonasCampos";
-                    echo json_encode($campos->GetDataZonasCampos());
+                    echo json_encode($zonaCampos->GetDataZonasCampos());
                 break;
-            case "":
+            case "getZonaCamposByCampos":
+                    echo json_encode($zonaCampos->getZonaCamposByCampos(["idCampo" => $zonaCampos->limpiarCadena($_POST["idCampo"])]));
                 break;
         }
         break;
