@@ -131,7 +131,7 @@ require_once '../../partials/header.php';
                     if (!response.ok) {
                         throw new Error('Error en la solicitud Campos')
                     }
-                    
+
                     const data = await response.json();
                     dataCampos = data;
 
@@ -214,8 +214,24 @@ require_once '../../partials/header.php';
                 const hora = parseInt(document.querySelector("#horaReservadas").value);
                 const precio = parseFloat(document.querySelector("#precioHora").value);
 
-                if(hora && precio){
-                    document.querySelector("#total").value = hora*precio;
+                if (hora && precio) {
+                    document.querySelector("#total").value = hora * precio;
+                } else document.querySelector("#total").value = ""
+            }
+
+            const validateFecha = () => {
+                const inputFecha = document.getElementById('fechaReservacion');
+                const fechaActual = new Date();
+                const fechaSeleccionada = new Date(inputFecha.value);
+
+                // Establecer la hora de ambas fechas a 00:00:00
+                fechaActual.setHours(0, 0, 0, 0);
+                fechaSeleccionada.setHours(0, 0, 0, 0);
+
+                // Comparar fechas solo por día, mes y año (sin horas)
+                if (fechaSeleccionada < fechaActual) {
+                    showToast('No puedes registrar una fecha pasada.', "ERROR");
+                    inputFecha.value = '';
                 }
             }
 
@@ -240,7 +256,7 @@ require_once '../../partials/header.php';
                 }
             }
 
-            const showMessage = (result) => {
+            const showStatusDni = (result) => {
                 if (result.length > 0) {
                     nomCliente.value = result[0].nombres + ' ' + result[0].apellidos;
                 } else {
@@ -249,26 +265,35 @@ require_once '../../partials/header.php';
                     showToast("DNI no valido", "ERROR")
                 }
             }
-            
 
             selectCampos.addEventListener("change", (event) => {
+                document.querySelector("#precioHora").value = ""
+                document.querySelector("#total").value = ""
+
                 const id = parseInt(event.target.value);
                 const selectedCampo = dataCampos.find(campo => campo.idcampo === id);
 
                 listSelectZonaCampos(id);
                 if (selectedCampo) document.querySelector("#direccion").value = selectedCampo.direccion;
-                else document.querySelector("#direccion").value = ""
+                else {
+                    document.querySelector("#direccion").value = ""
+                    document.querySelector("#precioHora").value = ""
+                    document.querySelector("#total").value = ""
+                }
+
             })
 
             selectsZonaCampos.addEventListener("change", (event) => {
                 const id = parseInt(event.target.value);
                 const selectedZonaCampo = dataZonasCampos.find(zonaCampo => zonaCampo.idZonaCampo === id);
 
-                if (selectedZonaCampo){ 
+                if (selectedZonaCampo) {
                     document.querySelector("#precioHora").value = selectedZonaCampo.precioHora;
                     calculatePrecio();
+                } else {
+                    document.querySelector("#precioHora").value = ""
+                    document.querySelector("#total").value = ""
                 }
-                else document.querySelector("#precioHora").value = ""
             })
 
             dni.addEventListener("keydown", async (event) => {
@@ -276,9 +301,13 @@ require_once '../../partials/header.php';
                     event.preventDefault();
 
                     const statusDni = await verifyDni(dni.value);
-                    showMessage(statusDni);
+                    showStatusDni(statusDni);
 
                 }
+            })
+
+            document.querySelector("#fechaReservacion").addEventListener("change", () => {
+                validateFecha();
             })
 
             document.querySelector("#hInicio").addEventListener("input", () => {

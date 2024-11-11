@@ -129,7 +129,6 @@ BEGIN
 END //
 
 DELIMITER ;
-
 DROP PROCEDURE IF EXISTS spGetDataCampos;
 DELIMITER //
 CREATE PROCEDURE spGetDataCampos()
@@ -145,7 +144,6 @@ BEGIN
     FROM 
         campos;
 END //
-
 DELIMITER ;
 
 
