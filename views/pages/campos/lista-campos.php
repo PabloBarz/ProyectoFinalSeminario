@@ -105,18 +105,25 @@ require_once '../../partials/header.php';
                     document.querySelectorAll(".btn-warning").forEach(button => {
                       button.addEventListener("click", (event) => {
                         event.preventDefault();
-                        console.log("boton presionado")
                         const idCampo = event.target.closest("tr").dataset.id;
-                        sessionStorage.setItem("idCampo", idCampo);
-                        window.location.href = "./actualizar-campos";
+                        console.log("ID de campo extraído:", idCampo); // Verifica si idCampo es correcto
+
+                        if (idCampo) {
+                          sessionStorage.setItem("idCampo", idCampo);
+                          window.location.href = "./actualizar-campos";
+                        } else {
+                          console.error("idCampo no se obtuvo correctamente. Verifica el atributo 'data-id'.");
+                        }
                       });
                     });
+
+
                   } else {
                     const noRows = `
-            <tr>
-              <td colspan="8" class="text-center text-muted">Registros vacíos</td>
-            </tr>
-          `;
+                    <tr>
+                      <td colspan="8" class="text-center text-muted">Registros vacíos</td>
+                    </tr>
+                    `;
                     tableBody.insertAdjacentHTML("beforeend", noRows);
                   }
                 } catch (error) {

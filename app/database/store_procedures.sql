@@ -181,6 +181,7 @@ DELIMITER //
 CREATE PROCEDURE spGetDataCampos()
 BEGIN
     SELECT 
+		idCampo,
         tipoCampo,
         nombre,
         latitud,

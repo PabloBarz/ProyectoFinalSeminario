@@ -43,20 +43,20 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 echo json_encode(["actualizado" => $resultado]);
                 break;
 
-            case "GetCampoById":
-                if (isset($_POST['idCampo'])) {
-                    $idCampo = $_POST['idCampo'];
-                    $campo = $campos->getCampoById(['idCampo' => $idCampo]);
-
-                    if ($campo) {
-                        echo json_encode($campo);
+                case "GetCampoById":
+                    if (isset($_POST['idCampo'])) {
+                        $idCampo = $_POST['idCampo'];
+                        $campo = $campos->getCampoById(['idCampo' => $idCampo]);
+                
+                        if ($campo) {
+                            echo json_encode($campo);
+                        } else {
+                            echo json_encode(["error" => "No se encontró el campo"]);
+                        }
                     } else {
-                        echo json_encode(["error" => "No se encontró el campo"]);
+                        echo json_encode(["error" => "ID de campo no proporcionado"]);
                     }
-                } else {
-                    echo json_encode(["error" => "ID de campo no proporcionado"]);
-                }
-                break;
+                    break;
         }
         break;
     case "GET":
