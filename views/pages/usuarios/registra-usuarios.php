@@ -28,33 +28,36 @@ require_once '../../partials/header.php';
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-6 form-group">
-                      <label for="tipo-usuario">DNI:</label>
-                      <input class="form-control" id="tipo-usuario" required />
+                      <label for="dni">DNI:</label>
+                      <input class="form-control" id="dni" name="dni" maxlength="8" minlength="8" required autofocus />
                     </div>
                     <div class="col-md-6 form-group">
-                      <label for="tipo-usuario">Tipo de Usuario:</label>
-                      <select class="form-control" id="tipo-usuario" required>
-                        <option value="">Selecciona un tipo de usuario</option>
-                          <!-- Mostrar datos tipos de usuarios JS --> 
+                      <label for="tipoUsuario">Tipo de Usuario:</label>
+                      <select class="form-control" id="tipoUsuario" name="tipoUsuario" required>
                       </select>
                     </div>
 
                     <div class="col-md-6 form-group">
-                      <label for="usuario">Usuario:</label>
-                      <input type="text" class="form-control" id="usuario" required>
+                      <label for="nomUser">Usuario:</label>
+                      <input type="text" class="form-control" id="nomUser" name="nomUser" required>
                     </div>
                     <div class="col-md-6 form-group">
-                      <label for="password">Contraseña:</label>
-                      <input type="text" class="form-control" id="password" required>
+                      <label for="passUser">Contraseña:</label>
+                      <input type="password" class="form-control" id="passUser" name="passUser" required>
                     </div>
 
                     <div class="col-md-6 form-group">
-                      <label for="usuario">Email:</label>
-                      <input type="text" class="form-control" id="usuario" required>
+                      <label for="email">Email:</label>
+                      <input type="text" class="form-control" id="email" name="email" required>
                     </div>
                     <div class="col-md-6 form-group">
-                      <label for="usuario">Telefono:</label>
-                      <input type="text" class="form-control" id="usuario" required>
+                      <label for="telefono">Telefono</label>
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">+51</span>
+                        </div>
+                        <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" required>
+                      </div>
                     </div>
 
                   </div>
@@ -74,17 +77,158 @@ require_once '../../partials/header.php';
       <?php
       require_once '../../partials/_footer.php';
       ?>
-      </body>
+
+      <!-- SweetAlert -->
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <!-- SweetAlert Customer -->
+      <script src="<?= SERVERURL ?>views/assets/js/swalcustom.js"></script>
 
       <script>
-
         // 1 Listar Tipos de usuarios
         // 1 validar dni 
         // 2 registrar persona 
         // 3 registar el usuario 
         document.addEventListener("DOMContentLoaded", (event) => {
-            const form = document.querySelector("#formRegisterUserPerson");
+          const form = document.querySelector("#formRegisterUserPerson");
+          const selectTipoUsuario = document.querySelector("#tipoUsuario");
+
+          const listSelectTipoUser = async () => {
+            const params = new FormData()
+            params.append("operation", "getListSelectTipoUsuario")
+
+            try {
+              const response = await fetch('../../../app/controllers/UsuarioController.php', {
+                method: 'POST',
+                body: params
+              })
+
+              const data = await response.json();
+
+              if (!response.ok) {
+                throw new Error('Error en la solicitud Tipos Usuarios')
+              }
+
+              selectTipoUsuario.innerHTML = '<option value="">Seleccione un tipo de usuario</option>';
+              data.forEach(element => {
+                const tagOption = document.createElement("option");
+                tagOption.value = element.idTipoUsuario;
+                tagOption.textContent = element.nombreRol;
+                selectTipoUsuario.appendChild(tagOption);
+              });
+
+            } catch (error) {
+              console.log(error)
+            }
+          }
+
+          const verifyDNI = async (dni) => {
+            try {
+              const response = await fetch(`https://apiperu.dev/api/dni/${dni}?api_token=e6b6d8fc003639e3e5f870c90503a32e59230627fcf35d0f43b2c454a7a966b1`);
+
+              const data = await response.json();
+
+              return data;
+            } catch (error) {
+              console.error("Error en la solicitud DNI:", error);
+            }
+          };
+
+          const registerPerson = async (dataPerson = {}) => {
+            const params = new FormData();
+            params.append("operation", "registerPerson")
+            params.append("apellidos", dataPerson.apellidos),
+              params.append("nombres", dataPerson.nombres),
+              params.append("dni", dataPerson.dni),
+              params.append("telefono", dataPerson.telefono)
+
+            try {
+              const response = await fetch(`../../../app/controllers/PersonaController.php`, {
+                method: "POST",
+                body: params
+              });
+
+              const data = await response.json();
+              return data;
+            } catch (error) {
+              console.error("Error en la solicitud persona:", error);
+            }
+          }
+
+          const registerUser = async (dataUser = {}) => {
+            const params = new FormData();
+            params.append("operation", "registerUser")
+            params.append("idPersona", dataUser.idPersona)
+            params.append("idTipoUsuario", dataUser.idTipoUsuario)
+            params.append("email", dataUser.email)
+            params.append("nomUser", dataUser.nomUser)
+            params.append("passUser", dataUser.passUser)
+
+            try {
+              const response = await fetch(`../../../app/controllers/UsuarioController.php`, {
+                method: "POST",
+                body: params
+              });
+
+              const data = await response.json();
+              return data;
+            } catch (error) {
+              console.error("Error en la solicitud usuario:", error);
+            }
+          }
+
+
+          form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const dni = document.querySelector("#dni").value;
+
+            const tipoUsuarioValue = document.querySelector("#tipoUsuario").value;
+            if (!tipoUsuarioValue) {
+              showToast("Debe seleccionar un tipo de usuario", "ERROR", 1500);
+            }
+
+            const infoPerson = await verifyDNI(dni);
+
+            //DNI VALIDO
+            if (infoPerson.success) {
+
+              const dataPerson = {
+                "apellidos": `${infoPerson.data.apellido_paterno} ${infoPerson.data.apellido_materno}`,
+                "nombres": infoPerson.data.nombres,
+                "dni": dni,
+                "telefono": document.querySelector("#telefono").value
+              }
+
+              const statusRegisterPerson = await registerPerson(dataPerson);
+              console.log(statusRegisterPerson)
+              //REGISTRO EXITOSO DE PERSONA 
+              if (statusRegisterPerson.status) {
+
+                const dataUser = {
+                  "idPersona": statusRegisterPerson.idPersona,
+                  "idTipoUsuario": tipoUsuarioValue,
+                  "email": document.querySelector("#email").value,
+                  "nomUser": document.querySelector("#nomUser").value,
+                  "passUser": document.querySelector("#passUser").value
+                }
+
+                const statusRegisterUser = await registerUser(dataUser);
+                // REGISTRO EXITOSO DE USUARIO
+                if (statusRegisterUser.status) showToast(statusRegisterUser.message, "SUCCESS", 1500, "./lista-usuarios.php")
+                else showToast(statusRegisterUser.message, "ERROR", 1500)
+
+              } else {
+                showToast(statusRegisterPerson.message, "ERROR", 1500)
+              }
+            } else {
+              showToast("DNI no valido", "ERROR", 1500)
+            }
+          });
+
+          //LLamar funciones
+          listSelectTipoUser();
         })
       </script>
+
+      </body>
 
       </html>

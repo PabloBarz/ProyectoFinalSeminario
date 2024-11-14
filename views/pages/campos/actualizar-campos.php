@@ -105,8 +105,11 @@ require_once '../../partials/header.php';
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("formActualizarCampos");
 
+      //1 FUNCION OBTENER DATOS DE STORAGE
+
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
+
 
         // Capturar los valores de cada campo
         const tipoCampo = document.getElementById("tipo-campo").value;

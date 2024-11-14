@@ -109,7 +109,6 @@ BEGIN
 	SELECT idTipoUsuario, nombreRol, nombreCorto FROM tipos_usuarios; 
 END //
 DELIMITER ; 
-
 DROP PROCEDURE IF EXISTS spGetDataUsers;
 DELIMITER //
 CREATE PROCEDURE spGetDataUsers()
@@ -117,15 +116,20 @@ BEGIN
     SELECT 
         u.idUsuario AS IDUsuario,
         t.nombreRol AS TipoUsuario,
+        p.nombres AS Nombres,
+        P.apellidos AS Apellidos,
+        u.email AS Email,
         u.nomUser AS Usuario,
         u.passUser AS Contraseña    
     FROM 
         usuarios u
     INNER JOIN 
-        tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario;
+        tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario
+	INNER JOIN 
+		personas AS p ON p.idPersona = u.idPersona;
 END //
 DELIMITER ;
-call spGetPermisosByPerfil("ADM");
+
 /*Store Procedure para obtener permiso por perfil*/
 DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;
 DELIMITER //

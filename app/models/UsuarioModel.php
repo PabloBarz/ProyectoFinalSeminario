@@ -93,6 +93,23 @@ class UsuarioModel extends Conexion {
         }
     }
 
+    public function getListTipoUsuarios(): array{
+        try{
+          $cmd = $this->pdo->prepare("CALL spListSelectTypeUser()");
+          $cmd->execute();
+    
+          return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $ex){
+            error_log("Error BD: " . $ex->getMessage());
+            return [];
+        }
+        catch(Exception $ex){
+            error_log("Error servidor: " . $ex->getMessage());
+            return [];
+        }
+    }
+
     public function updateUser(){}
     public function deleteUser(){}    
 }

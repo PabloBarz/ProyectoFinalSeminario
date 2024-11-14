@@ -11,7 +11,6 @@ BEGIN
 END //
 DELIMITER ;
 
-
 /* SP para poder renderizar  los select de zonacampos en base al id de campo*/
 DROP PROCEDURE IF EXISTS spListZonaCampoByCampo;
 DELIMITER //

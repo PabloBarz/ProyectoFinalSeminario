@@ -9,7 +9,7 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <?= Helper::renderContentHeader("Lista Reservaciones", "Inicio", SERVERURL . "views/") ?>
+    <?= Helper::renderContentHeader("Lista Reservaciones", "Inicio", SERVERURL . "views/home/welcome") ?>
 
     <!-- Tabla de litado de reservaciones-->
     <div class="row">
@@ -18,7 +18,7 @@ require_once '../../partials/header.php';
         <div class="card">
           <div class="card-header">
             <div class="row">
-              <div class="col-md-6">Horarios</div>
+              <div class="col-md-6">Reservaciones</div>
               <div class="col-md-6 text-right">
                 <a href="./registro-reservaciones" class="btn btn-sm btn-primary">Registrar</a>
                 <a href="./registro-reservaciones" class="btn btn-sm btn-danger">Reporte</a>

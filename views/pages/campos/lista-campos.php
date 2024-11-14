@@ -9,7 +9,7 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <?= Helper::renderContentHeader("Lista Campos", "Inicio", SERVERURL . "views/") ?>
+    <?= Helper::renderContentHeader("Lista Campos", "Inicio", SERVERURL . "views/home/welcome") ?>
 
     <div class="content-main">
       <div class="row">

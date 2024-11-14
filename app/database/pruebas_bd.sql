@@ -99,7 +99,6 @@ INSERT INTO campos (tipoCampo, nombre, latitud, longitud, direccion, distrito, t
 ('Futbol', 'Apolo', -13.412172, -76.133803, 'C. Rosario 159', 'Chincha Alta', '951050584'),
 ('Futbol', 'El profe', -13.411961, -76.142735, 'Av. Pedro Moreno 778', 'Chincha Alta', '956530662');
 
-
 /* Insertar zonas de campos */
 /* Insertar zonas para cada campo, máximo 3 zonas por campo */
 INSERT INTO zonas_campos (idCampo, nombre, capacidad, superficie, dimensiones, precioHora, descripcion, estado) VALUES 
