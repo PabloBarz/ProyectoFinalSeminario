@@ -128,7 +128,7 @@ BEGIN
     SELECT 
         MD.modulo,
         RT.ruta,
-        RT.visible,
+        RT.it visible,
         RT.texto,
         RT.icono
     FROM 
