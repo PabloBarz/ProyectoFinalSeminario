@@ -8,7 +8,7 @@ $campos = new CamposModel();
 switch ($_SERVER["REQUEST_METHOD"]) {
     case "POST":
         switch ($_POST["operation"]) {
-            case "GetListSelectCampos";
+            case "GetListSelectCampos":
                 echo json_encode($campos->getCamposForSelects());
                 break;
             case "GetDataCampos";
@@ -41,6 +41,21 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 ];
                 $resultado = $campos->UpdateCampo($campoActualizado);
                 echo json_encode(["actualizado" => $resultado]);
+                break;
+
+            case "GetCampoById":
+                if (isset($_POST['idCampo'])) {
+                    $idCampo = $_POST['idCampo'];
+                    $campo = $campos->getCampoById(['idCampo' => $idCampo]);
+
+                    if ($campo) {
+                        echo json_encode($campo);
+                    } else {
+                        echo json_encode(["error" => "No se encontró el campo"]);
+                    }
+                } else {
+                    echo json_encode(["error" => "ID de campo no proporcionado"]);
+                }
                 break;
         }
         break;

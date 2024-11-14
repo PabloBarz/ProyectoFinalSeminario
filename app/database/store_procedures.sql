@@ -117,12 +117,17 @@ BEGIN
     SELECT 
         u.idUsuario AS IDUsuario,
         t.nombreRol AS TipoUsuario,
+        p.nombres AS Nombres,
+        P.apellidos AS Apellidos,
+        u.email AS Email,
         u.nomUser AS Usuario,
         u.passUser AS Contraseña    
     FROM 
         usuarios u
     INNER JOIN 
-        tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario;
+        tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario
+	INNER JOIN 
+		personas AS p ON p.idPersona = u.idPersona;
 END //
 DELIMITER ;
 call spGetPermisosByPerfil("ADM");
