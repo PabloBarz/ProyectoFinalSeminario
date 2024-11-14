@@ -41,7 +41,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
               <form id="formRegisterUserPerson" autocomplete="off">
                 <div class="form-group">
                   <label for="dni">DNI</label>
-                  <input type="text" class="form-control p_input" id="dni" name="dni" required autofocus>
+                  <input type="text" class="form-control p_input" id="dni" name="dni" maxlength="8" minlength="8" required autofocus>
                 </div>
                 <div class="form-group">
                   <label for="nomUser">Nombre de Usuario</label>
@@ -75,7 +75,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
                   <button type="submit" class="btn btn-primary btn-block enter-btn">Registrarme</button>
                 </div>
 
-                <p class="sign-up text-center">¿Ya tienes una cuenta?<a href="./index.php">Sign Up</a></p>
+                <p class="sign-up text-center">¿Ya tienes una cuenta? <a href="./index.php">Sign In</a></p>
               </form>
             </div>
           </div>

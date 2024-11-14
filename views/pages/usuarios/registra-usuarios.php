@@ -15,7 +15,7 @@ require_once '../../partials/header.php';
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
-            <form action="" autocomplete="off">
+            <form id="formRegisterUserPerson" autocomplete="off">
               <div class="card card-outline card-primary">
                 <div class="card-header">
                   <div class="row">
@@ -27,22 +27,15 @@ require_once '../../partials/header.php';
                 </div>
                 <div class="card-body">
                   <div class="row">
-                  <div class="col-md-6 form-group">
-                      <label for="tipo-usuario">Persona:</label>
-                      <select class="form-control" id="tipo-usuario" required>
-                        <option value="">Selecciona una persona</option>
-                        <option value="Administrador">Barzola</option>
-                        <option value="Supervisor">Karina</option>
-                        <option value="Invitado">Carlos</option>
-                      </select>
+                    <div class="col-md-6 form-group">
+                      <label for="tipo-usuario">DNI:</label>
+                      <input class="form-control" id="tipo-usuario" required />
                     </div>
                     <div class="col-md-6 form-group">
                       <label for="tipo-usuario">Tipo de Usuario:</label>
                       <select class="form-control" id="tipo-usuario" required>
                         <option value="">Selecciona un tipo de usuario</option>
-                        <option value="Administrador">Administrador</option>
-                        <option value="Supervisor">Supervisor</option>
-                        <option value="Invitado">Invitado</option>
+                          <!-- Mostrar datos tipos de usuarios JS --> 
                       </select>
                     </div>
 
@@ -53,6 +46,15 @@ require_once '../../partials/header.php';
                     <div class="col-md-6 form-group">
                       <label for="password">Contraseña:</label>
                       <input type="text" class="form-control" id="password" required>
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                      <label for="usuario">Email:</label>
+                      <input type="text" class="form-control" id="usuario" required>
+                    </div>
+                    <div class="col-md-6 form-group">
+                      <label for="usuario">Telefono:</label>
+                      <input type="text" class="form-control" id="usuario" required>
                     </div>
 
                   </div>
@@ -74,9 +76,15 @@ require_once '../../partials/header.php';
       ?>
       </body>
 
-       <script>
+      <script>
+
+        // 1 Listar Tipos de usuarios
         // 1 validar dni 
         // 2 registrar persona 
         // 3 registar el usuario 
-       </script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            const form = document.querySelector("#formRegisterUserPerson");
+        })
+      </script>
+
       </html>

@@ -101,6 +101,14 @@ BEGIN
 END //
 DELIMITER ; 
 
+-- SP para listar select de tipos de usuarios
+DROP PROCEDURE IF EXISTS spListSelectTypeUser;
+DELIMITER //
+CREATE PROCEDURE spListSelectTypeUser()	
+BEGIN
+	SELECT idTipoUsuario, nombreRol, nombreCorto FROM tipos_usuarios; 
+END //
+DELIMITER ; 
 
 DROP PROCEDURE IF EXISTS spGetDataUsers;
 DELIMITER //
@@ -117,7 +125,7 @@ BEGIN
         tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario;
 END //
 DELIMITER ;
-
+call spGetPermisosByPerfil("ADM");
 /*Store Procedure para obtener permiso por perfil*/
 DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;
 DELIMITER //
@@ -128,7 +136,7 @@ BEGIN
     SELECT 
         MD.modulo,
         RT.ruta,
-        RT.it visible,
+        RT.visible,
         RT.texto,
         RT.icono
     FROM 
@@ -143,8 +151,6 @@ BEGIN
         TU.nombrecorto = _nombrecorto;
 END //
 DELIMITER ;
-
-CALL spGetPermisosByPerfil('ADM')
 
 DROP PROCEDURE IF EXISTS spGetDataZonasCampos;
 DELIMITER //
@@ -183,7 +189,6 @@ BEGIN
 END //
 DELIMITER ;
 
-DELIMITER;
 DROP PROCEDURE IF EXISTS spAddCampos;
 DELIMITER //
 CREATE PROCEDURE spAddCampos(
@@ -202,6 +207,7 @@ INSERT INTO  campos (tipoCampo,nombre,latitud,longitud,direccion,distrito,telefo
 
 END //
 DELIMITER ;
+
 
 
 DELIMITER ;
