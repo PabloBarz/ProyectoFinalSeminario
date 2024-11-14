@@ -63,6 +63,20 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             case "spGetDataUsers";
                 echo json_encode($user->GetDataUsers());
                 break;
+            case "registerUser": 
+
+                    $passEncrypted = password_hash($user->limpiarCadena($_POST["passUser"]), PASSWORD_BCRYPT);
+
+                    $result = $user->registerUser([
+                        "idPersona" => $user->limpiarCadena($_POST["idPersona"]),
+                        "idTipoUsuario" => $user->limpiarCadena($_POST["idTipoUsuario"]),
+                        "email" => $user->limpiarCadena($_POST["email"]),
+                        "nomUser" => $user->limpiarCadena($_POST["nomUser"]),
+                        "passUser" => $passEncrypted
+                    ]);
+
+                    echo json_encode($result);    
+                break; 
         }
         break;
     case "GET":

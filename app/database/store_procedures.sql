@@ -53,6 +53,41 @@ BEGIN
 END //
 DELIMITER ;
 
+-- SP para registrar usuarios 
+DROP PROCEDURE IF EXISTS spRegisterUser;
+DELIMITER //
+CREATE PROCEDURE spRegisterUser
+(
+  IN _idPersona      INT,
+  IN _idTipoUsuario  INT,
+  IN _email          VARCHAR(70),
+  IN _nomUser        VARCHAR(20),
+  IN _passUser       VARCHAR(70)
+)
+BEGIN 
+	INSERT INTO usuarios (idPersona, idTipoUsuario, email, nomUser, passUser) 
+	VALUES (_idPersona, _idTipoUsuario, _email, _nomUser, _passUser);
+END //
+DELIMITER ; 
+
+-- SP para registrar personas  
+DROP PROCEDURE IF EXISTS spRegisterPerson;
+DELIMITER //
+CREATE PROCEDURE spRegisterPerson
+(
+  IN _apellidos      VARCHAR(40),
+  IN _nombres        VARCHAR(40),
+  IN _dni            CHAR(8),
+  IN _telefono       CHAR(9)
+)
+BEGIN 
+	INSERT INTO personas (apellidos, nombres, dni, telefono)  
+	VALUES (_apellidos, _nombres, _dni, NULLIF(_telefono, ''));
+		
+	SELECT LAST_INSERT_ID() AS idPersona;
+END //
+DELIMITER ;
+
 -- SP para validar clientes al registrar una reserva
 DROP PROCEDURE IF EXISTS spVerifyClient;
 DELIMITER //

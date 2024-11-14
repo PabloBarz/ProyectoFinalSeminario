@@ -74,4 +74,9 @@ require_once '../../partials/header.php';
       ?>
       </body>
 
+       <script>
+        // 1 validar dni 
+        // 2 registrar persona 
+        // 3 registar el usuario 
+       </script>
       </html>

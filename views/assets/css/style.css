@@ -20196,7 +20196,8 @@ div.tagsinput {
 /* Auth */
 .auth.login-bg {
   background: url("../images/auth/Login_bg.jpg");
-  background-size: cover; }
+  background-size: cover;
+  object-fit: contain; }
 
 .auth .login-half-bg {
   background: url("../images/auth/login-bg.jpg");

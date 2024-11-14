@@ -44,20 +44,55 @@ class UsuarioModel extends Conexion {
         }
     }
 
-    public function getPermisosByPerfil($params = []){
+    public function getPermisosByPerfil($params = []): array{
         try{
           $cmd = $this->pdo->prepare("CALL spGetPermisosByPerfil(?)");
           $cmd->execute([$params["nombreCorto"]]);
     
           return $cmd->fetchAll(PDO::FETCH_ASSOC);
         }
-        catch(Exception $e){
-          error_log("Error servidor: " . $e->getMessage());
-          return [];
+        catch(PDOException $ex){
+            error_log("Error BD: " . $ex->getMessage());
+            return [];
+        }
+        catch(Exception $ex){
+            error_log("Error servidor: " . $ex->getMessage());
+            return [];
         }
     }
 
-    public function addUser(){}
+    public function registerUser($params = []): array{
+        try{
+          $cmd = $this->pdo->prepare("CALL spRegisterUser(?,?,?,?,?)");
+          $cmd->execute([
+            $params["idPersona"],
+            $params["idTipoUsuario"],
+            $params["email"],
+            $params["nomUser"],
+            $params["passUser"]
+        ]);
+    
+          return [
+                    "status" => true,
+                    "message" => "Usuario registrado con éxito"
+                 ];
+        } 
+        catch (PDOException $e) {
+            error_log("Error en la base de datos: " . $e->getMessage());
+            return [
+                "status" => false,
+                "message" => "Error al registrar el usuario en la base de datos"
+            ];
+        } 
+        catch (Exception $e) {
+            error_log("Error servidor: " . $e->getMessage());
+            return [
+                "status" => false,
+                "message" => "Error inesperado"
+            ];
+        }
+    }
+
     public function updateUser(){}
     public function deleteUser(){}    
 }

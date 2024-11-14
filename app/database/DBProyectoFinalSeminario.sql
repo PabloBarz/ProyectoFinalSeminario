@@ -52,10 +52,8 @@ CREATE TABLE personas (
   idPersona 		INT AUTO_INCREMENT PRIMARY KEY,
   apellidos		VARCHAR(40) 	NOT NULL,
   nombres 		VARCHAR(40)	NOT NULL,
-  dni 		CHAR(8) 	NOT NULL,
+  dni 			CHAR(8) 	NOT NULL,  
   telefono 		CHAR(9) 	NULL,
-  direccion		VARCHAR(70)	NULL,
-  email 		VARCHAR(70) 	NULL,
   createAt 		DATETIME 	NOT NULL DEFAULT NOW(),
   CONSTRAINT uk_dni_per UNIQUE (dni)
 ) ENGINE = INNODB;
@@ -66,6 +64,7 @@ CREATE TABLE usuarios (
   idUsuario 		INT AUTO_INCREMENT PRIMARY KEY,
   idPersona		INT NOT NULL,
   idTipoUsuario 	INT NOT NULL,
+  email 		VARCHAR(70) 	NOT NULL,
   nomUser 		VARCHAR(20) 	NOT NULL,
   passUser 		VARCHAR(70) 	NOT NULL,
   createAt 		DATETIME 	NOT NULL DEFAULT NOW(),

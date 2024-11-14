@@ -61,7 +61,7 @@
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block enter-btn">Ingresar</button>
                   </div>
-                  <p class="sign-up">Don't have an Account?<a href="#"> Sign Up</a></p>
+                  <p class="sign-up">Don't have an Account?<a href="./register.php"> Sign Up</a></p>
                 </form>
 
               </div>

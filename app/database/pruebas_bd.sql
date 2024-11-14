@@ -78,21 +78,12 @@ INSERT INTO personas (apellidos, nombres, dni) VALUES
 ('Ochoa Prada', 'Karina', '11112222'),
 ('Castilla Morales', 'Carlos', '33334444');
 
-
 /* Insertar usuarios */
 INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES 
 (1, 1, 'Pablo', '123'),
 (2, 1, 'Vaistaya', '123'),
 (3, 2, 'Karina', '123'),
 (4, 3, 'Carlos', '123');
-
-
-
-UPDATE usuarios SET passUser = '$2y$10$zDaQ9eU7HpHq6NA0Es/W3O.2wq2zpZKiOSf2MnTIKTzgyqxZKLM4e' WHERE idUsuario = 1;
-UPDATE usuarios SET passUser = '$2y$10$xLCsA6h7Nel8ArSyyAe.veYWIaUQty7pFUKxtv2EwWv8wvY33uDbi' WHERE idUsuario = 2;
-UPDATE usuarios SET passUser = '$2y$10$2lbo6wQ73RB.aKjUZpte5utBK.BDP/ZYT1d85ZjgUR8Z1N0gApW6q' WHERE idUsuario = 3;
-UPDATE usuarios SET passUser = '$2y$10$bSPoK.vw2LMFJ0XD.c6FJeH4n6UfaeUHLveq1y2Zs8l4EYYaByCtG' WHERE idUsuario = 4;
-
 
 /* Insertar campos */
 -- Inserción de datos en la tabla campos con NULL en el campo telefono cuando no hay número

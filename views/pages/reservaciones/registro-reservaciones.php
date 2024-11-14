@@ -253,6 +253,7 @@ require_once '../../partials/header.php';
                     return data;
                 } catch (error) {
                     console.error('Hubo un error: ', error.message);
+                    []
                 }
             }
 
