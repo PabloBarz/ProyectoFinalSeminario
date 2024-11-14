@@ -41,6 +41,7 @@ require_once '../../partials/header.php';
                       <th>Direccion</th>
                       <th>Distrito</th>
                       <th>Telefono</th>
+                      <th>Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -75,37 +76,47 @@ require_once '../../partials/header.php';
                     body: params
                   });
 
-                  // Verificar que la respuesta sea válida y convertirla a JSON
                   if (!response.ok) {
                     throw new Error('Error en la solicitud');
                   }
 
                   const data = await response.json();
 
-                  // Verifica si el array tiene datos
                   if (data.length > 0) {
                     tableBody.innerHTML = "";
 
                     data.forEach(element => {
                       const render = `
-                        <tr data-id="${element.idCampo}">
-                            <td>${element.tipoCampo}</td>
-                            <td>${element.nombre}</td>
-                            <td>${element.latitud}</td>
-                            <td>${element.longitud}</td>
-                            <td>${element.direccion}</td>
-                            <td>${element.distrito}</td>
-                            <td>${element.telefono ?? "No registrado"}</td>
-                        </tr>
-                    `;
+                      <tr data-id="${element.idCampo}">
+                        <td>${element.tipoCampo}</td>
+                        <td>${element.nombre}</td>
+                        <td>${element.latitud}</td>
+                        <td>${element.longitud}</td>
+                        <td>${element.direccion}</td>
+                        <td>${element.distrito}</td>
+                        <td>${element.telefono ?? "No registrado"}</td>
+                        <td>
+                        <button class="btn btn-sm btn-warning">Actualizar</button>
+                        </td>
+                      </tr>
+                      `;
                       tableBody.insertAdjacentHTML("beforeend", render);
+                    });
+                    document.querySelectorAll(".btn-warning").forEach(button => {
+                      button.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        console.log("boton presionado")
+                        const idCampo = event.target.closest("tr").dataset.id;
+                        sessionStorage.setItem("idCampo", idCampo);
+                        window.location.href = "./actualizar-campos";
+                      });
                     });
                   } else {
                     const noRows = `
-                    <tr>
-                        <td colspan="4" class="text-center text-muted">Registros vacíos</td>
-                    </tr>
-                `;
+            <tr>
+              <td colspan="8" class="text-center text-muted">Registros vacíos</td>
+            </tr>
+          `;
                     tableBody.insertAdjacentHTML("beforeend", noRows);
                   }
                 } catch (error) {
@@ -113,6 +124,16 @@ require_once '../../partials/header.php';
                 }
               };
 
+
+
               listTableCampos();
             });
+
+            // Define la función cargarDatosParaActualizar para manejar la actualización
+            function cargarDatosParaActualizar(idCampo) {
+              // Aquí puedes hacer una solicitud al servidor para obtener los datos de un campo específico
+              console.log("Actualizar campo con ID:", idCampo);
+
+              // Puedes agregar lógica para abrir un formulario de actualización y precargar los datos aquí.
+            }
           </script>

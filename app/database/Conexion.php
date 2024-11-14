@@ -1,5 +1,5 @@
 <?php
-require_once "../helpers/Helper.php";
+require_once "../helpers/helper.php";
 
 class Conexion extends Helper{
   //1. Almacenamos los datos de conexión
