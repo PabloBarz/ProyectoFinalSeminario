@@ -8,7 +8,7 @@ RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L]
 
 # Directivas de acceso 
-ErrorDocument 404 /proyectofinalseminario/views/pages/samples/error-404.php
-ErrorDocument 401 /proyectofinalseminario/views/pages/samples/error-500.php
-ErrorDocument 400 /proyectofinalseminario/views/pages/samples/error-500.php
-ErrorDocument 403 /proyectofinalseminario/views/pages/samples/error-500.php
+ErrorDocument 404 /proyectofinalseminario/views/page/samples/error-404.php
+ErrorDocument 401 /proyectofinalseminario/views/page/samples/error-500.php
+ErrorDocument 400 /proyectofinalseminario/views/page/samples/error-500.php
+ErrorDocument 403 /proyectofinalseminario/views/page/samples/error-500.php

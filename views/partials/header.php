@@ -61,8 +61,8 @@ if(!$encontrado){
     <!-- partial:partials/_sidebar.html - Sidebar left -->
     <sidebar class="sidebar sidebar-offcanvas" id="sidebar">
   <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-    <a class="sidebar-brand brand-logo" href="<?= SERVERURL?>views/"><img src="<?= SERVERURL?>views/assets/images/logo.svg" alt="logo" /></a>
-    <a class="sidebar-brand brand-logo-mini" href="<?= SERVERURL?>views/"><img src="<?= SERVERURL?>views/assets/images/logo-mini.svg" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo" href="<?= SERVERURL?>views/home/welcome"><img src="<?= SERVERURL?>views/assets/images/logo.svg" alt="logo" /></a>
+    <a class="sidebar-brand brand-logo-mini" href="<?= SERVERURL?>views/home/welcome"><img src="<?= SERVERURL?>views/assets/images/logo-mini.svg" alt="logo" /></a>
   </div>
   
   <ul class="nav">         
