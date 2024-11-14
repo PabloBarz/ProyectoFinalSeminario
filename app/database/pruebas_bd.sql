@@ -30,14 +30,15 @@ INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES
 -- Campos- Zonas Campos 
 (2, "lista-campos", TRUE, "Campos", "fa-solid fa-futbol"), -- 2
 (2, "registro-campos", FALSE, "", ""), -- 3 
+(2,"actualizar-campos",FALSE,"",""), -- 4 (verdaderamente 9 x el momento)
 -- Mapas de campos
-(3, "lista-maps-campos", TRUE, "Mapas de Campos", "fa-solid fa-map-location-dot"), -- 4
+(3, "lista-maps-campos", TRUE, "Mapas de Campos", "fa-solid fa-map-location-dot"), -- 5
 -- Reservaciones
-(4, "lista-reservaciones", TRUE, "Reservaciones", "fa-solid fa-calendar-days"), -- 5
-(4, "registro-reservaciones", FALSE, "", ""), -- 6
+(4, "lista-reservaciones", TRUE, "Reservaciones", "fa-solid fa-calendar-days"), -- 6
+(4, "registro-reservaciones", FALSE, "", ""), -- 7
 -- Usuarios
-(5, "lista-usuarios", TRUE, "Usuarios", "fa-solid fa-users"), -- 7
-(5, "registra-usuarios", FALSE, "", ""); -- 8
+(5, "lista-usuarios", TRUE, "Usuarios", "fa-solid fa-users"), -- 8
+(5, "registra-usuarios", FALSE, "", ""); -- 9
 
 
 /* Insertar tipos de usuarios */
@@ -56,19 +57,20 @@ INSERT INTO permisos (idTipoUsuario, idRuta) VALUES
 (1, 5),  
 (1, 6),  
 (1, 7),  
-(1, 8),  
+(1, 8),
+(1, 9),  
 
 -- SPV
 (2,1),
 (2,2),
-(2,5),
 (2,6),
+(2,7),
 
 -- CLI
 (3,1),
-(3,4),
 (3,5),
-(3,6);
+(3,6),
+(3,7);
 
 
 /* Insertar personas */

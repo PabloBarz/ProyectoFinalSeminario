@@ -109,6 +109,8 @@ BEGIN
 END //
 DELIMITER ;
 
+CALL spGetPermisosByPerfil('ADM')
+
 DROP PROCEDURE IF EXISTS spGetDataZonasCampos;
 DELIMITER //
 CREATE PROCEDURE spGetDataZonasCampos()
@@ -145,6 +147,81 @@ BEGIN
         campos;
 END //
 DELIMITER ;
+
+DELIMITER;
+DROP PROCEDURE IF EXISTS spAddCampos;
+DELIMITER //
+CREATE PROCEDURE spAddCampos(
+ IN _tipoCampo 	VARCHAR(20),
+ IN _nombre 	VARCHAR(20),
+ IN _latitud 	DECIMAL(9,6),
+ IN _longitud 	DECIMAL(9,6),
+ IN _direccion 	VARCHAR(30),
+ IN _distrito VARCHAR(30),
+ IN _telefono VARCHAR(9)
+)
+
+BEGIN
+INSERT INTO  campos (tipoCampo,nombre,latitud,longitud,direccion,distrito,telefono) VALUES
+(_tipoCampo,_nombre,_latitud,_longitud,_direccion,_distrito,_telefono);
+
+END //
+DELIMITER ;
+
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS spUpdateCampo;
+DELIMITER //
+CREATE PROCEDURE spUpdateCampo(
+    IN _idCampo INT,
+    IN _tipoCampo VARCHAR(20),
+    IN _nombre VARCHAR(20),
+    IN _latitud DECIMAL(9,6),
+    IN _longitud DECIMAL(9,6),
+    IN _direccion VARCHAR(30),
+    IN _distrito VARCHAR(30),
+    IN _telefono VARCHAR(9)
+)
+BEGIN
+    UPDATE campos 
+    SET tipoCampo = _tipoCampo,
+        nombre = _nombre,
+        latitud = _latitud,
+        longitud = _longitud,
+        direccion = _direccion,
+        distrito = _distrito,
+        telefono = _telefono
+    WHERE idCampo = _idCampo;
+END //
+
+DELIMITER ;
+DROP PROCEDURE IF EXISTS spGetCampoById;
+DELIMITER //
+CREATE PROCEDURE spGetCampoById(
+    IN _idCampo INT
+)
+BEGIN
+    SELECT 
+        idCampo,
+        tipoCampo,
+        nombre,
+        latitud,
+        longitud,
+        direccion,
+        distrito,
+        telefono,
+        createAt
+    FROM 
+        campos
+    WHERE 
+        idCampo = _idCampo;
+END //
+
+DELIMITER ;
+
+
+
+
 
 
 
