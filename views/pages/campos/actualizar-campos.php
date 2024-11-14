@@ -140,10 +140,14 @@ require_once '../../partials/header.php';
       }
 
       const form = document.getElementById("formActualizarCampos");
+      //1 FUNCION OBTENER DATOS DE STORAGE
+
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         console.log("Formulario de actualización enviado");
 
+
+        // Capturar los valores de cada campo
         const tipoCampo = document.getElementById("tipo-campo").value;
         const nombre = document.getElementById("nombre").value;
         const latitud = document.getElementById("latitud").value;

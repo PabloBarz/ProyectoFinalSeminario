@@ -109,7 +109,6 @@ BEGIN
 	SELECT idTipoUsuario, nombreRol, nombreCorto FROM tipos_usuarios; 
 END //
 DELIMITER ; 
-
 DROP PROCEDURE IF EXISTS spGetDataUsers;
 DELIMITER //
 CREATE PROCEDURE spGetDataUsers()
@@ -130,7 +129,7 @@ BEGIN
 		personas AS p ON p.idPersona = u.idPersona;
 END //
 DELIMITER ;
-call spGetPermisosByPerfil("ADM");
+
 /*Store Procedure para obtener permiso por perfil*/
 DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;
 DELIMITER //

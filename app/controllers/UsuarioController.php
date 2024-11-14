@@ -77,6 +77,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
 
                     echo json_encode($result);    
                 break; 
+            case "getListSelectTipoUsuario":
+                echo json_encode($user->getListTipoUsuarios());
+                break;
         }
         break;
     case "GET":

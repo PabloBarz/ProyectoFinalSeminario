@@ -112,7 +112,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.querySelector("#formRegisterUserPerson");
 
-      // Función para verificar el DNI usando el controlador PHP
+      
       const verifyDNI = async (dni) => {
         try {
           const response = await fetch(`https://apiperu.dev/api/dni/${dni}?api_token=e6b6d8fc003639e3e5f870c90503a32e59230627fcf35d0f43b2c454a7a966b1`);

@@ -77,6 +77,7 @@ class CamposModel extends Conexion{
                 array($params['idCampo'])
               );
             return $query->fetchAll(PDO::FETCH_ASSOC); 
+            return $query->fetchAll(PDO::FETCH_ASSOC); // Devuelve un solo registro como un array asociativo
         } catch (Exception $e) {
             die("Error en getCampoById: " . $e->getMessage());
         }

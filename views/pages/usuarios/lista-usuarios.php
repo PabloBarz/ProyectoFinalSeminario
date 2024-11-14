@@ -9,7 +9,7 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <?= Helper::renderContentHeader("Lista Usuarios", "Inicio", SERVERURL . "views/") ?>
+    <?= Helper::renderContentHeader("Lista Usuarios", "Inicio", SERVERURL . "views/home/welcome") ?>
 
     <div class="content-main">
       <div class="row">
@@ -17,7 +17,7 @@ require_once '../../partials/header.php';
           <div class="card">
             <div class="card-header">
               <div class="row">
-                <div class="col-md-6">Horarios</div>
+                <div class="col-md-6">Usuarios</div>
                 <div class="col-md-6 text-right">
                   <a href="./registra-usuarios" class="btn btn-sm btn-primary">Registrar</a>
                   <a href="./registra-usuarios" class="btn btn-sm btn-danger">Reporte</a>
@@ -26,9 +26,7 @@ require_once '../../partials/header.php';
             </div>
             <div class="card-body">
               <style>
-                #tabla-reservaciones thead th {
-                  color: white;
-                }
+                
               </style>
 
               <div class="table-responsive">
@@ -36,9 +34,11 @@ require_once '../../partials/header.php';
                   <thead>
                     <tr>
                       <th>ID Usuario</th>
-                      <th>Tipo Usuario</th>
                       <th>Usuario</th>
-                      <th>Contraseña</th>
+                      <th>Tipo Usuario</th>
+                      <th>Nombres</th>
+                      <th>Apellidos</th>
+                      <th>Email</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -60,8 +60,6 @@ require_once '../../partials/header.php';
 
           <script>
             document.addEventListener("DOMContentLoaded", (event) => {
-              console.log("DOM completamente cargado y analizado");
-
               const tableBody = document.querySelector("#tabla-usuarios tbody");
 
               const listTableUsers = async () => {
@@ -89,9 +87,11 @@ require_once '../../partials/header.php';
                       const render = `
                         <tr data-id="${element.IDUsuario}">
                             <td>${element.IDUsuario}</td>
-                            <td>${element.TipoUsuario}</td>
                             <td>${element.Usuario}</td>
-                            <td>${element.Contraseña}</td>
+                            <td>${element.TipoUsuario}</td>
+                            <td>${element.Nombres}</td>
+                            <td>${element.Apellidos}</td>
+                            <td>${element.Email}</td>
                         </tr>
                     `;
                       tableBody.insertAdjacentHTML("beforeend", render);

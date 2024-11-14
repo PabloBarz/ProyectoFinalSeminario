@@ -11,7 +11,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             case "GetListSelectCampos":
                 echo json_encode($campos->getCamposForSelects());
                 break;
-            case "GetDataCampos";
+            case "GetDataCampos":
                 echo json_encode($campos->GetDataCampos());
                 break;
             case "AddCampos":
