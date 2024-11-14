@@ -40,7 +40,7 @@ INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES
 (5, "registra-usuarios", FALSE, "", ""), -- 9
 (5, "actualizar-usuarios", FALSE, "", ""); -- 10
 
-CALL spGetPermisosByPerfil ("ADM");
+
 
 /* Insertar tipos de usuarios */
 INSERT INTO tipos_usuarios (nombreRol, nombreCorto) VALUES
