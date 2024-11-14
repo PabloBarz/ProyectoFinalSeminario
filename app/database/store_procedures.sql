@@ -2,7 +2,20 @@ USE sportsfieldrentaldb;
 
 /* Aquí irán todos los stored procedures */
 
--- SP para renderizar los campos
+-- SP para mostrar usuario por ID 
+DROP PROCEDURE IF EXISTS spGetUserById;
+DELIMITER //
+CREATE PROCEDURE spGetUserById
+(
+	IN _idUsuario INT 
+)
+BEGIN
+    SELECT * FROM vwUserTipoUsuario 
+    WHERE IDUsuario = _idUsuario;
+END //
+DELIMITER ;
+
+-- SP para listar los campos
 DROP PROCEDURE IF EXISTS spGetAllCampos;
 DELIMITER //
 CREATE PROCEDURE spGetAllCampos()
@@ -113,22 +126,11 @@ DROP PROCEDURE IF EXISTS spGetDataUsers;
 DELIMITER //
 CREATE PROCEDURE spGetDataUsers()
 BEGIN
-    SELECT 
-        u.idUsuario AS IDUsuario,
-        t.nombreRol AS TipoUsuario,
-        p.nombres AS Nombres,
-        P.apellidos AS Apellidos,
-        u.email AS Email,
-        u.nomUser AS Usuario,
-        u.passUser AS Contraseña    
-    FROM 
-        usuarios u
-    INNER JOIN 
-        tipos_usuarios t ON t.idTipoUsuario = u.idTipoUsuario
-	INNER JOIN 
-		personas AS p ON p.idPersona = u.idPersona;
+    SELECT * FROM vwUserTipoUsurio;
 END //
 DELIMITER ;
+
+
 
 /*Store Procedure para obtener permiso por perfil*/
 DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;

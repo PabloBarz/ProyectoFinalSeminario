@@ -53,7 +53,6 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                         $_SESSION["login"]["nombreCorto"] = $registro[0]['nombreCorto'];
                         $_SESSION["login"]["nomUser"] =  $registro[0]['nomUser'];
                         $_SESSION["login"]["permisos"] = $user->getPermisosByPerfil(["nombreCorto" => $registro[0]["nombreCorto"]]);
-
                     } else {
                         $statusLogin["mensaje"] = "Contraseña incorrecta";
                     }
@@ -63,20 +62,25 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             case "spGetDataUsers";
                 echo json_encode($user->GetDataUsers());
                 break;
-            case "registerUser": 
+            case "spGetUserById":
+                $limpioIdUser = $user->limpiarCadena($_POST["idUser"]);
+                echo json_encode($user->getUserById(["idUser" => $limpioIdUser]));
+                break;
 
-                    $passEncrypted = password_hash($user->limpiarCadena($_POST["passUser"]), PASSWORD_BCRYPT);
+            case "registerUser":
 
-                    $result = $user->registerUser([
-                        "idPersona" => $user->limpiarCadena($_POST["idPersona"]),
-                        "idTipoUsuario" => $user->limpiarCadena($_POST["idTipoUsuario"]),
-                        "email" => $user->limpiarCadena($_POST["email"]),
-                        "nomUser" => $user->limpiarCadena($_POST["nomUser"]),
-                        "passUser" => $passEncrypted
-                    ]);
+                $passEncrypted = password_hash($user->limpiarCadena($_POST["passUser"]), PASSWORD_BCRYPT);
 
-                    echo json_encode($result);    
-                break; 
+                $result = $user->registerUser([
+                    "idPersona" => $user->limpiarCadena($_POST["idPersona"]),
+                    "idTipoUsuario" => $user->limpiarCadena($_POST["idTipoUsuario"]),
+                    "email" => $user->limpiarCadena($_POST["email"]),
+                    "nomUser" => $user->limpiarCadena($_POST["nomUser"]),
+                    "passUser" => $passEncrypted
+                ]);
+
+                echo json_encode($result);
+                break;
             case "getListSelectTipoUsuario":
                 echo json_encode($user->getListTipoUsuarios());
                 break;

@@ -26,7 +26,7 @@ require_once '../../partials/header.php';
             </div>
             <div class="card-body">
               <style>
-                
+
               </style>
 
               <div class="table-responsive">
@@ -39,6 +39,7 @@ require_once '../../partials/header.php';
                       <th>Nombres</th>
                       <th>Apellidos</th>
                       <th>Email</th>
+                      <th>Acciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -92,9 +93,21 @@ require_once '../../partials/header.php';
                             <td>${element.Nombres}</td>
                             <td>${element.Apellidos}</td>
                             <td>${element.Email}</td>
+                            <td>
+                              <button class="btn btn-sm btn-warning">Actualizar</button>
+                            </td>
                         </tr>
                     `;
                       tableBody.insertAdjacentHTML("beforeend", render);
+                    });
+
+                    document.querySelectorAll(".btn-warning").forEach(button => {
+                      button.addEventListener("click", (event) => {
+                        event.preventDefault();
+                        const idUsuario = event.target.closest("tr").dataset.id;
+                        sessionStorage.setItem("idUsuario", idUsuario);
+                        window.location.href = "./actualizar-usuarios";
+                      });
                     });
                   } else {
                     const noRows = `

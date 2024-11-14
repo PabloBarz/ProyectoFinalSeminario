@@ -37,8 +37,10 @@ INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES
 (4, "registro-reservaciones", FALSE, "", ""), -- 7
 -- Usuarios
 (5, "lista-usuarios", TRUE, "Usuarios", "fa-solid fa-users"), -- 8
-(5, "registra-usuarios", FALSE, "", ""); -- 9
+(5, "registra-usuarios", FALSE, "", ""), -- 9
+(5, "actualizar-usuarios", FALSE, "", ""); -- 10
 
+CALL spGetPermisosByPerfil ("ADM");
 
 /* Insertar tipos de usuarios */
 INSERT INTO tipos_usuarios (nombreRol, nombreCorto) VALUES
@@ -58,6 +60,7 @@ INSERT INTO permisos (idTipoUsuario, idRuta) VALUES
 (1, 7),  
 (1, 8),
 (1, 9),  
+(1, 10),
 
 -- SPV
 (2,1),
@@ -78,6 +81,7 @@ INSERT INTO personas (apellidos, nombres, dni) VALUES
 ('Tasayco Yataco','Valentino','76180741'),
 ('Ochoa Prada', 'Karina', '11112222'),
 ('Castilla Morales', 'Carlos', '33334444');
+
 
 /* Insertar usuarios */
 INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES 
@@ -146,7 +150,6 @@ INSERT INTO zonas_campos (idCampo, nombre, capacidad, superficie, dimensiones, p
 (9, 'Zona Y', 8, 'Césped', '35x20', 45, 'Zona de práctica para principiantes', 'Disponible'),
 (9, 'Zona Z', 12, 'Césped', '50x25', 55, 'Zona para torneos locales', 'Disponible'),
 (9, 'Zona AA', 16, 'Césped', '60x30', 70, 'Zona con capacidad para espectadores', 'Ocupado');
-
 
 /* Insertar reservaciones */
 INSERT INTO reservaciones (idZonaCampo, idUsuario, fechaReservacion, horaInicio, horaFin, estadoPago, precioHora, cantidadHora) VALUES 

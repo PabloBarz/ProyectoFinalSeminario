@@ -110,6 +110,24 @@ class UsuarioModel extends Conexion {
         }
     }
 
+    public function getUserById($params = []): array{
+        try{
+          $cmd = $this->pdo->prepare("CALL spGetUserById(?)");
+          $cmd->execute([$params["idUser"]]);
+    
+          return $cmd->fetchAll(PDO::FETCH_ASSOC);
+        }
+        catch(PDOException $ex){
+            error_log("Error BD: " . $ex->getMessage());
+            return [];
+        }
+        catch(Exception $ex){
+            error_log("Error servidor: " . $ex->getMessage());
+            return [];
+        }
+    }
+
+
     public function updateUser(){}
     public function deleteUser(){}    
 }
