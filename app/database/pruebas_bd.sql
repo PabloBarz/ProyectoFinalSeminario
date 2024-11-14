@@ -14,7 +14,6 @@ DELETE FROM tipos_usuarios;
 DELETE FROM rutas;
 DELETE FROM modulos;
 
-
 /* Insertar Modulos*/
 INSERT INTO modulos (modulo) VALUES
 ("home"), -- 1
@@ -30,7 +29,7 @@ INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES
 -- Campos- Zonas Campos 
 (2, "lista-campos", TRUE, "Campos", "fa-solid fa-futbol"), -- 2
 (2, "registro-campos", FALSE, "", ""), -- 3 
-(2,"actualizar-campos",FALSE,"",""), -- 4 (verdaderamente 9 x el momento)
+(2,"actualizar-campos",FALSE,"",""), -- 4 
 -- Mapas de campos
 (3, "lista-maps-campos", TRUE, "Mapas de Campos", "fa-solid fa-map-location-dot"), -- 5
 -- Reservaciones
