@@ -20,8 +20,9 @@ INSERT INTO modulos (modulo) VALUES
 ("campos"), -- 2
 ("mapscampos"), -- 3
 ("reservaciones"), -- 4
-("usuarios"); -- 5
-
+("usuarios"), -- 5
+("zonas_campos"); -- 6
+ 
 /* Insertar acciones */
 INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES 
 -- Home
@@ -38,8 +39,10 @@ INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES
 -- Usuarios
 (5, "lista-usuarios", TRUE, "Usuarios", "fa-solid fa-users"), -- 8
 (5, "registra-usuarios", FALSE, "", ""), -- 9
-(5, "actualizar-usuarios", FALSE, "", ""); -- 10
-
+(5, "actualizar-usuarios", FALSE, "", ""), -- 10
+-- Zonas campos
+(6, "lista-zonascampos", TRUE, "Zona Campos", "fa-brands fa-codepen"), -- 11
+(6, "registro-zonascampos", FALSE, "", ""); -- 12
 
 
 /* Insertar tipos de usuarios */
@@ -61,19 +64,19 @@ INSERT INTO permisos (idTipoUsuario, idRuta) VALUES
 (1, 8),
 (1, 9),  
 (1, 10),
-
+(1, 11),
+(1 ,12),
 -- SPV
 (2,1),
 (2,2),
 (2,6),
 (2,7),
-
+(2,11),
 -- CLI
 (3,1),
 (3,5),
 (3,6),
 (3,7);
-
 
 /* Insertar personas */
 INSERT INTO personas (apellidos, nombres, dni) VALUES
@@ -89,6 +92,8 @@ INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES
 (2, 1, 'Vaistaya', '123'),
 (3, 2, 'Karina', '123'),
 (4, 3, 'Carlos', '123');
+
+/* UPDATE usuarios SET idTipoUsuario = 1 WHERE idUsuario = 1 */
 
 /* Insertar campos */
 -- Inserción de datos en la tabla campos con NULL en el campo telefono cuando no hay número

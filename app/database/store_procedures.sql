@@ -122,15 +122,15 @@ BEGIN
 	SELECT idTipoUsuario, nombreRol, nombreCorto FROM tipos_usuarios; 
 END //
 DELIMITER ; 
+
+-- SP para listar todos los campos usuarios con su tipo de usuario
 DROP PROCEDURE IF EXISTS spGetDataUsers;
 DELIMITER //
 CREATE PROCEDURE spGetDataUsers()
 BEGIN
-    SELECT * FROM vwUserTipoUsurio;
+    SELECT * FROM vwUserTipoUsuario;
 END //
 DELIMITER ;
-
-
 
 /*Store Procedure para obtener permiso por perfil*/
 DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;

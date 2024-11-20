@@ -118,7 +118,7 @@ require_once '../../partials/header.php';
                     tableBody.insertAdjacentHTML("beforeend", noRows);
                   }
                 } catch (error) {
-                  console.error("Hubo un error en la solicitud o en el procesamiento:", error.message);
+                  console.error("Hubo un error en la solicitud o en el listTableUsers:", error.message);
                 }
               };
 

@@ -19,7 +19,7 @@ require_once '../../partials/header.php';
               <div class="row">
                 <div class="col-md-6">Zonas Campos</div>
                 <div class="col-md-6 text-right">
-                  <a href="./registro-campos" class="btn btn-sm btn-primary">Registrar</a>
+                  <a href="./registro-zonascampos" class="btn btn-sm btn-primary">Registrar</a>
                 </div>
               </div>
             </div>

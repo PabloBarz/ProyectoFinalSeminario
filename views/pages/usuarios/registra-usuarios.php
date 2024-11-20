@@ -56,7 +56,7 @@ require_once '../../partials/header.php';
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">+51</span>
                         </div>
-                        <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" required>
+                        <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" >
                       </div>
                     </div>
 
