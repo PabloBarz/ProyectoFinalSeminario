@@ -26,7 +26,12 @@ require_once '../../partials/header.php';
                   <div class="row">
                     <div class="col-md-6 form-group">
                       <label for="tipo-campo">Selecciona un Tipo de campo:</label>
-                      <select class="form-control" id="tipo-campo" required></select>
+                      <select class="form-control" id="tipo-campo" required>
+                        <option value="">Selecciona un campo</option>
+                        <option value="Futbol">Futbol</option>
+                        <option value="Baloncesto">Baloncesto</option>
+                        <option value="Bolleyball">Bolleyball</option>
+                      </select>
                     </div>
                     <div class="col-md-6 form-group">
                       <label for="nombre">Nombre:</label>
@@ -46,7 +51,20 @@ require_once '../../partials/header.php';
                     </div>
                     <div class="col-md-6 form-group">
                       <label for="distrito">Distrito:</label>
-                      <select class="form-control" id="distrito" required></select>
+                      <select class="form-control" id="distrito" required>
+                        <!-- Opciones del distrito -->
+                        <option value="Alto Laran">Alto Laran</option>
+                        <option value="Chavin">Chavin</option>
+                        <option value="Chincha Alta">Chincha Alta</option>
+                        <option value="Chincha Baja">Chincha Baja</option>
+                        <option value="Grocio Prado">Grocio Prado</option>
+                        <option value="Pueblo Nuevo">Pueblo Nuevo</option>
+                        <option value="Tambo de Mora">Tambo de Mora</option>
+                        <option value="San Juan de Yanac">San Juan de Yanac</option>
+                        <option value="San Pedro de Huacarpana">San Pedro de Huacarpana</option>
+                        <option value="Sunampe">Sunampe</option>
+                        <option value="El Carmen">El Carmen</option>
+                      </select>
                     </div>
                     <div class="col-md-6 form-group">
                       <label for="telefono">Teléfono:</label>
@@ -71,70 +89,85 @@ require_once '../../partials/header.php';
   ?>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const idCampo = sessionStorage.getItem("idCampo");
+    document.addEventListener("DOMContentLoaded", (event) => {
 
-      if (!idCampo) {
-        alert("ID de campo no encontrado.");
-        window.location.href = "./lista-campos";
-        return;
+      const idCampo = sessionStorage.getItem("idCampo");
+      const params = new FormData();
+      params.append("operation", "GetCampoById");
+      params.append("idCampo", idCampo);
+
+      const renderDataForm = async () => {
+        try {
+          const response = await fetch("../../../app/controllers/CamposController.php", {
+            method: "POST",
+            body: params
+          })
+          data = await response.json();
+
+          document.querySelector("#tipo-campo").value = data[0].tipoCampo
+          document.querySelector("#nombre").value = data[0].nombre
+          document.querySelector("#latitud").value = data[0].latitud
+          document.querySelector("#longitud").value = data[0].longitud
+          document.querySelector("#direccion").value = data[0].direccion
+          document.querySelector("#distrito").value = data[0].distrito
+          document.querySelector("#telefono").value = data[0].telefono
+        } catch (error) {
+          console.log("Error peticion GetCampoById", error)
+        }
       }
 
-      // Función para cargar los datos del campo específico
-      const cargarDatosCampo = async (idCampo) => {
-        try {
-          const response = await fetch(`../../../app/controllers/CamposController.php?operation=GetCampoById&idCampo=${idCampo}`);
-          if (!response.ok) {
-            throw new Error("Error al cargar los datos del campo.");
-          }
-          const campo = await response.json();
-          if (campo) {
-            document.getElementById("tipo-campo").value = campo.tipoCampo;
-            document.getElementById("nombre").value = campo.nombre;
-            document.getElementById("latitud").value = campo.latitud;
-            document.getElementById("longitud").value = campo.longitud;
-            document.getElementById("direccion").value = campo.direccion;
-            document.getElementById("distrito").value = campo.distrito;
-            document.getElementById("telefono").value = campo.telefono;
-          } else {
-            throw new Error("No se encontró el campo.");
-          }
-        } catch (error) {
-          console.error("Error:", error.message);
-          alert("Ocurrió un error al cargar los datos del campo.");
-        }
-      };
+      const form = document.querySelector("#formActualizarCampos");
 
-      // Cargar los datos al iniciar la vista
-      await cargarDatosCampo(idCampo);
-
-      // Manejo del formulario de actualización
-      const form = document.getElementById("formActualizarCampos");
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const formData = new FormData(form);
-        formData.append("operation", "UpdateCampo");
-        formData.append("idCampo", idCampo);
+
+        const idCampo = sessionStorage.getItem("idCampo");
+        const tipoCampo = document.querySelector("#tipo-campo").value;
+        const nombre = document.querySelector("#nombre").value;
+        const latitud = parseFloat(document.querySelector("#latitud").value);
+        const longitud = parseFloat(document.querySelector("#longitud").value);
+        const direccion = document.querySelector("#direccion").value;
+        const distrito = document.querySelector("#distrito").value;
+        const telefono = document.querySelector("#telefono").value;
+
+        const params = new FormData();
+        params.append("operation", "UpdateCampo");
+        params.append("idCampo", idCampo);
+        params.append("tipoCampo", tipoCampo);
+        params.append("nombre", nombre);
+        params.append("latitud", latitud);
+        params.append("longitud", longitud);
+        params.append("direccion", direccion);
+        params.append("distrito", distrito);
+        params.append("telefono", telefono);
 
         try {
-          const response = await fetch(`../../../app/controllers/CamposController.php?operation=GetCampoById&idCampo=${idCampo}`);
-          if (!response.ok) {
-            const errorData = await response.json();
-            console.error("Error response:", errorData);
-            throw new Error(`Error al cargar los datos del campo: ${errorData.error}`);
-          }
-          const campo = await response.json();
+          const response = await fetch("../../../app/controllers/CamposController.php", {
+            method: "POST",
+            body: params
+          });
+
+          const result = await response.json();
+          console.log("Respuesta del servidor:", result); // Log para inspeccionar la respuesta
+
           if (result.actualizado) {
             alert("Campo actualizado correctamente.");
             window.location.href = "./lista-campos";
           } else {
-            alert("Error al actualizar el campo.");
+            alert("Error al actualizar el campo: " + (result.message || "Respuesta inesperada"));
           }
         } catch (error) {
-          console.error("Error:", error.message);
-          alert("Ocurrió un error al actualizar el campo.");
+          console.error("Error en la solicitud:", error); // Verifica si ocurrió un problema en la conexión
+          alert("Ocurrió un error al intentar actualizar el campo.");
         }
-      });
-    });
+
+
+
+
+
+      })
+      renderDataForm();
+
+    })
   </script>
 </div>

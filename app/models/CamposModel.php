@@ -83,6 +83,5 @@ class CamposModel extends Conexion{
         }
     }
 
-
 }
 
