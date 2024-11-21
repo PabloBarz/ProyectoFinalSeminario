@@ -21,6 +21,17 @@ class ZonaCamposModel extends Conexion {
             die($ex->getCode());
         }
     }
+
+    public function getCamposForSelects(): array {
+        try {
+            $query = "CALL spListSelectCampos()";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $ex) {
+            die("Error en getCamposForSelects: " . $ex->getMessage());
+        }
+    }
     
     public function getZonaCamposByCampos($params = []):array{
         try{
@@ -34,6 +45,58 @@ class ZonaCamposModel extends Conexion {
             die($ex->getCode());
         }
     }
+
+    public function AddZonaCampos ($params = []): bool {
+
+        try {
+            $query = $this->pdo->prepare("CALL spAddZonaCampos(?,?,?,?,?,?,?,?)");
+            return $query->execute([
+                $params['idCampo'],
+                $params['nombre'],
+                $params['capacidad'],
+                $params['superficie'],
+                $params['dimensiones'],
+                $params['precioHora'],
+                $params['descripcion'],
+                $params['estado']
+            ]);
+        } catch (Exception $e) {
+            die("Error en AddZonaCampos: " . $e->getMessage());
+        }
+    }
+
+    public function getZonaCamposById($params= []): array {
+        try {
+            $query = $this->pdo->prepare("CALL spGetZonaCampoById(?)");
+            $query->execute(
+                array($params['idZonaCampo'])
+            );
+            return $query->fetchAll(PDO::FETCH_ASSOC);
+        } catch (Exception $e) {
+            die("Error en getZonaCampoById: " . $e->getMessage());
+        }
+    }
+
+    public function UpdateZonaCampo($params = []): bool {
+        try {
+            $query = $this->pdo->prepare("CALL spUpdateZonaCampo(?,?,?,?,?,?,?,?,?)");
+            return $query->execute([
+                $params['idZonaCampo'],
+                $params['idCampo'],
+                $params['nombre'],
+                $params['capacidad'],
+                $params['superficie'],
+                $params['dimensiones'],
+                $params['precioHora'],
+                $params['descripcion'],
+                $params['estado']
+            ]);
+        } catch (Exception $e) {
+            die("Error en UpdateZonaCampos: " . $e->getMessage());
+            
+        }
+    }
+
 }
 
 ?>

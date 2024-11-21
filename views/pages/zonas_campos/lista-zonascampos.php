@@ -42,6 +42,7 @@ require_once '../../partials/header.php';
                       <th>Precio x Hora</th>
                       <th>Descripcion</th>
                       <th>Estado</th>
+                      <th>Opciones</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -89,7 +90,7 @@ require_once '../../partials/header.php';
 
                     data.forEach(element => {
                       const render = `
-                        <tr data-id="${element.NombreCampo}">
+                        <tr data-id="${element.idZonaCampo}">
                             <td>${element.NombreCampo}</td>
                             <td>${element.NombreZonaCampo}</td>
                             <td>${element.CapacidadZonaCampo}</td>
@@ -98,10 +99,28 @@ require_once '../../partials/header.php';
                             <td>${element.PrecioPorHora}</td>
                             <td>${element.DescripcionZonaCampo}</td>
                             <td>${element.EstadoZonaCampo}</td>
+                            <td>
+                            <button class="btn btn-sm btn-warning">Actualizar</button>
+                            </td>
                         </tr>
                     `;
                       tableBody.insertAdjacentHTML("beforeend", render);
                     });
+                    document.querySelectorAll(".btn-warning").forEach(button =>{
+                      button.addEventListener("click", (event) =>{
+                        event.preventDefault();
+                        const idZonaCampo = event.target.closest("tr").dataset.id;
+                        console.log("ID de campo extraido:",idZonaCampo); //verificar si trae correctamente el id de Zona_Campo
+
+                        if(idZonaCampo){
+                          sessionStorage.setItem("idZonaCampo",idZonaCampo);
+                          window.location.href = "./actualizar-zonascampo.php";
+
+                        } else {
+                          console.error ("IdZonaCampo no se obtuvo correctamente")
+                        }
+                      })
+                    })
                   } else {
                     const noRows = `
                     <tr>
@@ -117,4 +136,8 @@ require_once '../../partials/header.php';
 
               listTableCampos();
             });
+
+            function cargarDatosParaActualizar(idZonaCampo) {
+              console.log("Actualizar zona_campo con ID:",idZonaCampo);
+            }
           </script>

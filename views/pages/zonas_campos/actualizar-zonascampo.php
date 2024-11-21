@@ -9,19 +9,19 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <?= Helper::renderContentHeader("Registro Campos", "Inicio", SERVERURL . "views/") ?>
+    <?= Helper::renderContentHeader("Registro Zona Campos", "Inicio", SERVERURL . "views/") ?>
 
     <div class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
-            <form id="formRegistroZonaCampos" autocomplete="off">
+            <form id="formActualizarZonaCampo" autocomplete="off">
               <div class="card card-outline card-primary">
                 <div class="card-header">
                   <div class="row">
-                    <div class="col-md-6">Complete los datos</div>
+                    <div class="col-md-6">Actualize los datos</div>
                     <div class="col-md-6 text-right">
-                      <a href="./lista-zonascampos" class="btn btn-sm btn-primary">Mostrar Lista</a>
+                      <a href="./lista-campos" class="btn btn-sm btn-primary">Mostrar Lista</a>
                     </div>
                   </div>
                 </div>
@@ -75,7 +75,7 @@ require_once '../../partials/header.php';
                 </div>
                 <div class="card-footer text-right">
                   <button class="btn btn-sm btn-outline-secondary" type="reset">Cancelar</button>
-                  <button class="btn btn-sm btn-primary" type="submit">Registrar</button>
+                  <button class="btn btn-sm btn-primary" type="submit">Actualizar</button>
                 </div>
               </div>
             </form>
@@ -88,91 +88,117 @@ require_once '../../partials/header.php';
       <?php
       require_once '../../partials/_footer.php';
       ?>
-
       <script>
-        document.addEventListener("DOMContentLoaded", () => {
-          const form = document.getElementById("formRegistroZonaCampos");
+        document.addEventListener("DOMContentLoaded", (event) => {
+          const idZonaCampo = sessionStorage.getItem("idZonaCampo");
+          const selectCampos = document.querySelector("#campo"); // Aseguramos referencia correcta
+          let dataCampos = [];
 
-          form.addEventListener("submit", async (event) => {
-            event.preventDefault();
-
-            const campo = document.getElementById("campo").value;
-            const NombreZonaCampo = document.getElementById("nombre-zonaCampo").value;
-            const capacidad = document.getElementById("capacidad").value;
-            const superficie = document.getElementById("superficie").value;
-            const dimensiones = document.getElementById("dimensiones").value;
-            const preciohora = document.getElementById("preciohora").value;
-            const descripcion = document.getElementById("descripcion").value;
-            const estado = document.getElementById("estado").value;
-
-            const datos = new FormData();
-            datos.append("operation", "AddZonaCampos");
-            datos.append("campo", campo);
-            datos.append("nombre-zonaCampo", NombreZonaCampo);
-            datos.append("capacidad", capacidad);
-            datos.append("superficie", superficie);
-            datos.append("dimensiones", dimensiones);
-            datos.append("preciohora", preciohora);
-            datos.append("descripcion", descripcion);
-            datos.append("estado", estado);
-
+          const renderDataForm = async () => {
             try {
+              const params = new FormData();
+              params.append("operation", "getZonaCampoById");
+              params.append("idZonaCampo", idZonaCampo);
+
               const response = await fetch("../../../app/controllers/ZonasCamposController.php", {
                 method: "POST",
-                body: datos
+                body: params,
               });
-              if (!response.ok) {
-                throw new Error("Error en la respuesta del servidor");
-              }
-              const result = await response.json();
 
-              if (result.guardado) {
-                alert("Campo registrado correctamente");
-                form.reset();
+              const data = await response.json();
+              if (data.length > 0) {
+                document.querySelector("#campo").value = data[0].Campo;
+                document.querySelector("#nombre-zonaCampo").value = data[0].nombre_zonaCampo; // Propiedad corregida
+                document.querySelector("#capacidad").value = data[0].capacidad;
+                document.querySelector("#superficie").value = data[0].superficie;
+                document.querySelector("#dimensiones").value = data[0].dimensiones;
+                document.querySelector("#preciohora").value = data[0].preciohora;
+                document.querySelector("#descripcion").value = data[0].descripcion;
+                document.querySelector("#estado").value = data[0].estado;
               } else {
-                alert("Error al registrar la zona del campo");
+                alert("No se encontró información de la zona del campo.");
               }
             } catch (error) {
-              console.error("Error:", error);
-              alert("Ocurrió un error en la solicitud.");
+              console.log("Error en petición getZonaCampoById", error);
             }
-          });
-
-          const selectCampos = document.querySelector("#campo");
-          let dataCampos = [];
+          };
 
           const listSelectCampos = async () => {
             const params = new FormData();
             params.append("operation", "GetListSelectCampos");
             try {
-              const response = await fetch('../../../app/controllers/ZonasCamposController.php', {
+              const response = await fetch("../../../app/controllers/CamposController.php", {
                 method: "POST",
-                body: params
+                body: params,
               });
-              
-              
               if (!response.ok) {
-                throw new Error('Error en la solicitud Campos');
+                throw new Error("Error en la solicitud Campos");
               }
 
               const data = await response.json();
               dataCampos = data;
 
               selectCampos.innerHTML = '<option value="">Seleccione un campo</option>';
-              data.forEach(element => {
+              data.forEach((element) => {
                 const tagOption = document.createElement("option");
                 tagOption.value = element.idcampo;
                 tagOption.textContent = element.nombre;
                 selectCampos.appendChild(tagOption);
               });
-
             } catch (error) {
               console.error("ERROR al traer lista campos ", error.message);
             }
           };
 
-          // Llamar a la función después de definirla
+          const form = document.querySelector("#formActualizarZonaCampo");
+          form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const idZonaCampo = sessionStorage.getItem("idZonaCampo");
+            const campo = document.querySelector("#campo").value;
+            const nombre_zonaCampo = document.querySelector("#nombre-zonaCampo").value;
+            const capacidad = document.querySelector("#capacidad").value;
+            const superficie = document.querySelector("#superficie").value;
+            const dimensiones = document.querySelector("#dimensiones").value;
+            const preciohora = document.querySelector("#preciohora").value;
+            const descripcion = document.querySelector("#descripcion").value;
+            const estado = document.querySelector("#estado").value;
+
+            const params = new FormData();
+            params.append("operation", "UpdateZonaCampo");
+            params.append("idZonaCampo", idZonaCampo);
+            params.append("campo", campo);
+            params.append("nombre-zonaCampo", nombre_zonaCampo);
+            params.append("capacidad", capacidad);
+            params.append("superficie", superficie);
+            params.append("dimensiones", dimensiones);
+            params.append("preciohora", preciohora);
+            params.append("descripcion", descripcion);
+            params.append("estado", estado);
+
+            try {
+              const response = await fetch("../../../app/controllers/ZonasCamposController.php", {
+                method: "POST",
+                body: params,
+              });
+
+              const result = await response.json();
+              console.log("Respuesta del servidor:", result);
+
+              if (result.actualizado) {
+                alert("Zona del campo actualizada correctamente");
+                window.location.href = "./lista-zonascampos.php";
+              } else {
+                alert("Error al actualizar la zona del campo: " + (result.message || "Respuesta inesperada"));
+              }
+            } catch (error) {
+              console.error("Error en la solicitud:", error);
+              alert("Ocurrió un error al intentar actualizar la zona del campo.");
+            }
+          });
+
           listSelectCampos();
+          renderDataForm();
         });
       </script>
       </body>

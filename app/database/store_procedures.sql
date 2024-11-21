@@ -2,20 +2,17 @@ USE sportsfieldrentaldb;
 
 /* Aquí irán todos los stored procedures */
 
--- SP para mostrar usuario por ID 
+/* SP para mostrar usuario por ID */
 DROP PROCEDURE IF EXISTS spGetUserById;
 DELIMITER //
-CREATE PROCEDURE spGetUserById
-(
-	IN _idUsuario INT 
-)
+CREATE PROCEDURE spGetUserById(IN _idUsuario INT)
 BEGIN
     SELECT * FROM vwUserTipoUsuario 
     WHERE IDUsuario = _idUsuario;
 END //
 DELIMITER ;
 
--- SP para listar los campos
+/* SP para listar los campos */
 DROP PROCEDURE IF EXISTS spGetAllCampos;
 DELIMITER //
 CREATE PROCEDURE spGetAllCampos()
@@ -24,7 +21,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- SP para listar las reservaciones
+/* SP para listar las reservaciones */
 DROP PROCEDURE IF EXISTS spGetDataReservacion;
 DELIMITER //
 CREATE PROCEDURE spGetDataReservacion()
@@ -56,7 +53,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- SP para validar usuario al iniciar sesión
+/* SP para validar usuario al iniciar sesión */
 DROP PROCEDURE IF EXISTS spUsuarioLogin;
 DELIMITER //
 CREATE PROCEDURE spUsuarioLogin(IN _nomuser VARCHAR(20))
@@ -66,7 +63,7 @@ BEGIN
 END //
 DELIMITER ;
 
--- SP para registrar usuarios 
+/* SP para registrar usuarios */
 DROP PROCEDURE IF EXISTS spRegisterUser;
 DELIMITER //
 CREATE PROCEDURE spRegisterUser
@@ -83,7 +80,7 @@ BEGIN
 END //
 DELIMITER ; 
 
--- SP para registrar personas  
+/* SP para registrar personas */
 DROP PROCEDURE IF EXISTS spRegisterPerson;
 DELIMITER //
 CREATE PROCEDURE spRegisterPerson
@@ -101,20 +98,17 @@ BEGIN
 END //
 DELIMITER ;
 
--- SP para validar clientes al registrar una reserva
+/* SP para validar clientes al registrar una reserva */
 DROP PROCEDURE IF EXISTS spVerifyClient;
 DELIMITER //
-CREATE PROCEDURE spVerifyClient
-(
-	IN _dni CHAR(8)
-)	
+CREATE PROCEDURE spVerifyClient(IN _dni CHAR(8))	
 BEGIN
 	SELECT * FROM vwUserPerson
 	WHERE dni = _dni; 
 END //
 DELIMITER ; 
 
--- SP para listar select de tipos de usuarios
+/* SP para listar select de tipos de usuarios */
 DROP PROCEDURE IF EXISTS spListSelectTypeUser;
 DELIMITER //
 CREATE PROCEDURE spListSelectTypeUser()	
@@ -123,7 +117,7 @@ BEGIN
 END //
 DELIMITER ; 
 
--- SP para listar todos los campos usuarios con su tipo de usuario
+/* SP para listar todos los campos usuarios con su tipo de usuario */
 DROP PROCEDURE IF EXISTS spGetDataUsers;
 DELIMITER //
 CREATE PROCEDURE spGetDataUsers()
@@ -132,7 +126,7 @@ BEGIN
 END //
 DELIMITER ;
 
-/*Store Procedure para obtener permiso por perfil*/
+/* Store Procedure para obtener permiso por perfil */
 DROP PROCEDURE IF EXISTS spGetPermisosByPerfil;
 DELIMITER //
 CREATE PROCEDURE spGetPermisosByPerfil (
@@ -158,11 +152,13 @@ BEGIN
 END //
 DELIMITER ;
 
+/* SP para obtener los datos de zonas de los campos */
 DROP PROCEDURE IF EXISTS spGetDataZonasCampos;
 DELIMITER //
 CREATE PROCEDURE spGetDataZonasCampos()
 BEGIN
     SELECT 
+	z.idZonaCampo,
         c.nombre AS NombreCampo,
         z.nombre AS NombreZonaCampo,
         z.capacidad AS CapacidadZonaCampo,
@@ -176,8 +172,9 @@ BEGIN
     INNER JOIN 
         zonas_campos z ON c.idCampo = z.idCampo;
 END //
-
 DELIMITER ;
+
+/* SP para obtener los datos de los campos */
 DROP PROCEDURE IF EXISTS spGetDataCampos;
 DELIMITER //
 CREATE PROCEDURE spGetDataCampos()
@@ -196,6 +193,7 @@ BEGIN
 END //
 DELIMITER ;
 
+/* SP para agregar campos */
 DROP PROCEDURE IF EXISTS spAddCampos;
 DELIMITER //
 CREATE PROCEDURE spAddCampos(
@@ -207,17 +205,32 @@ CREATE PROCEDURE spAddCampos(
  IN _distrito VARCHAR(30),
  IN _telefono VARCHAR(9)
 )
-
 BEGIN
 INSERT INTO  campos (tipoCampo,nombre,latitud,longitud,direccion,distrito,telefono) VALUES
 (_tipoCampo,_nombre,_latitud,_longitud,_direccion,_distrito,_telefono);
-
 END //
 DELIMITER ;
 
-
-
+/* SP para agregar zonas de campos */
+DROP PROCEDURE IF EXISTS spAddZonaCampos;
+DELIMITER //
+CREATE PROCEDURE spAddZonaCampos(
+	IN _idCampo INT,
+	IN _nombre VARCHAR(20),
+	IN _capacidad SMALLINT,
+	IN _superficie VARCHAR(20),
+	IN _dimensiones VARCHAR(20),
+	IN _precioHora SMALLINT,
+	IN _descripcion TEXT,
+	IN _estado VARCHAR(10)
+)
+BEGIN
+	INSERT INTO zonas_campos (idCampo,nombre,capacidad,superficie,dimensiones,precioHora,descripcion,estado) 
+	VALUES (_idCampo,_nombre,_capacidad,_superficie,_dimensiones,_precioHora,_descripcion,_estado);
+END //
 DELIMITER ;
+
+/* SP para actualizar campos */
 DROP PROCEDURE IF EXISTS spUpdateCampo;
 DELIMITER //
 CREATE PROCEDURE spUpdateCampo(
@@ -241,8 +254,37 @@ BEGIN
         telefono = _telefono
     WHERE idCampo = _idCampo;
 END //
-
 DELIMITER ;
+
+/* SP para actualizar zonas de campos */
+DROP PROCEDURE IF EXISTS spUpdateZonaCampo;
+DELIMITER //
+CREATE PROCEDURE spUpdateZonaCampo(
+	IN _idZonaCampo INT,
+	IN _idCampo INT, 
+	IN _nombre VARCHAR(20),
+	IN _capacidad SMALLINT,
+	IN _superficie VARCHAR(20),
+	IN _dimensiones VARCHAR(10),
+	IN _precioHora SMALLINT,
+	IN _descripcion TEXT,
+	IN _estado VARCHAR(10)
+)
+BEGIN
+	UPDATE zonas_campos
+	SET idCampo = _idCampo,
+	 nombre = _nombre,
+	 capacidad = _capacidad,
+	 superficie = _superficie,
+	 dimensiones = _dimensiones,
+	 precioHora = _precioHora,
+	 descripcion = _descripcion,
+	 estado = _estado
+	 WHERE idZonaCampo = _idZonaCampo;
+END //
+DELIMITER ;
+
+/* SP para obtener un campo por ID */
 DROP PROCEDURE IF EXISTS spGetCampoById;
 DELIMITER //
 CREATE PROCEDURE spGetCampoById(
@@ -264,35 +306,28 @@ BEGIN
     WHERE 
         idCampo = _idCampo;
 END //
-
 DELIMITER ;
 
--- sp para actualizar usuario 
-DROP PROCEDURE IF EXISTS spUpdateUser;
+/* SP para obtener una zona de campo por ID */
+DROP PROCEDURE IF EXISTS spGetZonaCampoById;
 DELIMITER //
-CREATE PROCEDURE spUpdateUser(
-    IN _idUsuario INT,
-    IN _idTipoUsuario INT,
-    IN _nomUser VARCHAR(20),
-    IN _email 	VARCHAR(70)
+CREATE PROCEDURE spGetZonaCampoById(
+	IN _idZonaCampo INT
 )
 BEGIN
-    UPDATE usuarios 
-    SET idTipoUsuario = _idTipoUsuario,
-	nomUser = _nomUser,
-	email = _email
-    WHERE idUsuario = _idUsuario;
+    SELECT 
+        idZonaCampo,
+        idCampo,
+        nombre,
+        capacidad,
+        superficie,
+        dimensiones,
+        precioHora,
+        descripcion,
+        estado
+    FROM 
+        zonas_campos
+    WHERE
+        idZonaCampo = _idZonaCampo;
 END //
-
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-

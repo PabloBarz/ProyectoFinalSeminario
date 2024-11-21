@@ -42,7 +42,8 @@ INSERT INTO rutas (idmodulo, ruta, visible, texto, icono) VALUES
 (5, "actualizar-usuarios", FALSE, "", ""), -- 10
 -- Zonas campos
 (6, "lista-zonascampos", TRUE, "Zona Campos", "fa-brands fa-codepen"), -- 11
-(6, "registro-zonascampos", FALSE, "", ""); -- 12
+(6, "registro-zonascampos", FALSE, "", ""), -- 12
+(6, "actualizar-zonascampo",FALSE, "", ""); -- 13
 
 
 /* Insertar tipos de usuarios */
@@ -66,6 +67,7 @@ INSERT INTO permisos (idTipoUsuario, idRuta) VALUES
 (1, 10),
 (1, 11),
 (1 ,12),
+(1 ,13),
 -- SPV
 (2,1),
 (2,2),
