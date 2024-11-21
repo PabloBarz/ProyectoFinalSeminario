@@ -26,6 +26,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
   <!-- endinject -->
   <!-- Layout styles -->
   <link rel="stylesheet" href="<?= SERVERURL ?>/views/assets/css/style.css">
+  <link rel="stylesheet" href="<?= SERVERURL ?>/views/assets/css/form.css">
   <!-- End layout styles -->
   <link rel="shortcut icon" href="<?= SERVERURL ?>/views/assets/images/favicon.png" />
 </head>
@@ -42,6 +43,9 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
                 <div class="form-group">
                   <label for="dni">DNI</label>
                   <input type="text" class="form-control p_input" id="dni" name="dni" maxlength="8" minlength="8" required autofocus>
+                </div>
+                <div class="form-group" id="resultDni">
+
                 </div>
                 <div class="form-group">
                   <label for="nomUser">Nombre de Usuario</label>
@@ -112,7 +116,7 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.querySelector("#formRegisterUserPerson");
 
-      
+
       const verifyDNI = async (dni) => {
         try {
           const response = await fetch(`https://apiperu.dev/api/dni/${dni}?api_token=e6b6d8fc003639e3e5f870c90503a32e59230627fcf35d0f43b2c454a7a966b1`);
@@ -125,16 +129,29 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
         }
       };
 
+      const showPersonByDni = async (infoPerson) => {
+        const inputPerson = document.querySelector("#resultDni");
+
+        inputPerson.innerHTML = "";
+        render =
+          `
+            <label for="dataPerson">Datos de la persona</label>
+            <input type="text" class="form-control p_input" id="dataPerson" value="${infoPerson.data.apellido_paterno} ${infoPerson.data.apellido_materno} ${infoPerson.data.nombres}" name="nomUser" readonly>
+          `
+
+          inputPerson.insertAdjacentHTML("beforeend", render)
+      }
+
       const registerPerson = async (dataPerson = {}) => {
         const params = new FormData();
-          params.append("operation", "registerPerson")
-          params.append("apellidos", dataPerson.apellidos),
+        params.append("operation", "registerPerson")
+        params.append("apellidos", dataPerson.apellidos),
           params.append("nombres", dataPerson.nombres),
           params.append("dni", dataPerson.dni),
           params.append("telefono", dataPerson.telefono)
 
         try {
-          const response = await fetch(`app/controllers/PersonaController.php`,{
+          const response = await fetch(`app/controllers/PersonaController.php`, {
             method: "POST",
             body: params
           });
@@ -150,13 +167,13 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
         const params = new FormData();
         params.append("operation", "registerUser")
         params.append("idPersona", dataUser.idPersona)
-        params.append("idTipoUsuario",dataUser.idTipoUsuario)
-        params.append("email",dataUser.email)
+        params.append("idTipoUsuario", dataUser.idTipoUsuario)
+        params.append("email", dataUser.email)
         params.append("nomUser", dataUser.nomUser)
         params.append("passUser", dataUser.passUser)
 
         try {
-          const response = await fetch(`app/controllers/UsuarioController.php`,{
+          const response = await fetch(`app/controllers/UsuarioController.php`, {
             method: "POST",
             body: params
           });
@@ -168,6 +185,21 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
         }
       }
 
+      document.querySelector("#dni").addEventListener("keydown", async (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+
+          const infoPerson = await verifyDNI(event.target.value);
+          if (infoPerson.success) {
+            showPersonByDni(infoPerson);
+          } else {
+            showToast("DNI no valido", "ERROR", 1500);
+            event.target.value = "";
+            document.querySelector("#resultDni").innerHTML=""
+          }
+        }
+      })
+
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -178,37 +210,35 @@ if (isset($_SESSION["login"]) && $_SESSION["login"]["status"] == true) {
         //DNI VALIDO
         if (infoPerson.success) {
 
-            const dataPerson = {
-              "apellidos" : `${infoPerson.data.apellido_paterno} ${infoPerson.data.apellido_materno}`,
-              "nombres" : infoPerson.data.nombres,
-              "dni": dni,
-              "telefono": document.querySelector("#telefono").value
+          const dataPerson = {
+            "apellidos": `${infoPerson.data.apellido_paterno} ${infoPerson.data.apellido_materno}`,
+            "nombres": infoPerson.data.nombres,
+            "dni": dni,
+            "telefono": document.querySelector("#telefono").value
+          }
+
+          const statusRegisterPerson = await registerPerson(dataPerson);
+          console.log(statusRegisterPerson)
+          //REGISTRO EXITOSO DE PERSONA 
+          if (statusRegisterPerson.status) {
+
+            const dataUser = {
+              "idPersona": statusRegisterPerson.idPersona,
+              "idTipoUsuario": 3,
+              "email": document.querySelector("#email").value,
+              "nomUser": document.querySelector("#nomUser").value,
+              "passUser": document.querySelector("#passUser").value
             }
 
-            const statusRegisterPerson =  await registerPerson(dataPerson);
-            console.log(statusRegisterPerson)
-            //REGISTRO EXITOSO DE PERSONA 
-            if(statusRegisterPerson.status){
+            const statusRegisterUser = await registerUser(dataUser);
+            // REGISTRO EXITOSO DE USUARIO
+            if (statusRegisterUser.status) showToast(statusRegisterUser.message, "SUCCESS", 1500, "<?= SERVERURL ?>")
+            else showToast(statusRegisterUser.message, "ERROR", 1500)
 
-              const dataUser = {
-                "idPersona": statusRegisterPerson.idPersona,
-                "idTipoUsuario": 3,
-                "email": document.querySelector("#email").value,
-                "nomUser": document.querySelector("#nomUser").value,
-                "passUser": document.querySelector("#passUser").value
-              }
-
-              const statusRegisterUser = await registerUser(dataUser);
-              // REGISTRO EXITOSO DE USUARIO
-              if(statusRegisterUser.status) showToast(statusRegisterUser.message, "SUCCESS", 1500, "<?=SERVERURL?>")
-              else showToast(statusRegisterUser.message, "ERROR", 1500)
-              
-            }
-            else{
-              showToast(statusRegisterPerson.message, "ERROR", 1500)
-            }
-        } 
-        else {
+          } else {
+            showToast(statusRegisterPerson.message, "ERROR", 1500)
+          }
+        } else {
           showToast("DNI no valido", "ERROR", 1500)
         }
       });

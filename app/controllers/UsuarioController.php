@@ -84,6 +84,15 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             case "getListSelectTipoUsuario":
                 echo json_encode($user->getListTipoUsuarios());
                 break;
+            case "updateUser":
+                $result = $user->updateUser([
+                    "idUser" => $user->limpiarCadena($_POST["idUser"]),
+                    "idTipoUsuario" => $user->limpiarCadena($_POST["tipoUsuario"]),
+                    "nomUser" => $user->limpiarCadena($_POST["nomUser"]),
+                    "email" => $user->limpiarCadena($_POST["email"])
+                ]);
+
+                echo json_encode($result);
         }
         break;
     case "GET":

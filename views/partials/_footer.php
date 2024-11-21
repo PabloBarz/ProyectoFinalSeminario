@@ -32,3 +32,8 @@
 <!-- Custom js for this page -->
 <script src="<?= SERVERURL?>views/assets/js/dashboard.js"></script>
 <!-- End custom js for this page -->
+
+<!-- SweetAlert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <!-- SweetAlert Customer -->
+      <script src="<?= SERVERURL ?>views/assets/js/swalcustom.js"></script>

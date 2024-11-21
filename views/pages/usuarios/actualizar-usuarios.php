@@ -9,13 +9,13 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <?= Helper::renderContentHeader("Actualización de Campos", "Inicio", SERVERURL . "views/") ?>
+    <?= Helper::renderContentHeader("Actualización de Usuarios", "Lista Usuarios", "./lista-usuarios") ?>
 
     <div class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-md-12">
-            <form id="formRegisterUserPerson" autocomplete="off">
+            <form id="formUpdateUser" autocomplete="off">
               <div class="card card-outline card-primary">
                 <div class="card-header">
                   <div class="row">
@@ -45,22 +45,13 @@ require_once '../../partials/header.php';
                       <label for="email">Email:</label>
                       <input type="text" class="form-control" id="email" name="email" required>
                     </div>
-
-                    <div class="col-md-6 form-group">
-                      <label for="telefono">Telefono</label>
-                      <div class="input-group">
-                        <div class="input-group-prepend">
-                          <span class="input-group-text" id="basic-addon1">+51</span>
-                        </div>
-                        <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" required>
-                      </div>
+                    <div>
+                      <input type="hidden" id="idUser" name="idUser">
                     </div>
-
                   </div>
                 </div>
                 <div class="card-footer text-right">
-                  <button class="btn btn-sm btn-outline-secondary" type="reset">Cancelar</button>
-                  <button class="btn btn-sm btn-primary" type="submit">Registrar</button>
+                  <button class="btn btn-sm btn-primary" type="submit">Actualizar</button>
                 </div>
               </div>
             </form>
@@ -76,8 +67,10 @@ require_once '../../partials/header.php';
   <?php
   require_once '../../partials/_footer.php';
   ?>
+
   <script>
     document.addEventListener("DOMContentLoaded", (event) => {
+
 
       const listSelectTipoUser = async () => {
 
@@ -127,13 +120,46 @@ require_once '../../partials/header.php';
           document.querySelector("#dni").value = data[0].Dni
           document.querySelector("#nomUser").value = data[0].Usuario
           document.querySelector("#email").value = data[0].Email
-          document.querySelector("#telefono").value = data[0].Telefono
           document.querySelector("#tipoUsuario").value = data[0].idTipoUsuario
+          document.querySelector("#idUser").value = data[0].IDUsuario
 
         } catch (error) {
           console.log("Error peticion spGetUserById", error)
         }
       }
+
+      const updateUser = async (formData) => {
+        const params = new FormData(formData);
+        params.append("operation", "updateUser")
+
+        try {
+          const response = await fetch(`../../../app/controllers/UsuarioController.php`, {
+            method: "POST",
+            body: params
+          });
+
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Error en la solicitud updateUsuario:", error);
+        }
+      }
+
+      document.querySelector("#formUpdateUser").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const tipoUsuarioValue = document.querySelector("#tipoUsuario").value;
+        if (!tipoUsuarioValue) {
+          showToast("Debe seleccionar un tipo de usuario", "ERROR", 1500);
+        }else{
+          const statusUpdate = await updateUser(event.target);
+
+          (statusUpdate.status) ? showToast(statusUpdate.message, "SUCCESS", 1500, "./lista-usuarios") : showToast(statusUpdate.message, "ERROR", 1500)
+        }
+
+
+
+      })
       listSelectTipoUser();
       renderDataForm();
     })

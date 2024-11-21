@@ -99,7 +99,7 @@ INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES
 -- Inserción de datos en la tabla campos con NULL en el campo telefono cuando no hay número
 INSERT INTO campos (tipoCampo, nombre, latitud, longitud, direccion, distrito, telefono) VALUES
 ('Futbol', 'El golazo', -13.412920, -76.152480, 'Av Centenario Calle 3', 'Sunampe', '956848951'),
-('Futbol', 'Deporcentro Tarazona', -13.445049, -76.137218, 'Las gardenias', 'Chincha Baja', '981047228'),
+('Futbol', 'Deporcentro Tarazona', -13.445049, -76.137218, 'Las gardenias', 'Chincha Baja', '981047228'), -- id 2 
 ('Futbol', 'El volante', -13.424924, -76.136024, 'Prol. Lima 699', 'Sunampe', '955660928'),
 ('Futbol', 'Los peloteros', -13.404182, -76.149584, 'C. Satelite', 'Grocio Prado', NULL),
 ('Futbol', 'Los galacticos', -13.416167, -76.149789, 'Psj. La Paz', 'Sunampe', '981127319'),
@@ -118,7 +118,7 @@ INSERT INTO zonas_campos (idCampo, nombre, capacidad, superficie, dimensiones, p
 
 -- Zonas para el campo 2
 (2, 'Zona D', 8, 'Arena', '30x20', 40, 'Zona para entrenamiento', 'Disponible'),
-(2, 'Zona E', 10, 'Arena', '35x25', 45, 'Zona de práctica con menor aforo', 'Disponible'),
+(2, 'Zona E', 10, 'Arena', '35x25', 45, 'Zona de práctica con menor aforo', 'Disponible'), -- Deporcentro Tarazona
 (2, 'Zona F', 12, 'Arena', '40x30', 50, 'Zona para actividades de resistencia', 'Ocupado'),
 
 -- Zonas para el campo 3
@@ -158,8 +158,17 @@ INSERT INTO zonas_campos (idCampo, nombre, capacidad, superficie, dimensiones, p
 
 /* Insertar reservaciones */
 INSERT INTO reservaciones (idZonaCampo, idUsuario, fechaReservacion, horaInicio, horaFin, estadoPago, precioHora, cantidadHora) VALUES 
-(1, 2, '2024-10-30', '10:00:00', '12:00:00', 'Pagado', 50, 2),
-(2, 1, '2024-10-31', '14:00:00', '16:00:00', 'Pendiente', 75, 2);
+(1, 2, '2024-10-21', '10:00:00', '12:00:00', 'Pagado', 50, 2),
+(2, 1, '2024-10-22', '14:00:00', '16:00:00', 'Pendiente', 75, 2),
+(3, 2, '2024-10-23', '08:00:00', '09:30:00', 'Pagado', 60, 1), 
+(4, 1, '2024-10-24', '12:00:00', '13:00:00', 'Pagado', 40, 1),  
+(1, 2, '2024-10-25', '15:00:00', '17:00:00', 'Pagado', 50, 2),    
+(3, 1, '2024-10-26', '09:00:00', '10:30:00', 'Pendiente', 60, 1), 
+(4, 2, '2024-10-27', '16:00:00', '18:00:00', 'Pagado', 40, 2),  
+(5, 1, '2024-10-28', '11:00:00', '12:30:00', 'Pagado', 100, 1),
+(4, 1, '2024-10-28', '11:00:00', '12:30:00', 'Pagado', 100, 1),
+(6, 1, '2024-10-28', '11:00:00', '12:30:00', 'Pagado', 100, 1); 
+
 
 /* Insertar pagos */
 INSERT INTO pagos (idReservacion, monto, fechaPago, metodoPago, comprobante, estadoPago) VALUES 

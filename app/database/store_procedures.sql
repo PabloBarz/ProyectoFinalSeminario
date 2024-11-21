@@ -267,6 +267,26 @@ END //
 
 DELIMITER ;
 
+-- sp para actualizar usuario 
+DROP PROCEDURE IF EXISTS spUpdateUser;
+DELIMITER //
+CREATE PROCEDURE spUpdateUser(
+    IN _idUsuario INT,
+    IN _idTipoUsuario INT,
+    IN _nomUser VARCHAR(20),
+    IN _email 	VARCHAR(70)
+)
+BEGIN
+    UPDATE usuarios 
+    SET idTipoUsuario = _idTipoUsuario,
+	nomUser = _nomUser,
+	email = _email
+    WHERE idUsuario = _idUsuario;
+END //
+
+DELIMITER ;
+
+
 
 
 

@@ -21,5 +21,22 @@ class CamposMapsModel extends Conexion{
             die($ex->getCode());
         }
     }
+
+    // Obtener campos disponibles según filtros
+    public function getCamposDisponibles($params = []): array {
+        try {
+            $query = "CALL splistCamposDisponibles(?, ?, ?)";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute([
+                $params["fecha"],
+                $params["horaInicio"],
+                $params["horaFin"]
+            ]);
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $ex) {
+            die($ex->getMessage());
+        }
+    }
 }
 

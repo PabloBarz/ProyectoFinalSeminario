@@ -9,7 +9,7 @@ require_once '../../partials/header.php';
   <!-- MAIN -->
   <div class="content-wrapper">
     <!-- Contenido main -->
-    <?= Helper::renderContentHeader("Registro Usuarios", "Inicio", SERVERURL . "views/") ?>
+    <?= Helper::renderContentHeader("Registro Usuarios", "Lista Usuarios", "./lista-usuarios") ?>
 
     <div class="content">
       <div class="container-fluid">
@@ -27,9 +27,12 @@ require_once '../../partials/header.php';
                 </div>
                 <div class="card-body">
                   <div class="row">
-                    <div class="col-md-6 form-group">
+                    <div class="col-md-2 form-group">
                       <label for="dni">DNI:</label>
                       <input class="form-control" id="dni" name="dni" maxlength="8" minlength="8" required autofocus />
+                    </div>
+                    <div class="col-md-4 form-group" id="resultDni">
+
                     </div>
                     <div class="col-md-6 form-group">
                       <label for="tipoUsuario">Tipo de Usuario:</label>
@@ -56,7 +59,7 @@ require_once '../../partials/header.php';
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">+51</span>
                         </div>
-                        <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" >
+                        <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9">
                       </div>
                     </div>
 
@@ -77,11 +80,6 @@ require_once '../../partials/header.php';
       <?php
       require_once '../../partials/_footer.php';
       ?>
-
-      <!-- SweetAlert -->
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-      <!-- SweetAlert Customer -->
-      <script src="<?= SERVERURL ?>views/assets/js/swalcustom.js"></script>
 
       <script>
         // 1 Listar Tipos de usuarios
@@ -133,6 +131,19 @@ require_once '../../partials/header.php';
             }
           };
 
+          const showPersonByDni = async (infoPerson) => {
+            const inputPerson = document.querySelector("#resultDni");
+
+            inputPerson.innerHTML = "";
+            render =
+              `
+            <label for="dataPerson">Datos de la persona</label>
+            <input type="text" class="form-control p_input" id="dataPerson" value="${infoPerson.data.apellido_paterno} ${infoPerson.data.apellido_materno} ${infoPerson.data.nombres}" name="nomUser" readonly>
+          `
+
+            inputPerson.insertAdjacentHTML("beforeend", render)
+          }
+
           const registerPerson = async (dataPerson = {}) => {
             const params = new FormData();
             params.append("operation", "registerPerson")
@@ -175,6 +186,21 @@ require_once '../../partials/header.php';
               console.error("Error en la solicitud usuario:", error);
             }
           }
+
+          document.querySelector("#dni").addEventListener("keydown", async (event) => {
+            if (event.key === 'Enter') {
+              event.preventDefault();
+
+              const infoPerson = await verifyDNI(event.target.value);
+              if (infoPerson.success) {
+                showPersonByDni(infoPerson);
+              } else {
+                showToast("DNI no valido", "ERROR", 1500);
+                event.target.value = "";
+                document.querySelector("#resultDni").innerHTML=""
+              }
+            }
+          })
 
 
           form.addEventListener("submit", async (event) => {
