@@ -9,13 +9,15 @@ require_once '../../partials/header.php';
     <!-- MAIN -->
     <div class="content-wrapper">
         <!-- Contenido main -->
-        <?= Helper::renderContentHeader("Registro Campos", "Inicio", SERVERURL . "views/") ?>
+        <?php
+        echo Helper::renderContentHeader("Registro Campos", "Inicios", SERVERURL . "views/home/welcome");
+        ?>
 
         <div class="content-main">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <form action="" autocomplete="off">
+                        <form action="" id="formRegisterReserva" autocomplete="off">
                             <div class="card card-outline card-primary">
                                 <div class="card-header">
                                     <div class="row">
@@ -35,10 +37,11 @@ require_once '../../partials/header.php';
                                             <label for="nomCliente">Cliente:</label>
                                             <input type="text" class="form-control" name="nomCliente" id="nomCliente" readonly required>
                                         </div>
+                                        <input type="hidden" id="idUsuario">
                                         <div class="col-md-2 form-group"></div>
                                         <div class="col-md-2 form-group">
                                             <label for="horaReservadas">Horas:</label>
-                                            <input type="number" class="form-control" value="1" id="horaReservadas" name="horaReservadas" min="1" step="1" required>
+                                            <input type="number" class="form-control" value="1" id="horaReservadas" name="horaReservadas" min="1" step="1" max="6" required>
                                         </div>
                                     </div>
                                     <div class="row" id="row-fecha">
@@ -116,9 +119,84 @@ require_once '../../partials/header.php';
             const nomCliente = document.querySelector("#nomCliente");
             const selectCampos = document.querySelector("#campo");
             const selectsZonaCampos = document.querySelector("#zonaCampo");
+            const origen = sessionStorage.getItem("origen");
 
             let dataCampos = [];
             let dataZonasCampos = [];
+
+            const listZonaCampoDisponible = async (formData = {}) => {
+                const params = new FormData();
+                params.append("fecha", formData.fecha);
+                params.append("hInicio", formData.hInicio);
+                params.append("hFin", formData.hFin);
+                params.append("idCampo", formData.idCampo);
+                params.append("operation", "getZonaCampoDisponible")
+
+                try {
+                    const response = await fetch('../../../app/controllers/ZonasCamposController.php', {
+                        method: "POST",
+                        body: params
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Error en la solicitud ZonaCamposDisponibles')
+                    }
+
+                    const data = await response.json();
+                    dataZonasCampos = data;
+                    selectsZonaCampos.innerHTML = '<option value="">Seleccione una zona de campo</option>';
+                    data.forEach(element => {
+                        const tagOption = document.createElement("option");
+                        tagOption.value = element.idZonaCampo;
+                        tagOption.textContent = element.nombre;
+                        selectsZonaCampos.appendChild(tagOption);
+                    });
+
+
+
+                } catch (Error) {
+                    console.error("ERROR al traer lista zona campos ", error.message);
+                }
+
+            }
+
+            const rellenarDatosByMapa = async () => {
+                if (origen === "mapasCampo") {
+                    console.log("Viniste de Mapas de Campo")
+                    const idCampo = sessionStorage.getItem("idCampo");
+                    const nombres = <?php echo json_encode($_SESSION['login']['nombres']); ?>;
+                    const apellidos = <?php echo json_encode($_SESSION['login']['apellidos']); ?>;
+                    const dni = <?php echo json_encode($_SESSION['login']['dni']); ?>;
+                    const fecha = sessionStorage.getItem("fecha") || "";
+                    const horaInicio = sessionStorage.getItem("horaInicio") || "";
+                    const horaFin = sessionStorage.getItem("horaFin") || "";
+                    const horas = sessionStorage.getItem("horas") || 1
+
+                    const datosZonaDisponible = {
+                        "fecha": fecha,
+                        "hInicio": horaInicio,
+                        "hFin": horaFin,
+                        "idCampo": idCampo,
+                    }
+
+                    const statusDni = await verifyDni(dni);
+                    showStatusDni(statusDni);
+
+                    listZonaCampoDisponible(datosZonaDisponible)
+
+                    document.querySelector("#dniCliente").value = dni
+                    document.querySelector("#dniCliente").readOnly = true
+                    //document.querySelector("#nomCliente").value = `${nombres} ${apellidos}`
+                    document.querySelector("#fechaReservacion").value = fecha
+                    document.querySelector("#hInicio").value = horaInicio
+                    document.querySelector("#hFin").value = horaFin
+                    document.querySelector("#campo").value = idCampo
+                    document.querySelector("#horaReservadas").value = horas
+
+                } else if (origen === "listaReservaciones") {
+                    console.log("Viniste de lista")
+                }
+            }
 
             const listSelectCampos = async () => {
                 const params = new FormData();
@@ -142,6 +220,11 @@ require_once '../../partials/header.php';
                         tagOption.textContent = element.nombre;
                         selectCampos.appendChild(tagOption);
                     });
+
+                    rellenarDatosByMapa();
+                    const selectedCampo = dataCampos.find(campo => campo.idcampo === Number(sessionStorage.getItem("idCampo")));
+                    if (selectedCampo) document.querySelector("#direccion").value = selectedCampo.direccion;
+
 
                 } catch (error) {
                     console.error("ERROR al traer lista campos ", error.message);
@@ -206,6 +289,7 @@ require_once '../../partials/header.php';
                     const horasInt = parseInt(horasString)
 
                     if (horasInt < 1) document.querySelector("#horaReservadas").value = 1
+                    else if (horasInt > 6) document.querySelector("#horaReservadas").value = 6
                     else document.querySelector("#horaReservadas").value = horasInt;
                 }
             }
@@ -260,12 +344,48 @@ require_once '../../partials/header.php';
             const showStatusDni = (result) => {
                 if (result.length > 0) {
                     nomCliente.value = result[0].nombres + ' ' + result[0].apellidos;
+                    document.querySelector("#idUsuario").value = result[0].idPersona
                 } else {
                     dni.value = ""
                     nomCliente.value = ""
                     showToast("DNI no valido", "ERROR")
                 }
             }
+
+            const registerReservacion = async (datos = {}) => {
+                const params = new FormData()
+                for (const key in datos) {
+                    if (datos.hasOwnProperty(key)) {
+                        params.append(key, datos[key]);
+                    }
+                };
+                params.append("operation", "registerReservacion");
+
+                try {
+                    const response = await fetch("../../../app/controllers/ReservacionController.php", {
+                        method: "POST",
+                        body: params
+                    });
+
+                    if (!response.ok) {
+                        throw new Error("Error en la respuesta del servidor");
+                    }
+
+                    const result = await response.json();
+
+                    if (result.status) {
+                        showToast(result.message, "SUCCESS", 1500, "./lista-reservaciones")
+                    } else {
+                        showToast(statusRegisterPerson.message, "ERROR", 1500)
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    console.error("Ocurrió un error en la solicitud registraReservacion.");
+                }
+
+            }
+
+
 
             selectCampos.addEventListener("change", (event) => {
                 document.querySelector("#precioHora").value = ""
@@ -286,8 +406,10 @@ require_once '../../partials/header.php';
 
             selectsZonaCampos.addEventListener("change", (event) => {
                 const id = parseInt(event.target.value);
+                console.log(id)
+                console.log(dataZonasCampos)
                 const selectedZonaCampo = dataZonasCampos.find(zonaCampo => zonaCampo.idZonaCampo === id);
-
+                console.log(selectedZonaCampo.precioHora)
                 if (selectedZonaCampo) {
                     document.querySelector("#precioHora").value = selectedZonaCampo.precioHora;
                     calculatePrecio();
@@ -321,7 +443,28 @@ require_once '../../partials/header.php';
                 calculatePrecio();
             });
 
+            document.querySelector("#formRegisterReserva").addEventListener("submit", (event) => {
+                event.preventDefault();
+                console.log("Click en evniar")
+
+                datos = {
+                    idZonaCampo: document.querySelector("#zonaCampo").value,
+                    idUsuario: document.querySelector("#idUsuario").value,
+                    fecha: document.querySelector("#fechaReservacion").value,
+                    hInicio: document.querySelector("#hInicio").value,
+                    hFin: document.querySelector("#hFin").value,
+                    estadoPago: "Pendiente",
+                    precioHora: document.querySelector("#precioHora").value,
+                    cantidadHora: document.querySelector("#horaReservadas").value,
+                    totalMonto: document.querySelector("#total").value
+                };
+
+                registerReservacion(datos);
+
+            })
+
             listSelectCampos();
+            rellenarDatosByMapa();
 
         });
     </script>

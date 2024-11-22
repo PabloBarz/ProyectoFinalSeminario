@@ -153,7 +153,6 @@ require_once '../../partials/header.php';
           showToast("Debe seleccionar un tipo de usuario", "ERROR", 1500);
         }else{
           const statusUpdate = await updateUser(event.target);
-
           (statusUpdate.status) ? showToast(statusUpdate.message, "SUCCESS", 1500, "./lista-usuarios") : showToast(statusUpdate.message, "ERROR", 1500)
         }
 

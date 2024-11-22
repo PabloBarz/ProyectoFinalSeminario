@@ -17,18 +17,22 @@ require_once '../../partials/header.php';
             <form id="form-busqueda" class="mb-4">
                 <div class="row">
                     <div class="col-md-4">
-                        <label for="fecha">Fecha:</label>
-                        <input type="date" id="fecha" name="fecha" class="form-control" required>
+                        <label for="fechaReservacion">Fecha:</label>
+                        <input type="date" id="fechaReservacion" name="fechaReservacion" class="form-control" required>
                     </div>
-                    <div class="col-md-3">
-                        <label for="horaInicio">Hora de Inicio:</label>
-                        <input type="time" id="horaInicio" name="horaInicio" class="form-control" required>
+                    <div class="col-md-2">
+                        <label for="hInicio">Hora de Inicio:</label>
+                        <input type="time" id="hInicio" name="hInicio" class="form-control" required>
                     </div>
-                    <div class="col-md-3">
-                        <label for="horaFin">Hora de Fin:</label>
-                        <input type="time" id="horaFin" name="horaFin" class="form-control" required>
+                    <div class="col-md-2">
+                        <label for="hFin">Hora de Fin:</label>
+                        <input type="time" id="hFin" name="hFin" class="form-control" readonly>
                     </div>
-                    <div class="col-md-2 d-flex justify-content-center align-items-end" >
+                    <div class="col-md-2">
+                        <label for="horasReservadas">Horas:</label>
+                        <input type="number" id="horaReservadas" name="horaReservadas" class="form-control">
+                    </div>
+                    <div class="col-md-1 d-flex justify-content-center align-items-end">
                         <button type="submit" class="btn btn-primary" style="height: 40px;">Buscar</button>
                     </div>
                 </div>
@@ -117,18 +121,35 @@ require_once '../../partials/header.php';
 
             camposData.forEach(campo => {
                 const render = `
-                <div class="col-md-4 px-3 py-3">
+                <article class="col-md-4 px-3 py-3" data-id="${campo.idCampo}">
                     <div id="map-${campo.idCampo}" style="height: 400px; width: 100%;"></div>
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div class="d-flex flex-column">
-                            <h5 id="campoNombre-${campo.idCampo}" class="mb-0"></h5>
-                            <h5 id="distritoCampo-${campo.idCampo}" class="mb-0"></h5>
+                            <h5 id="campoNombre-${campo.idCampo}" class="mb-0">${campo.nombre}</h5>
+                            <h5 id="distritoCampo-${campo.idCampo}" class="mb-0">${campo.distrito}</h5>
                         </div>
-                        <button class="btn btn-primary" id="reservarCampoBtn-${campo.idCampo}">Realizar reserva</button>
+                        <button class="btn btn-primary btn-campo" id="reservarCampoBtn-${campo.idCampo}">Realizar reserva</button>
                     </div>
-                </div>`;
+                </article>`;
 
                 contentBody.insertAdjacentHTML("beforeend", render);
+
+                // Selecciona solo el botón del campo actual
+                const button = document.getElementById(`reservarCampoBtn-${campo.idCampo}`);
+                button.addEventListener("click", (event) => {
+                    event.preventDefault();
+                    const idCampo = event.target.closest("article").dataset.id;
+
+                    sessionStorage.setItem("idCampo", idCampo);
+                    sessionStorage.setItem("origen", "mapasCampo");
+                    sessionStorage.setItem("fecha", document.getElementById("fechaReservacion").value)
+                    sessionStorage.setItem("horaInicio", document.getElementById("hInicio").value)
+                    sessionStorage.setItem("horaFin", document.getElementById("hFin").value)
+                    sessionStorage.setItem("horas", document.getElementById("horaReservadas").value)
+
+                    window.location.href = `../reservaciones/registro-reservaciones`;
+                });
+
 
                 const location = {
                     lat: parseFloat(campo.latitud),
@@ -147,14 +168,56 @@ require_once '../../partials/header.php';
                     title: campo.nombre
                 });
 
-                document.querySelector(`#campoNombre-${campo.idCampo}`).innerText = campo.nombre;
-                document.querySelector(`#distritoCampo-${campo.idCampo}`).innerText = campo.distrito;
 
-                document.getElementById(`reservarCampoBtn-${campo.idCampo}`).onclick = function() {
-                    alert('Reserva realizada para ' + campo.nombre);
-                };
             });
         };
+
+        const calcularHFin = () => {
+            const hInicio = document.querySelector("#hInicio").value;
+            const horas = parseInt(document.querySelector("#horaReservadas").value);
+
+            if (hInicio && horas) {
+                const [hora, minutos] = hInicio.split(":").map(Number);
+
+                const fechaInicio = new Date();
+                fechaInicio.setHours(hora, minutos);
+                fechaInicio.setHours(fechaInicio.getHours() + horas);
+
+                const hFin = fechaInicio.toTimeString().slice(0, 5);
+                document.querySelector("#hFin").value = hFin;
+            } else {
+                document.querySelector("#hFin").value = "";
+            }
+        }
+
+        const validateHora = () => {
+            const horasString = document.querySelector("#horaReservadas").value;
+
+            if (horasString === "") document.querySelector("#horaReservadas").value = "1";
+            else {
+                const horasInt = parseInt(horasString)
+
+                if (horasInt < 1) document.querySelector("#horaReservadas").value = 1
+                else if (horasInt > 6) document.querySelector("#horaReservadas").value = 6
+                else document.querySelector("#horaReservadas").value = horasInt;
+            }
+        }
+
+        const validateFecha = () => {
+            const inputFecha = document.querySelector('#fechaReservacion');
+            const fechaActual = new Date();
+            const fechaSeleccionada = new Date(inputFecha.value);
+
+            // Establecer la hora de ambas fechas a 00:00:00
+            fechaActual.setHours(0, 0, 0, 0);
+            fechaSeleccionada.setHours(0, 0, 0, 0);
+
+            // Comparar fechas solo por día, mes y año (sin horas)
+            if (fechaSeleccionada < fechaActual) {
+                showToast('No puedes registrar una fecha pasada.', "ERROR");
+                inputFecha.value = '';
+            }
+        }
 
         // Inicializar el mapa con todos los campos
         async function initMap() {
@@ -162,13 +225,27 @@ require_once '../../partials/header.php';
             renderCampos(camposData);
         }
 
+        document.querySelector("#fechaReservacion").addEventListener("change", () => {
+            validateFecha();
+        })
+
+        document.querySelector("#hInicio").addEventListener("input", () => {
+            calcularHFin();
+        });
+
+        document.querySelector("#horaReservadas").addEventListener("input", () => {
+            validateHora();
+            calcularHFin();
+        });
+
+
         // Manejar la búsqueda
         formBusqueda.addEventListener("submit", async (event) => {
             event.preventDefault();
 
-            const fecha = document.getElementById("fecha").value;
-            const horaInicio = document.getElementById("horaInicio").value;
-            const horaFin = document.getElementById("horaFin").value;
+            const fecha = document.getElementById("fechaReservacion").value; 
+            const horaInicio = document.getElementById("hInicio").value;
+            const horaFin = document.getElementById("hFin").value;
 
             if (fecha && horaInicio && horaFin) {
                 const camposDisponibles = await fetchCamposDisponibles(fecha, horaInicio, horaFin);
@@ -178,5 +255,6 @@ require_once '../../partials/header.php';
             }
         });
     </script>
-</body>
-</html>
+    </body>
+
+    </html>

@@ -11,7 +11,21 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             case "getListReservaciones";
                     echo json_encode($reservaciones->getdataReservacion());
                 break;
-            case "":
+            case "registerReservacion":
+
+                $result = $reservaciones->registerResera([
+                    "idZonaCampo"   => $_POST["idZonaCampo"],
+                    "idUsuario"     => $_POST["idUsuario"],
+                    "fecha"         => $_POST["fecha"],
+                    "hInicio"       => $_POST["hInicio"],
+                    "hFin"          => $_POST["hFin"],
+                    "estadoPago"    => $_POST["estadoPago"],
+                    "precioHora"    => $_POST["precioHora"],
+                    "cantidadHora"  => $_POST["cantidadHora"],
+                    "totalMonto"    => $_POST["totalMonto"]
+                ]);
+
+                echo json_encode($result);
                 break;
         }
         break;

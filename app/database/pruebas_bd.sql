@@ -81,20 +81,22 @@ INSERT INTO permisos (idTipoUsuario, idRuta) VALUES
 (3,7);
 
 /* Insertar personas */
-INSERT INTO personas (apellidos, nombres, dni) VALUES
+/*INSERT INTO personas (apellidos, nombres, dni) VALUES
 ('Barzola Claudio', 'Roberto Pablo', '77420150'),
 ('Tasayco Yataco','Valentino','76180741'),
 ('Ochoa Prada', 'Karina', '11112222'),
-('Castilla Morales', 'Carlos', '33334444');
+('Castilla Morales', 'Carlos', '33334444');*/
 
 
 /* Insertar usuarios */
-INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES 
+/*INSERT INTO usuarios (idPersona, idTipoUsuario, nomUser, passUser) VALUES 
 (1, 1, 'Pablo', '123'),
 (2, 1, 'Vaistaya', '123'),
 (3, 2, 'Karina', '123'),
-(4, 3, 'Carlos', '123');
+(4, 3, 'Carlos', '123');*/
 
+-- Esto es para actualizar el primer registro de usuario 
+-- ya que nos registramos como cliete y aca nos editamos a admin para poder agregar a otros usuarios
 /* UPDATE usuarios SET idTipoUsuario = 1 WHERE idUsuario = 1 */
 
 /* Insertar campos */
@@ -159,20 +161,20 @@ INSERT INTO zonas_campos (idCampo, nombre, capacidad, superficie, dimensiones, p
 (9, 'Zona AA', 16, 'Césped', '60x30', 70, 'Zona con capacidad para espectadores', 'Ocupado');
 
 /* Insertar reservaciones */
-INSERT INTO reservaciones (idZonaCampo, idUsuario, fechaReservacion, horaInicio, horaFin, estadoPago, precioHora, cantidadHora) VALUES 
-(1, 2, '2024-10-21', '10:00:00', '12:00:00', 'Pagado', 50, 2),
-(2, 1, '2024-10-22', '14:00:00', '16:00:00', 'Pendiente', 75, 2),
-(3, 2, '2024-10-23', '08:00:00', '09:30:00', 'Pagado', 60, 1), 
-(4, 1, '2024-10-24', '12:00:00', '13:00:00', 'Pagado', 40, 1),  
-(1, 2, '2024-10-25', '15:00:00', '17:00:00', 'Pagado', 50, 2),    
-(3, 1, '2024-10-26', '09:00:00', '10:30:00', 'Pendiente', 60, 1), 
-(4, 2, '2024-10-27', '16:00:00', '18:00:00', 'Pagado', 40, 2),  
-(5, 1, '2024-10-28', '11:00:00', '12:30:00', 'Pagado', 100, 1),
-(4, 1, '2024-10-28', '11:00:00', '12:30:00', 'Pagado', 100, 1),
-(6, 1, '2024-10-28', '11:00:00', '12:30:00', 'Pagado', 100, 1); 
+/*INSERT INTO reservaciones (idZonaCampo, idUsuario, fechaReservacion, horaInicio, horaFin, estadoPago, precioHora, cantidadHora, totalMonto) VALUES 
+(1, 1, '2024-11-01', '08:00:00', '10:00:00', 'Pagado', 45, 2, 90.00),
+(2, 2, '2024-11-02', '09:30:00', '12:00:00', 'Pendiente', 50, 2, 100.00),
+(3, 3, '2024-11-03', '13:00:00', '15:00:00', 'Pagado', 60, 3, 180.00),
+(4, 1, '2024-11-04', '14:00:00', '16:30:00', 'Pagado', 35, 3, 105.00),
+(5, 2, '2024-11-05', '16:00:00', '18:00:00', 'Pendiente', 40, 2, 80.00),
+(6, 3, '2024-11-06', '07:30:00', '09:00:00', 'Pagado', 75, 1, 75.00),
+(2, 1, '2024-11-07', '17:00:00', '19:30:00', 'Pagado', 100, 2, 200.00),
+(3, 2, '2024-11-08', '10:00:00', '12:30:00', 'Pendiente', 85, 2, 170.00),
+(1, 3, '2024-11-09', '15:00:00', '17:00:00', 'Pagado', 55, 2, 110.00),
+(4, 2, '2024-11-10', '11:00:00', '13:00:00', 'Pagado', 90, 2, 180.00);*/
 
 
 /* Insertar pagos */
-INSERT INTO pagos (idReservacion, monto, fechaPago, metodoPago, comprobante, estadoPago) VALUES 
+/*INSERT INTO pagos (idReservacion, monto, fechaPago, metodoPago, comprobante, estadoPago) VALUES 
 (1, 100.00, '2024-10-30 09:00:00', 'Yape', 'comprobante_1.pdf', 'Completado'),
-(2, 150.00, '2024-10-31 13:00:00', 'Yape', 'comprobante_2.pdf', 'Pendiente');
+(2, 150.00, '2024-10-31 13:00:00', 'Yape', 'comprobante_2.pdf', 'Pendiente');*/

@@ -61,7 +61,7 @@ CREATE PROCEDURE spListZonasDisponibles(
     IN p_ID_campo INT
 )
 BEGIN
-    SELECT z.idZonaCampo, z.nombre
+    SELECT z.idZonaCampo, z.nombre, z.precioHora
     FROM zonas_campos z
     LEFT JOIN reservaciones rz 
         ON z.idZonaCampo = rz.idZonaCampo 

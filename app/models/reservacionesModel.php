@@ -21,6 +21,37 @@ class ReservacionesModel extends Conexion {
             die($ex->getCode());
         }
     }
+
+    public function registerResera($params = []):array{
+        try{
+            $query = "CALL spRegisterReservacion(?,?,?,?,?,?,?,?,?)";
+            $statement = $this->pdo->prepare($query);
+            $statement->execute([
+                $params["idZonaCampo"],
+                $params["idUsuario"],
+                $params["fecha"],
+                $params["hInicio"],
+                $params["hFin"],
+                $params["estadoPago"],
+                $params["precioHora"],
+                $params["cantidadHora"],
+                $params["totalMonto"]
+            ]);
+
+            return [
+                "status" => true,
+                "message" => "Reservación registrada con éxito"
+            ];
+
+        }
+        catch(PDOException $ex){
+            die($ex->getCode());
+            return [
+                "status" => false,
+                "message" => "No se puedo registrar la reservación" 
+            ];
+        }
+    }
 }
 
 ?>

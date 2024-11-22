@@ -121,7 +121,7 @@ require_once '../../partials/header.php';
 
           const verifyDNI = async (dni) => {
             try {
-              const response = await fetch(`https://apiperu.dev/api/dni/${dni}?api_token=e6b6d8fc003639e3e5f870c90503a32e59230627fcf35d0f43b2c454a7a966b1`);
+              const response = await fetch(`https://apiperu.dev/api/dni/${dni}?api_token=acd1e28dbc9751de891472cbc35f1ec73d23e92069e9051832ffafc70a170a36`);
 
               const data = await response.json();
 
@@ -239,7 +239,7 @@ require_once '../../partials/header.php';
 
                 const statusRegisterUser = await registerUser(dataUser);
                 // REGISTRO EXITOSO DE USUARIO
-                if (statusRegisterUser.status) showToast(statusRegisterUser.message, "SUCCESS", 1500, "./lista-usuarios.php")
+                if (statusRegisterUser.status) showToast(statusRegisterUser.message, "SUCCESS", 1500, "./lista-usuarios")
                 else showToast(statusRegisterUser.message, "ERROR", 1500)
 
               } else {

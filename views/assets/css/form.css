@@ -2,6 +2,12 @@ form input[readonly] {
     background-color: #2A3038 !important; 
 }
 
+form input[disabled], 
+form select[disabled] {
+    background-color: #2A3038 !important; 
+    color: white !important; 
+}
+
 form input,select{
 color: white !important;
 }

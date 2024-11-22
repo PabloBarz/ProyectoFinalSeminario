@@ -9,9 +9,10 @@ if (!isset($_SESSION['login']) || $_SESSION['login']['status'] == false) {
     $_SESSION['login'] = [
         "status"      => false,
         "idusuario"   => -1,
+        "dni"         => "",
         "apellidos"   => "",
         "nombres"     => "",
-        "nombreRol"      => "",
+        "nombreRol"   => "",
         "nombreCorto" => "",
         "nomUser"     => "",
         "permisos"    => []
@@ -47,6 +48,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                         //Actualizar los datos de la variable de sesión
                         $_SESSION["login"]["status"] = true;
                         $_SESSION["login"]["idusuario"] =  $registro[0]['idusuario'];
+                        $_SESSION["login"]["dni"] = $registro[0]['dni'];
                         $_SESSION["login"]["apellidos"] =  $registro[0]['apellidos'];
                         $_SESSION["login"]["nombres"] =  $registro[0]['nombres'];
                         $_SESSION["login"]["nombreRol"] =  $registro[0]['nombreRol'];

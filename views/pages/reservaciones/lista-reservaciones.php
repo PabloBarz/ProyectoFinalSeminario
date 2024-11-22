@@ -20,8 +20,8 @@ require_once '../../partials/header.php';
             <div class="row">
               <div class="col-md-6">Reservaciones</div>
               <div class="col-md-6 text-right">
-                <a href="./registro-reservaciones" class="btn btn-sm btn-primary">Registrar</a>
-                <a href="./registro-reservaciones" class="btn btn-sm btn-danger">Reporte</a>
+                <button href="./registro-reservaciones" id="registraReservacion" class="btn btn-sm btn-primary">Registrar</button>
+                <a href="#" class="btn btn-sm btn-danger">Reporte</a>
               </div>
             </div>
           </div>
@@ -43,6 +43,7 @@ require_once '../../partials/header.php';
                     <th>H. Fin</th>
                     <th>H. Reservadas</th>
                     <th>Precio por H.</th>
+                    <th>Sub total</th>
                     <th>Estado de Pago</th>
                     <th>Zona Campo</th>
                     <th>Campo</th>
@@ -112,6 +113,7 @@ require_once '../../partials/header.php';
                   <td>${element.horaFin}</td>
                   <td>${element.cantidadHora}</td>
                   <td>${element.precioHora}</td>
+                  <td>${element.totalMonto || ""}</td>
                   <td><label class="${classStatusPago}">${element.estadoPago}</label></td>
                   <td>${element.nombreZona}</td>
                   <td>${element.nombreCampo}</td>
@@ -135,6 +137,12 @@ require_once '../../partials/header.php';
           console.error('Hubo un error: ', error.message);
         }
       }
+
+      document.querySelector("#registraReservacion").addEventListener("click", event => {
+        event.preventDefault();
+        sessionStorage.setItem("origen", "listaReservaciones");
+        window.location.href = `../reservaciones/registro-reservaciones`;
+      })
 
       listTableRerservaciones();
 

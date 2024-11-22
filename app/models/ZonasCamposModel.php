@@ -46,6 +46,24 @@ class ZonaCamposModel extends Conexion {
         }
     }
 
+    //Metodo para obtener las zonas de 1 un campo disponible
+    public function getZonaCampoDisponible($params = []): array {
+        try {
+            $query = $this->pdo->prepare("CALL spListZonasDisponibles(?,?,?,?)");
+            $query->execute(
+                array(
+                    $params['fecha'],
+                    $params["hInicio"],
+                    $params["hFin"],
+                    $params["idCampo"]
+                    )
+              );
+            return $query->fetchAll(PDO::FETCH_ASSOC); 
+        } catch (Exception $e) {
+            die("Error en getCampoById: " . $e->getMessage());
+        }
+    }
+
     public function AddZonaCampos ($params = []): bool {
 
         try {

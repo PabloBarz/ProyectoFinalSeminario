@@ -34,6 +34,7 @@ BEGIN
         r.estadoPago,
         r.precioHora,
         r.cantidadHora,
+        r.totalMonto,
         z.nombre AS nombreZona,
         u.nomUser AS nombreUsuario,
         p.apellidos AS apellidoUsuario,  
@@ -180,7 +181,7 @@ DELIMITER //
 CREATE PROCEDURE spGetDataCampos()
 BEGIN
     SELECT 
-		idCampo,
+	idCampo,
         tipoCampo,
         nombre,
         latitud,
@@ -331,3 +332,44 @@ BEGIN
         idZonaCampo = _idZonaCampo;
 END //
 DELIMITER ;
+
+-- sp para actualizar usuario 
+DROP PROCEDURE IF EXISTS spUpdateUser;
+DELIMITER //
+CREATE PROCEDURE spUpdateUser(
+    IN _idUsuario INT,
+    IN _idTipoUsuario INT,
+    IN _nomUser VARCHAR(20),
+    IN _email 	VARCHAR(70)
+)
+BEGIN
+    UPDATE usuarios 
+    SET idTipoUsuario = _idTipoUsuario,
+	nomUser = _nomUser,
+	email = _email
+    WHERE idUsuario = _idUsuario;
+END //
+
+DELIMITER ;
+
+-- para registrar un reservacion
+DROP PROCEDURE IF EXISTS spRegisterReservacion;
+DELIMITER //
+CREATE PROCEDURE spRegisterReservacion
+(
+    IN _idZonaCampo INT,
+    IN _idUsuario INT,
+    IN _fechaReservacion DATE,
+    IN _horaInicio TIME,
+    IN _horaFin TIME,
+    IN _estadoPago VARCHAR (10),
+    IN _precioHora SMALLINT,
+    IN _cantidadHora SMALLINT,
+    IN _totalMonto DECIMAL(10,2)
+)
+BEGIN
+	INSERT INTO reservaciones (idZonaCampo, idUsuario, fechaReservacion, horaInicio, horaFin, estadoPago, precioHora, cantidadHora, totalMonto)
+	VALUES (_idZonaCampo, _idUsuario, _fechaReservacion, _horaInicio, _horaFin, _estadoPago, _precioHora, _cantidadHora, _totalMonto);
+END // 
+DELIMITER ;
+

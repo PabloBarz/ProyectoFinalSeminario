@@ -75,7 +75,16 @@ try {
                     $resultado = $zonaCampos->UpdateZonaCampo($zonaCampoActualizado);
                     echo json_encode(["actualizado" => $resultado]);
                     break;
-
+                case "getZonaCampoDisponible":
+                        $result = $zonaCampos->getZonaCampoDisponible([
+                            "fecha" => $_POST['fecha'],
+                            "hInicio" => $_POST["hInicio"],
+                            "hFin" => $_POST["hFin"],
+                            "idCampo" => $_POST["idCampo"]
+                        ]);
+        
+                        echo json_encode($result);
+                    break;
                 default:
                     echo json_encode(["error" => "Operación no válida"]);
                     break;
