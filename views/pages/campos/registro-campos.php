@@ -72,7 +72,7 @@ require_once '../../partials/header.php';
                     </div>
                     <div class="col-md-6 form-group">
                       <label for="telefono">Teléfono:</label>
-                      <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" required>
+                      <input type="tel" class="form-control p_input" id="telefono" name="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" >
                     </div>
                   </div>
                 </div>
@@ -137,14 +137,14 @@ require_once '../../partials/header.php';
 
               // Verificar la respuesta y mostrar un mensaje al usuario
               if (result.guardado) {
-                alert("Campo registrado correctamente.");
+                showToast("Campo registrado correctamente", "SUCCESS", 1500, "./lista-campos")
                 form.reset(); // Limpiar el formulario
               } else {
-                alert("Error al registrar el campo.");
+                showToast("Ocurrio un error al registrar el campo", "ERROR")
               }
             } catch (error) {
               console.error("Error:", error);
-              alert("Ocurrió un error en la solicitud.");
+              showToast("Ocurrio un error al registrar el campo", "ERROR")
             }
           });
         });

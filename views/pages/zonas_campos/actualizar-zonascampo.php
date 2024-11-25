@@ -186,14 +186,13 @@ require_once '../../partials/header.php';
               console.log("Respuesta del servidor:", result);
 
               if (result.actualizado) {
-                alert("Zona del campo actualizada correctamente");
-                window.location.href = "./lista-zonascampos.php";
+                showToast("Zona de campo actualizado correctamente", "SUCCESS", 1500, "./lista-zonascampos")
               } else {
-                alert("Error al actualizar la zona del campo: " + (result.message || "Respuesta inesperada"));
+                showToast("Ocurrio un error al actualizar la zona del campo", "ERROR")
               }
             } catch (error) {
               console.error("Error en la solicitud:", error);
-              alert("Ocurrió un error al intentar actualizar la zona del campo.");
+              showToast("Ocurrio un error al actualizar la zona del campo", "ERROR")
             }
           });
 

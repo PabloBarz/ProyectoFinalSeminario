@@ -68,7 +68,7 @@ require_once '../../partials/header.php';
                     </div>
                     <div class="col-md-6 form-group">
                       <label for="telefono">Teléfono:</label>
-                      <input type="tel" class="form-control" id="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" required>
+                      <input type="tel" class="form-control" id="telefono" pattern="9[0-9]{8}" maxlength="9" minlength="9" >
                     </div>
                   </div>
                 </div>
@@ -151,14 +151,13 @@ require_once '../../partials/header.php';
           console.log("Respuesta del servidor:", result); // Log para inspeccionar la respuesta
 
           if (result.actualizado) {
-            alert("Campo actualizado correctamente.");
-            window.location.href = "./lista-campos";
+            showToast("Campo actualizado correctamente", "SUCCESS", 1500, "./lista-campos")
           } else {
-            alert("Error al actualizar el campo: " + (result.message || "Respuesta inesperada"));
+            showToast("Ocurrio un error al actualizar el campo", "ERROR")
           }
         } catch (error) {
           console.error("Error en la solicitud:", error); // Verifica si ocurrió un problema en la conexión
-          alert("Ocurrió un error al intentar actualizar el campo.");
+          showToast("Ocurrio un error al actualizar el campo", "ERROR")
         }
 
 

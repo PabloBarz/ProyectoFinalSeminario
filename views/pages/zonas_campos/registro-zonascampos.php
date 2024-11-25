@@ -127,14 +127,14 @@ require_once '../../partials/header.php';
               const result = await response.json();
 
               if (result.guardado) {
-                alert("Campo registrado correctamente");
+                showToast("Zona de campo registrado correctamente", "SUCCESS", 1500, "./lista-zonascampos")
                 form.reset();
               } else {
-                alert("Error al registrar la zona del campo");
+                showToast("Ocurrio un error al registrar la zona del campo", "ERROR")
               }
             } catch (error) {
               console.error("Error:", error);
-              alert("Ocurrió un error en la solicitud.");
+              showToast("Ocurrio un error al registrar la zona del campo", "ERROR")
             }
           });
 
